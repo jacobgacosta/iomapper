@@ -29,7 +29,7 @@ public class MapperTest {
 
     @Test
     public void ignoreFieldsFromSourceForMapping() {
-        UserDto userDto = Mapper.from(source).to(UserDto.class).ignoreFromSource(toIgnore -> {
+        UserDto userDto = Mapper.from(source).to(UserDto.class).ignoreFieldsFromSource(toIgnore -> {
             toIgnore.add("name");
             toIgnore.add("email");
         }).build();
@@ -39,18 +39,4 @@ public class MapperTest {
         assertNull(userDto.getName());
         assertEquals(29, userDto.getAge());
     }
-
-    @Test
-    public void ignoreFieldsFromTargetForMapping() {
-        UserDto userDto = Mapper.from(source).to(UserDto.class).ignoreFromTarget(toIgnore -> {
-            toIgnore.add("name");
-            toIgnore.add("email");
-        }).build();
-
-        assertNotNull(userDto);
-        assertNull(userDto.getEmail());
-        assertNull(userDto.getName());
-        assertEquals(29, userDto.getAge());
-    }
-
 }

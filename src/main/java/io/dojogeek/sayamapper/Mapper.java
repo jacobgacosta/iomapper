@@ -11,8 +11,7 @@ public class Mapper {
 
     private Object source;
     private Class target;
-    private Ignorable ignorableSource;
-    private Ignorable ignorableTarget;
+    private Ignorable ignorable;
 
     private Mapper() {
     }
@@ -37,7 +36,9 @@ public class Mapper {
 
         Map<String, Object> sourceMap = this.getPropertiesAndValuesFrom(source.getClass(), source);
 
-        this.removeExcludedFields(this.ignorableSource, sourceMap);
+        if (this.ignorable != null) {
+            this.removeExcludedFields(this.ignorable, sourceMap);
+        }
 
         sourceMap.forEach((key, value) -> {
             try {
@@ -96,13 +97,8 @@ public class Mapper {
                 }));
     }
 
-    public Mapper ignoreFromSource(Ignorable ignorable) {
-        this.ignorableSource = ignorable;
-        return this;
-    }
-
-    public Mapper ignoreFromTarget(Ignorable ignorable) {
-        this.ignorableTarget = ignorable;
+    public Mapper ignoreFieldsFromSource(Ignorable ignorable) {
+        this.ignorable = ignorable;
         return this;
     }
 
