@@ -5,6 +5,7 @@ public class UserDto {
     private String name;
     private int age;
     private String email;
+    private String address;
 
     public String getName() {
         return name;
@@ -30,4 +31,11 @@ public class UserDto {
         this.email = email;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
