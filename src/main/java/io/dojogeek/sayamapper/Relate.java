@@ -8,5 +8,4 @@ public class Relate extends HashMap<String, String> {
         return super.put(sourceField, targetField);
     }
 
-
 }

@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Map {
@@ -29,89 +28,31 @@ public class Map {
     }
 
     public <T> T build() {
-        return this.fillDestinationObjectWith(this.origin);
+        return this.prepareToFillDestinationObject();
     }
 
-    private <T> T fillDestinationObjectWith(Object origin) {
-        T destinationInstance = this.createInstanceFor(this.destination);
+    private <T> T prepareToFillDestinationObject() {
+        T destinationObject = this.createInstanceFor(this.destination);
 
-        java.util.Map<String, Object> originMap = this.getPropertiesAndValuesFrom(origin);
+        java.util.Map<String, Object> originMap = this.getPropertiesAndValuesFrom(this.origin);
 
         if (this.ignorable != null) {
             this.excludedFieldsFor(originMap);
         }
 
-        originMap.forEach((key, value) -> {
-            try {
-                Field destinationField = destinationInstance.getClass().getDeclaredField(key);
+        destinationObject = this.fillDestinationObjectWithOriginMap(originMap, destinationObject);
 
-                isCustomizable(destinationField);
-
-                if (destinationField != null) {
-                    destinationField.setAccessible(true);
-                    destinationField.set(destinationInstance, value);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        return destinationInstance;
-    }
-
-    private void setValue(Field field) {
-    }
-
-    private boolean isCustomizable(Field field) {
-        if (this.customRelations != null
-                && this.existDestinationFieldInCustomRelations(field.getName())) {
+        if (this.customRelations != null) {
+            destinationObject = this.applyCustomMappings(destinationObject);
         }
 
-        return false;
-    }
-
-    private boolean existDestinationFieldInCustomRelations(String fieldName) {
-        Relate relate = new Relate();
-        this.customRelations.map(relate);
-
-        boolean existInCustomMapping = false;
-
-        for (java.util.Map.Entry<String, String> entry : relate.entrySet()) {
-            return Pattern.matches("^" + fieldName + "(\\.\\w+$)?", entry.getValue());
-        }
-
-        return existInCustomMapping;
-    }
-
-    private void excludedFieldsFor(java.util.Map sourceMap) {
-        List<String> fieldsToIgnore = new ArrayList<>();
-        this.ignorable.fillWithFieldsToIgnore(fieldsToIgnore);
-
-        fieldsToIgnore.stream().forEach(field -> {
-            sourceMap.remove(field);
-        });
-    }
-
-    private <T> T createInstanceFor(Class target) {
-        T object = null;
-
-        try {
-            object = (T) target.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        return object;
+        return destinationObject;
     }
 
     private java.util.Map<String, Object> getPropertiesAndValuesFrom(Object instance) {
         return Arrays.asList(instance.getClass().getDeclaredFields()).stream()
                 .collect(Collectors.toMap(field -> field.getName(), field -> {
                     field.setAccessible(true);
-
                     Object value = null;
 
                     try {
@@ -122,6 +63,102 @@ public class Map {
 
                     return value;
                 }));
+    }
+
+    private void excludedFieldsFor(java.util.Map originMap) {
+        List<String> fieldsToIgnore = new ArrayList<>();
+        this.ignorable.fillWithFieldsToIgnore(fieldsToIgnore);
+
+        fieldsToIgnore.stream().forEach(field -> {
+            originMap.remove(field);
+        });
+    }
+
+    private <T> T fillDestinationObjectWithOriginMap(java.util.Map<String, Object> originMap,
+                                                     T destinationObject) {
+        return (T) (new AllocationHandler(originMap, destinationObject)).getPopulatedDestinationObject();
+    }
+
+    private <T> T applyCustomMappings(T destinationObject) {
+        Relate relate = new Relate();
+        this.customRelations.map(relate);
+
+        for (Relate.Entry<String, String> entry : relate.entrySet()) {
+            Object value = this.getValueFrom(this.origin, entry.getKey());
+            this.setValueTo(destinationObject, value, entry.getValue());
+        }
+
+        return destinationObject;
+    }
+
+    private void setValueTo(Object destination, Object value, String destinationField) {
+        String pathToField = this.clearPathField(destinationField);
+
+        String rootField = pathToField;
+        String remainingFields = null;
+
+        if (rootField.contains(".")) {
+            rootField = destinationField.substring(0, destinationField.indexOf("."));
+            remainingFields = destinationField.substring(rootField.length() + 1);
+        }
+
+        try {
+            Field declaredField = destination.getClass().getDeclaredField(rootField);
+            declaredField.setAccessible(true);
+            Object instanceObject = this.createInstanceFor(declaredField.getType());
+            if (remainingFields != null) {
+                declaredField.set(destination, instanceObject);
+                this.setValueTo(instanceObject, value, remainingFields);
+            } else {
+                declaredField.set(destination, value);
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String clearPathField(String destinationField) {
+        if (destinationField.trim().startsWith(".")) {
+            destinationField = destinationField.substring(1);
+        }
+
+        if (destinationField.trim().endsWith(".")) {
+            destinationField = destinationField.substring(0, destinationField.length() - 1);
+        }
+
+        return destinationField;
+    }
+
+    private Object getValueFrom(Object object, String field) {
+        for (String fieldName : field.split("\\.")) {
+            try {
+                Field declaredField = object.getClass().getDeclaredField(fieldName);
+                declaredField.setAccessible(true);
+                object = declaredField.get(object);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return object;
+    }
+
+    private <T> T createInstanceFor(Class clazz) {
+        T object = null;
+
+        try {
+            object = (T) clazz.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return object;
     }
 
     public Map ignoreFieldsFromSource(Ignorable ignorable) {

@@ -15,11 +15,15 @@ public class MapTest {
         address.setStreet("Elm");
         address.setNumber("5233");
 
+        BankCard bankCard = new BankCard();
+        bankCard.setMark("Santander");
+
         this.userSource = new User();
         this.userSource.setName("Jacob");
         this.userSource.setAge(29);
         this.userSource.setEmail("dosek17@gmail.com");
         this.userSource.setAddress(address);
+        this.userSource.setCard(bankCard);
     }
 
     @Test
@@ -46,12 +50,14 @@ public class MapTest {
     }
 
     @Test
-    public void mapNestedFieldsFromSourceObjectToTargetObjectWithTheSameFieldsNames() {
+    public void mapCustomFields() {
         UserDto userDto = Map.from(userSource).to(UserDto.class).customRelate(map -> {
             map.relate("address.street", "address");
+            map.relate("card.mark", "cardDto.trademark");
         }).build();
 
         assertEquals("Elm", userDto.getAddress());
+        assertEquals("Santander", userDto.getCardDto().getTrademark());
     }
 
 }

@@ -6,6 +6,7 @@ public class User {
     private String email;
     private int age;
     private Address address;
+    private BankCard card;
 
     public String getName() {
         return name;
@@ -39,4 +40,11 @@ public class User {
         this.address = address;
     }
 
+    public BankCard getCard() {
+        return card;
+    }
+
+    public void setCard(BankCard card) {
+        this.card = card;
+    }
 }

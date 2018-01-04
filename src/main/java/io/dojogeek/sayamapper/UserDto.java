@@ -6,6 +6,7 @@ public class UserDto {
     private int age;
     private String email;
     private String address;
+    private BankCardDto cardDto;
 
     public String getName() {
         return name;
@@ -38,4 +39,13 @@ public class UserDto {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public BankCardDto getCardDto() {
+        return cardDto;
+    }
+
+    public void setCardDto(BankCardDto cardDto) {
+        this.cardDto = cardDto;
+    }
+
 }
