@@ -20,32 +20,17 @@ public class AllocationHandler<T> {
 
     private void populateDestinationInstance() {
         originMap.forEach((fieldName, value) -> {
-            this.mergeFieldAndValue(this.getFieldFromDestinationInstance(fieldName), value);
+            this.merge(this.getFieldFromDestinationInstance(fieldName), value);
         });
     }
 
-    private void mergeFieldAndValue(Field field, Object value) {
-        if (!this.isMergeable(field, value)) {
-            System.out.println("no merge for: " + field + " with value: " + value);
+    private void merge(Field field, Object value) {
+        if (!this.mergeFieldAndValue(field, value)) {
+
             return;
         }
 
-        try {
-            field.set(this.destinationInstance, value);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private boolean isMergeable(Field field, Object value) {
-        try {
-            field.set(this.destinationInstance, value);
-        } catch (IllegalAccessException e) {
-            return false;
-        } catch (RuntimeException e) {
-            return false;
-        }
-        return true;
+        this.mergeFieldAndValue(field, value);
     }
 
     private Field getFieldFromDestinationInstance(String fieldName) {
@@ -59,6 +44,18 @@ public class AllocationHandler<T> {
         }
 
         return field;
+    }
+
+    private boolean mergeFieldAndValue(Field field, Object value) {
+        try {
+            field.set(this.destinationInstance, value);
+        } catch (IllegalAccessException e) {
+            return false;
+        } catch (RuntimeException e) {
+            return false;
+        }
+
+        return true;
     }
 
 }
