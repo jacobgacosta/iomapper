@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class MapTest {
 
-    private User userSource;
+    private User originUser;
 
     @Before
     public void setup() {
@@ -18,17 +18,17 @@ public class MapTest {
         BankCard bankCard = new BankCard();
         bankCard.setMark("Santander");
 
-        this.userSource = new User();
-        this.userSource.setName("Jacob");
-        this.userSource.setAge(29);
-        this.userSource.setEmail("dosek17@gmail.com");
-        this.userSource.setAddress(address);
-        this.userSource.setCard(bankCard);
+        this.originUser = new User();
+        this.originUser.setName("Jacob");
+        this.originUser.setAge(29);
+        this.originUser.setEmail("dosek17@gmail.com");
+        this.originUser.setAddress(address);
+        this.originUser.setCard(bankCard);
     }
 
     @Test
     public void fillAnObjectWithAnotherWhitCompatibleFields() {
-        UserDto userDto = Map.from(userSource).to(UserDto.class).build();
+        UserDto userDto = Map.from(originUser).to(UserDto.class).build();
 
         assertNotNull(userDto);
         assertEquals("Jacob", userDto.getName());
@@ -38,7 +38,7 @@ public class MapTest {
 
     @Test
     public void ignoreFieldsFromSourceForMapping() {
-        UserDto userDto = Map.from(userSource).to(UserDto.class).ignoreFieldsFromSource(toIgnore -> {
+        UserDto userDto = Map.from(originUser).to(UserDto.class).ignoreFieldsFromSource(toIgnore -> {
             toIgnore.add("name");
             toIgnore.add("email");
         }).build();
@@ -51,7 +51,7 @@ public class MapTest {
 
     @Test
     public void mapCustomFields() {
-        UserDto userDto = Map.from(userSource).to(UserDto.class).customRelate(map -> {
+        UserDto userDto = Map.from(originUser).to(UserDto.class).customRelate(map -> {
             map.relate("address.street", "address");
             map.relate("card.mark", "cardDto.trademark");
         }).build();

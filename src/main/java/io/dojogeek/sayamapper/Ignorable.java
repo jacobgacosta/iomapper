@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface Ignorable {
 
-    void fillWithFieldsToIgnore(List<String> toIgnore);
+    void fieldsToIgnore(List<String> toIgnore);
 
 }

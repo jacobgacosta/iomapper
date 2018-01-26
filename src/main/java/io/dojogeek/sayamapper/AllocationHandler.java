@@ -26,7 +26,6 @@ public class AllocationHandler<T> {
 
     private void merge(Field field, Object value) {
         if (!this.mergeFieldAndValue(field, value)) {
-
             return;
         }
 
