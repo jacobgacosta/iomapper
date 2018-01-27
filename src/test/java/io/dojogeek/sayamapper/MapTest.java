@@ -27,7 +27,7 @@ public class MapTest {
     }
 
     @Test
-    public void fillAnObjectWithAnotherWhitCompatibleFields() {
+    public void shouldMappingFieldsWithTheSameNameAndType() {
         UserDto userDto = Map.from(originUser).to(UserDto.class).build();
 
         assertNotNull(userDto);
@@ -37,11 +37,10 @@ public class MapTest {
     }
 
     @Test
-    public void ignoreFieldsFromSourceForMapping() {
-        UserDto userDto = Map.from(originUser).to(UserDto.class).ignoreFieldsFromSource(toIgnore -> {
-            toIgnore.add("name");
-            toIgnore.add("email");
-        }).build();
+    public void shouldIgnoreFieldsFromSourceAtFirstLevel() {
+        UserDto userDto = Map.from(originUser).to(UserDto.class).ignoreFields(field ->
+                field.toIgnore("email").toIgnore("name")
+        ).build();
 
         assertNotNull(userDto);
         assertNull(userDto.getEmail());
@@ -50,7 +49,7 @@ public class MapTest {
     }
 
     @Test
-    public void mapCustomFields() {
+    public void shouldMapNestedFieldsOfTheSameType() {
         UserDto userDto = Map.from(originUser).to(UserDto.class).customRelate(map -> {
             map.relate("address.street", "address");
             map.relate("card.mark", "cardDto.trademark");

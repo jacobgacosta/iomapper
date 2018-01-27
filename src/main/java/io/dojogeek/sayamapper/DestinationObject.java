@@ -1,15 +1,13 @@
 package io.dojogeek.sayamapper;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DestinationObject<T> {
 
     private T destination;
     private Inspectable origin;
-    private java.util.Map<String, Object> originMap;
-    private Ignorable ignorable;
+    private java.util.Map<String, Object> originFieldsAndValuesMap;
+    private Ignorable toIgnore;
     private CustomMapper customRelations;
 
     public DestinationObject(Class destination) {
@@ -17,24 +15,28 @@ public class DestinationObject<T> {
     }
 
     public <T> T getFilledObject() {
-        this.applyExclusions();
-        this.populate();
-        this.applyCustomMapping();
+        this.prepareObject();
 
         return (T) this.destination;
     }
 
     public void fillWith(Inspectable origin) {
         this.origin = origin;
-        this.originMap = origin.getPropertiesAndValuesMap();
+        this.originFieldsAndValuesMap = origin.getPropertiesAndValuesMap();
     }
 
-    public void setIgnorable(Ignorable ignorable) {
-        this.ignorable = ignorable;
+    public void ignore(Ignorable ignorable) {
+        this.toIgnore = ignorable;
     }
 
-    public void setCustomMapping(CustomMapper customRelations) {
+    public void customMapping(CustomMapper customRelations) {
         this.customRelations = customRelations;
+    }
+
+    private void prepareObject() {
+        this.ignoreFieldsForMapping();
+        this.populate();
+        this.applyCustomMapping();
     }
 
     private <T> T createInstance(Class clazz) {
@@ -51,21 +53,21 @@ public class DestinationObject<T> {
         return object;
     }
 
-    private void populate() {
-        originMap.forEach((originFieldName, originValue) -> {
+    private DestinationObject populate() {
+        originFieldsAndValuesMap.forEach((originFieldName, originValue) -> {
             this.merge(this.getFieldIfExist(originFieldName), originValue);
         });
+
+        return this;
     }
 
-    private void applyExclusions() {
-        if (this.ignorable != null) {
-            List<String> fieldsToIgnore = new ArrayList<>();
-            ignorable.fieldsToIgnore(fieldsToIgnore);
-
-            fieldsToIgnore.stream().forEach(fieldToIgnore -> {
-                originMap.remove(fieldToIgnore);
-            });
+    private void ignoreFieldsForMapping() {
+        if (this.toIgnore == null) {
+            return;
         }
+
+        FieldList fieldsToIgnore = this.toIgnore.ignore(new FieldList());
+        fieldsToIgnore.forEach(field -> originFieldsAndValuesMap.remove(field));
     }
 
     private void applyCustomMapping() {

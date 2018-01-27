@@ -4,10 +4,11 @@ public class Map {
 
     private Object origin;
     private Class destination;
-    private Ignorable ignorable;
+    private Ignorable toIgnore;
     private CustomMapper customRelations;
 
-    private Map() {}
+    private Map() {
+    }
 
     public static Map from(Object source) {
         Map map = new Map();
@@ -27,14 +28,14 @@ public class Map {
     private <T> T fillDestinationObject() {
         DestinationObject<T> destination = new DestinationObject<>(this.destination);
         destination.fillWith(new OriginObject(this.origin));
-        destination.setIgnorable(this.ignorable);
-        destination.setCustomMapping(this.customRelations);
+        destination.ignore(this.toIgnore);
+        destination.customMapping(this.customRelations);
 
         return destination.getFilledObject();
     }
 
-    public Map ignoreFieldsFromSource(Ignorable ignorable) {
-        this.ignorable = ignorable;
+    public Map ignoreFields(Ignorable fieldList) {
+        this.toIgnore = fieldList;
         return this;
     }
 
