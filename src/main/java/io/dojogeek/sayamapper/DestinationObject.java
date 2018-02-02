@@ -14,8 +14,8 @@ public class DestinationObject<T> {
         this.destination = this.createInstance(destination);
     }
 
-    public <T> T getFilledObject() {
-        this.prepareObject();
+    public <T> T getFilled() {
+        this.prepare();
 
         return (T) this.destination;
     }
@@ -33,7 +33,7 @@ public class DestinationObject<T> {
         this.customRelations = customRelations;
     }
 
-    private void prepareObject() {
+    private void prepare() {
         this.ignoreFieldsForMapping();
         this.populate();
         this.applyCustomMapping();
@@ -54,8 +54,8 @@ public class DestinationObject<T> {
     }
 
     private DestinationObject populate() {
-        originFieldsAndValuesMap.forEach((originFieldName, originValue) -> {
-            this.merge(this.getFieldIfExist(originFieldName), originValue);
+        originFieldsAndValuesMap.forEach((fieldName, value) -> {
+            this.merge(this.getFieldIfExist(fieldName), value);
         });
 
         return this;

@@ -31,7 +31,7 @@ public class Map {
         destination.ignore(this.toIgnore);
         destination.customMapping(this.customRelations);
 
-        return destination.getFilledObject();
+        return destination.getFilled();
     }
 
     public Map ignoreFields(Ignorable fieldList) {
