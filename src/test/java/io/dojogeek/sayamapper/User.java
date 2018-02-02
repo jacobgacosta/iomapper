@@ -7,6 +7,7 @@ public class User {
     private int age;
     private Address address;
     private BankCard card;
+    private String gender;
 
     public String getName() {
         return name;
@@ -46,5 +47,13 @@ public class User {
 
     public void setCard(BankCard card) {
         this.card = card;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
