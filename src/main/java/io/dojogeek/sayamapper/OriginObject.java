@@ -14,19 +14,10 @@ public class OriginObject implements Inspectable {
     }
 
     public Map<String, Object> getPropertiesAndValuesMap() {
-        return Arrays.asList(origin.getClass().getDeclaredFields()).stream()
-                .collect(Collectors.toMap(field -> field.getName(), field -> {
-                    field.setAccessible(true);
-                    Object value = null;
-
-                    try {
-                        value = field.get(origin);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-
-                    return value;
-                }));
+        return Arrays.asList(origin.getClass().getDeclaredFields())
+                .stream()
+                .filter(field -> this.getValueFor(field) != null)
+                .collect(Collectors.toMap(field -> field.getName(), field -> this.getValueFor(field)));
     }
 
     @Override
@@ -43,6 +34,19 @@ public class OriginObject implements Inspectable {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+        }
+
+        return value;
+    }
+
+    private Object getValueFor(Field field) {
+        field.setAccessible(true);
+        Object value = null;
+
+        try {
+            value = field.get(origin);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
         return value;
