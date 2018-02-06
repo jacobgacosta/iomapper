@@ -13,11 +13,13 @@ public class Map {
     public static Map from(Object source) {
         Map map = new Map();
         map.origin = source;
+
         return map;
     }
 
     public Map to(Class clazz) {
         this.destination = clazz;
+
         return this;
     }
 
@@ -36,11 +38,13 @@ public class Map {
 
     public Map ignoreFields(Ignorable fieldList) {
         this.toIgnore = fieldList;
+
         return this;
     }
 
     public Map customRelate(CustomMapper customMapper) {
         this.customRelations = customMapper;
+
         return this;
     }
 
