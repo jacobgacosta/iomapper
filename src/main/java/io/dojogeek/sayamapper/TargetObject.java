@@ -1,41 +1,40 @@
 package io.dojogeek.sayamapper;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 public class DestinationObject<T> {
 
     private T destination;
-    private Inspectable origin;
-    private java.util.Map<String, Object> originFieldsAndValuesMap;
+    private Inspectable source;
     private Ignorable toIgnore;
-    private CustomMapper customRelations;
+    private Customizable customRelations;
 
     public DestinationObject(Class destination) {
         this.destination = this.createInstance(destination);
     }
 
-    public <T> T getFilled() {
+    public <T> T getFilledInstance() {
         this.prepare();
 
         return (T) this.destination;
     }
 
-    public void fillWith(Inspectable origin) {
-        this.origin = origin;
-        this.originFieldsAndValuesMap = origin.getPropertiesAndValuesMap();
+    public void fillWith(Inspectable source) {
+        this.source = source;
     }
 
     public void ignore(Ignorable ignorable) {
         this.toIgnore = ignorable;
     }
 
-    public void customMapping(CustomMapper customRelations) {
+    public void customMapping(Customizable customRelations) {
         this.customRelations = customRelations;
     }
 
     private void prepare() {
         this.ignoreFieldsForMapping();
-        this.populate();
+        this.populateFrom(this.source);
         this.applyCustomMapping();
     }
 
@@ -53,12 +52,41 @@ public class DestinationObject<T> {
         return object;
     }
 
-    private DestinationObject populate() {
-        originFieldsAndValuesMap.forEach((fieldName, value) -> {
-            this.merge(this.getFieldIfExist(fieldName), value);
-        });
+    private void populateFrom(Inspectable sourceObject) {
+        sourceObject.getPropertiesAndValues().forEach((sourceField, sourceValue) -> {
+            Optional<Field> matchedField = this.searchForFieldsThatMatchWith(sourceField);
 
-        return this;
+            if (matchedField.isPresent()) {
+                this.merge(matchedField.get(), sourceValue);
+            }
+        });
+    }
+
+    private Optional<Field> searchForFieldsThatMatchWith(Field field) {
+        for (Field declaredField : this.destination.getClass().getDeclaredFields()) {
+            if (declaredField.getName().toLowerCase().contains(field.getName())) {
+                return Optional.of(declaredField);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private void merge(Field field, Object value) {
+        if (!field.getType().isAssignableFrom(value.getClass())) {
+            this.tryMerge(field, value);
+        }
+
+        try {
+            field.set(this.destination, value);
+        } catch (IllegalAccessException | RuntimeException e) {
+            return;
+        }
+    }
+
+    private void tryMerge(Field field, Object value) {
+        DestinationObject destinationObject = new DestinationObject<>(field.getType());
+        destinationObject.populateFrom(new SourceObject(value));
     }
 
     private void ignoreFieldsForMapping() {
@@ -66,8 +94,8 @@ public class DestinationObject<T> {
             return;
         }
 
-        FieldList fieldsToIgnore = this.toIgnore.ignore(new FieldList());
-        fieldsToIgnore.forEach(field -> originFieldsAndValuesMap.remove(field));
+        IgnorableList fieldsToIgnore = this.toIgnore.ignore(new IgnorableList());
+        fieldsToIgnore.forEach(field -> this.source.getPropertiesAndValues().remove(field));
     }
 
     private void applyCustomMapping() {
@@ -76,34 +104,13 @@ public class DestinationObject<T> {
             customRelations.map(customMapping);
 
             for (CustomMapping.Entry<String, String> entry : customMapping.entrySet()) {
-                Object value = this.origin.getValueFor(entry.getKey());
+                Object value = this.source.getValueFor(entry.getKey());
                 this.setValue(this.destination, value, entry.getValue());
             }
         }
     }
 
-    private Field getFieldIfExist(String fieldName) {
-        Field field = null;
-
-        try {
-            field = this.destination.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-
-        return field;
-    }
-
-    private void merge(Field field, Object value) {
-        try {
-            field.set(this.destination, value);
-        } catch (IllegalAccessException | RuntimeException e) {
-            return;
-        }
-    }
-
-    private void setValue(Object destination, Object value, String destinationField) {
+    private void setValue(Object reference, Object value, String destinationField) {
         String pathToField = this.clearPathField(destinationField);
 
         String rootField = pathToField;
@@ -115,15 +122,15 @@ public class DestinationObject<T> {
         }
 
         try {
-            Field declaredField = destination.getClass().getDeclaredField(rootField);
+            Field declaredField = reference.getClass().getDeclaredField(rootField);
             declaredField.setAccessible(true);
             Object instanceObject = this.createInstance(declaredField.getType());
 
             if (remainingFields != null) {
-                declaredField.set(destination, instanceObject);
+                declaredField.set(reference, instanceObject);
                 this.setValue(instanceObject, value, remainingFields);
             } else {
-                declaredField.set(destination, value);
+                declaredField.set(reference, value);
             }
 
         } catch (NoSuchFieldException e) {

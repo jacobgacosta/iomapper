@@ -13,11 +13,11 @@ public class OriginObject implements Inspectable {
         this.origin = origin;
     }
 
-    public Map<String, Object> getPropertiesAndValuesMap() {
+    public Map<Field, Object> getPropertiesAndValuesMap() {
         return Arrays.asList(origin.getClass().getDeclaredFields())
                 .stream()
                 .filter(field -> this.getValueFor(field) != null)
-                .collect(Collectors.toMap(field -> field.getName(), field -> this.getValueFor(field)));
+                .collect(Collectors.toMap(field -> field, field -> this.getValueFor(field)));
     }
 
     @Override
