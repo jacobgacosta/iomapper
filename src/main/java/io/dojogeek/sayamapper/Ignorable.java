@@ -2,6 +2,6 @@ package io.dojogeek.sayamapper;
 
 public interface Ignorable {
 
-    FieldList ignore(FieldList fieldList);
+    IgnorableList ignore(IgnorableList fieldList);
 
 }

@@ -1,7 +1,7 @@
 package io.dojogeek.sayamapper;
 
-public interface CustomMapper {
+public interface Customizable {
 
-    void map(CustomMapping customMapping);
+    void fill(CustomMapper customMapping);
 
 }
