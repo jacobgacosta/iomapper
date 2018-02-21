@@ -10,23 +10,23 @@ public class ForeignField extends FlexibleField {
 
     @Override
     protected void setValue(FlexibleField flexibleField) {
-        this.populateFrom(new SourceObject(flexibleField.getValue()));
+        this.populateFrom(new SourceObject(flexibleField.getValue()), this.nestedFieldsToIgnore);
     }
 
     @Override
-    protected InspectableObject getReferenceToManageableObject() {
+    protected InspectableObject getInspectableObject() {
         Object reference = null;
 
         try {
             this.field.setAccessible(true);
-            reference = this.field.get(declaringObject);
+            reference = this.field.get(this.declaringObject);
 
             if (reference != null) {
                 return new InspectableObject(reference);
             }
 
             reference = this.field.getType().newInstance();
-            this.field.set(declaringObject, reference);
+            this.field.set(this.declaringObject, reference);
 
         } catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace();

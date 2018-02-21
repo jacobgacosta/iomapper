@@ -1,11 +1,8 @@
 package io.dojogeek.sayamapper;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class SayaMapperTest {
 
@@ -24,5 +21,25 @@ public class SayaMapperTest {
         assertNotNull(userDto);
         assertEquals(bankCardDto.getNumber(), user.getCard().getNumber());
     }
+
+    @Test
+    public void shouldIgnoreFieldsForMappingAtFirstLevel() {
+        BankCardDto bankCardDto = new BankCardDto();
+        bankCardDto.setNumber("1234567890123456");
+
+        UserDto userDto = new UserDto();
+        userDto.setAge(29);
+        userDto.setCardDto(bankCardDto);
+
+        User user = map.from(userDto).ignoring(targetFields ->
+            targetFields.ignore("age").ignore("cardDto")
+        ).to(User.class);
+
+        assertNotNull(user);
+        assertNull(user.getCard());
+        assertEquals(0, user.getAge());
+    }
+
+
 
 }

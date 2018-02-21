@@ -8,25 +8,33 @@ public class TargetObject extends ManagementObject {
 
     private Object target;
     private SourceObject source;
+    private IgnorableList ignorableList;
 
-    public <T> T getFilledInstanceOf(Class<T> clazz) {
+    public <T> T getFilledInstanceOf(Class<T> targetClass) {
         try {
-            this.target = clazz.newInstance();
+            this.target = targetClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             LOGGER.info("An error occurred when instantiating: " + target + "\n" + e.getMessage());
         }
 
-        this.populateFrom(this.source);
+        this.populateFrom(this.source, this.ignorableList);
 
         return (T) this.target;
     }
 
-    public void setSourceObject(SourceObject source) {
+    public void fillWith(SourceObject source) {
         this.source = source;
     }
 
+    public void ignoreFieldsForMapping(IgnorableList ignorableList) {
+        this.ignorableList = ignorableList;
+    }
+
+    public void applyCustomRelations(Customizable customizable) {
+    }
+
     @Override
-    protected InspectableObject getReferenceToManageableObject() {
+    protected InspectableObject getInspectableObject() {
         return new InspectableObject(this.target);
     }
 

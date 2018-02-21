@@ -9,6 +9,8 @@ public abstract class FlexibleField extends ManagementObject {
 
     protected Field field;
     protected Object declaringObject;
+    protected boolean imIgnorable = false;
+    protected String nestedFieldsToIgnore = "";
 
     protected FlexibleField(Field field, Object declaringObject) {
         this.field = field;
@@ -39,6 +41,18 @@ public abstract class FlexibleField extends ManagementObject {
         } catch (IllegalAccessException | RuntimeException e) {
             LOGGER.info("An error occurred when assigning the value: " + flexibleField.getValue() + " to field: " + this.field + "\n" + e.getMessage());
         }
+    }
+
+    protected void ignore() {
+        this.imIgnorable = true;
+    }
+
+    protected boolean isIgnorable() {
+        return this.imIgnorable;
+    }
+
+    protected void setNestedFieldsToIgnore(String nestedFields) {
+        this.nestedFieldsToIgnore = nestedFields;
     }
 
 }

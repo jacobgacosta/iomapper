@@ -9,7 +9,7 @@ public class SourceObject extends ManagementObject {
     }
 
     @Override
-    protected InspectableObject getReferenceToManageableObject() {
+    protected InspectableObject getInspectableObject() {
         return new InspectableObject(this.source);
     }
 

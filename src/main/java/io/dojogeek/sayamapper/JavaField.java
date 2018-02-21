@@ -15,20 +15,11 @@ public class JavaField extends FlexibleField {
             return;
         }
 
-        this.populateFrom(new SourceObject(flexibleField.getValue()));
+        super.populateFrom(new SourceObject(flexibleField.getValue()), this.nestedFieldsToIgnore);
     }
 
     @Override
-    protected void populateFrom(SourceObject sourceObject) {
-        FlexibleField matchedField = sourceObject.findMatchingFieldWithName(this.getName());
-
-        if (matchedField != null) {
-            this.setValue(matchedField);
-        }
-    }
-
-    @Override
-    protected InspectableObject getReferenceToManageableObject() {
+    protected InspectableObject getInspectableObject() {
         return new InspectableObject(declaringObject);
     }
 
