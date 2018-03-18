@@ -1,6 +1,7 @@
 package io.dojogeek.sayamapper;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class FlexibleField extends ManagementObject {
@@ -8,13 +9,13 @@ public abstract class FlexibleField extends ManagementObject {
     private final static Logger LOGGER = Logger.getLogger(FlexibleField.class.getName());
 
     protected Field field;
-    protected Object declaringObject;
-    protected boolean imIgnorable = false;
-    protected String nestedFieldsToIgnore = "";
+    protected Object parentObject;
+    protected boolean isIgnorable = false;
+    protected IgnorableList ignorable;
 
-    protected FlexibleField(Field field, Object declaringObject) {
+    protected FlexibleField(Field field, Object parentObject) {
         this.field = field;
-        this.declaringObject = declaringObject;
+        this.parentObject = parentObject;
     }
 
     protected String getName() {
@@ -26,7 +27,7 @@ public abstract class FlexibleField extends ManagementObject {
 
         try {
             this.field.setAccessible(true);
-            value = this.field.get(this.declaringObject);
+            value = this.field.get(this.parentObject);
         } catch (IllegalAccessException e) {
             LOGGER.info("An error occurred when retrieving the value for: " + this.field + "\n" + e.getMessage());
         }
@@ -34,25 +35,32 @@ public abstract class FlexibleField extends ManagementObject {
         return value;
     }
 
-    protected void setValue(FlexibleField flexibleField) {
+    protected void setValue(Object value) {
         try {
             this.field.setAccessible(true);
-            this.field.set(this.declaringObject, flexibleField.getValue());
+            this.field.set(this.parentObject, value);
         } catch (IllegalAccessException | RuntimeException e) {
-            LOGGER.info("An error occurred when assigning the value: " + flexibleField.getValue() + " to field: " + this.field + "\n" + e.getMessage());
+            LOGGER.info("An error occurred when assigning the value: " + value + " to field: " + this.field + "\n" + e.getMessage());
         }
     }
 
+    protected void setValue(FlexibleField flexibleField) {
+        this.setValue(flexibleField.getValue());
+    }
+
     protected void ignore() {
-        this.imIgnorable = true;
+        this.isIgnorable = true;
     }
 
     protected boolean isIgnorable() {
-        return this.imIgnorable;
+        return this.isIgnorable;
     }
 
-    protected void setNestedFieldsToIgnore(String nestedFields) {
-        this.nestedFieldsToIgnore = nestedFields;
+    public void setIgnorable(IgnorableList ignorable) {
+        this.ignorable = ignorable;
     }
 
+    public IgnorableList getIgnorable() {
+        return this.ignorable;
+    }
 }

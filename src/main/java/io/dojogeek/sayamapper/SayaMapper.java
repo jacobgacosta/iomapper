@@ -2,30 +2,34 @@ package io.dojogeek.sayamapper;
 
 public class SayaMapper implements Mapper {
 
-    private TargetObject targetObject = new TargetObject();
+    private SourceObject source;
+    private IgnorableList fieldsToIgnore;
 
     @Override
     public <T> T to(Class<T> targetClass) {
-        return targetObject.getFilledInstanceOf(targetClass);
+        TargetObject<T> targetObject = new TargetObject(targetClass);
+        targetObject.fillWith(this.source);
+        targetObject.ignoreFieldsForMapping(this.fieldsToIgnore);
+
+        return targetObject.getFilledInstance();
     }
 
     @Override
     public SayaMapper from(Object source) {
-        targetObject.fillWith(new SourceObject(source));
+        this.source = new SourceObject(source);
 
         return this;
     }
 
     @Override
     public SayaMapper ignoring(Ignorable fieldList) {
-        targetObject.ignoreFieldsForMapping(fieldList.ignore(new IgnorableList()));
+        this.fieldsToIgnore = fieldList.ignore(new IgnorableList());
 
         return this;
     }
 
     @Override
     public SayaMapper relate(Customizable customizable) {
-        targetObject.applyCustomRelations(customizable);
 
         return this;
     }

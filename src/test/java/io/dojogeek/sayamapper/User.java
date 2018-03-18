@@ -8,6 +8,7 @@ public class User {
     private Address address;
     private BankCard card;
     private String gender;
+    private String jobTitle;
 
     public String getName() {
         return name;
@@ -57,4 +58,11 @@ public class User {
         this.gender = gender;
     }
 
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 }

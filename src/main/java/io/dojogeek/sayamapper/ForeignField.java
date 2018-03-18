@@ -1,38 +1,41 @@
 package io.dojogeek.sayamapper;
 
 import java.lang.reflect.Field;
+import java.util.logging.Logger;
 
 public class ForeignField extends FlexibleField {
 
-    public ForeignField(Field field, Object declaringObject) {
-        super(field, declaringObject);
+    private final static Logger LOGGER = Logger.getLogger(ForeignField.class.getName());
+
+    public ForeignField(Field field, Object parentObject) {
+        super(field, parentObject);
     }
 
     @Override
     protected void setValue(FlexibleField flexibleField) {
-        this.populateFrom(new SourceObject(flexibleField.getValue()), this.nestedFieldsToIgnore);
+        try {
+            Object instance = this.field.getType().newInstance();
+
+            this.merge(instance, flexibleField);
+        } catch (InstantiationException | IllegalAccessException e) {
+            LOGGER.info("An error occurred when instantiating: " + this.field.getType() + "\n" + e.getMessage());
+        }
     }
 
-    @Override
-    protected InspectableObject getInspectableObject() {
-        Object reference = null;
+    private void merge(Object instance, FlexibleField flexibleField) {
+        if (flexibleField instanceof JavaField) {
+            FlexibleField sourceMatchedField = new SourceObject(instance).findMatchingFieldWithName(flexibleField.getName());
 
-        try {
-            this.field.setAccessible(true);
-            reference = this.field.get(this.declaringObject);
-
-            if (reference != null) {
-                return new InspectableObject(reference);
+            if (sourceMatchedField != null && sourceMatchedField.getValue() != null) {
+                flexibleField.setValue(sourceMatchedField);
             }
 
-            reference = this.field.getType().newInstance();
-            this.field.set(this.declaringObject, reference);
-
-        } catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+            return;
         }
 
-        return new InspectableObject(reference);
+        this.setValue(instance);
+
+        super.merge(new SourceObject(flexibleField.getValue()), instance, this.getIgnorable());
     }
 
 }

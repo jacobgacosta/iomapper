@@ -4,51 +4,24 @@ import java.util.List;
 
 public abstract class ManagementObject {
 
-    abstract InspectableObject getInspectableObject();
-
-    protected void populateFrom(SourceObject sourceObject, IgnorableList ignorableList) {
-        this.merge(sourceObject, this.getDeclaredFieldsIgnoring(ignorableList));
+    protected void merge(SourceObject sourceObject, Object target) {
+        this.merge(sourceObject, new InspectableObject(target).getDeclaredFields());
     }
 
-    protected void populateFrom(SourceObject sourceObject, String ignoreFields) {
-        this.merge(sourceObject, this.getDeclaredFieldsIgnoring(ignoreFields));
+    protected void merge(SourceObject sourceObject, Object target, IgnorableList ignorableList) {
+        this.merge(sourceObject, new InspectableObject(target).getDeclaredFieldsIgnoring(ignorableList));
     }
 
-    protected List<FlexibleField> getDeclaredFields() {
-        return this.getInspectableObject().getDeclaredFields();
-    }
-
-    protected List<FlexibleField> getDeclaredFieldsIgnoring(IgnorableList ignorableList) {
-        return this.getInspectableObject().getDeclaredFieldsIgnoring(ignorableList);
-    }
-
-    protected List<FlexibleField> getDeclaredFieldsIgnoring(String ignoreFields) {
-        return this.getInspectableObject().getDeclaredFieldsIgnoring(ignoreFields);
-    }
-
-    protected FlexibleField findMatchingFieldWithName(String fieldName) {
-        FlexibleField flexibleField = null;
-
-        for (FlexibleField declaredField : this.getDeclaredFields()) {
-            if (declaredField.getName().toLowerCase().contains(fieldName) ||
-                    fieldName.toLowerCase().contains(declaredField.getName())) {
-                flexibleField = declaredField;
-            }
-        }
-
-        return flexibleField;
-    }
-
-    private void merge(SourceObject sourceObject, List<FlexibleField> targetFields) {
-        targetFields.forEach(targetField -> {
-            if (targetField.isIgnorable()) {
+    private void merge(SourceObject sourceObject, List<FlexibleField> flexibleFieldList) {
+        flexibleFieldList.forEach(field -> {
+            if (field.isIgnorable()) {
                 return;
             }
 
-            FlexibleField sourceMatchedField = sourceObject.findMatchingFieldWithName(targetField.getName());
+            FlexibleField sourceMatchedField = sourceObject.findMatchingFieldWithName(field.getName());
 
             if (sourceMatchedField != null && sourceMatchedField.getValue() != null) {
-                targetField.setValue(sourceMatchedField);
+                field.setValue(sourceMatchedField);
             }
         });
     }

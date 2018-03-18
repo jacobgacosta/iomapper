@@ -12,14 +12,24 @@ public class SayaMapperTest {
     public void shouldMapFieldsByNameConvention() {
         BankCardDto bankCardDto = new BankCardDto();
         bankCardDto.setNumber("1234567890123456");
+        bankCardDto.setTrademark("Santander");
 
         UserDto userDto = new UserDto();
+        userDto.setName("Jacob");
+        userDto.setAge(30);
+        userDto.setEmail("jgacosta@dojogeek.io");
+        userDto.setAddress("CDMX");
         userDto.setCardDto(bankCardDto);
 
         User user = map.from(userDto).to(User.class);
 
         assertNotNull(userDto);
+        assertEquals(userDto.getName(), user.getName());
+        assertEquals(userDto.getAge(), user.getAge());
+        assertEquals(userDto.getEmail(), user.getEmail());
+        assertNull(user.getAddress());
         assertEquals(bankCardDto.getNumber(), user.getCard().getNumber());
+        assertEquals(bankCardDto.getTrademark(), user.getCard().getMark());
     }
 
     @Test
@@ -32,7 +42,9 @@ public class SayaMapperTest {
         userDto.setCardDto(bankCardDto);
 
         User user = map.from(userDto).ignoring(targetFields ->
-            targetFields.ignore("age").ignore("cardDto")
+                targetFields
+                        .ignore("age")
+                        .ignore("cardDto")
         ).to(User.class);
 
         assertNotNull(user);
@@ -40,6 +52,24 @@ public class SayaMapperTest {
         assertEquals(0, user.getAge());
     }
 
+    @Test
+    public void shouldIgnoreNestedFieldsForMapping() {
+        BankCardDto bankCardDto = new BankCardDto();
+        bankCardDto.setNumber("1234567890123456");
+        bankCardDto.setTrademark("Santander");
 
+        UserDto userDto = new UserDto();
+        userDto.setCardDto(bankCardDto);
+
+        User user = map.from(userDto).ignoring(targetFields ->
+                targetFields
+                        .ignore("card.number")
+                        .ignore("card.mark")
+        ).to(User.class);
+
+        assertNotNull(user);
+        assertNull(user.getCard().getNumber());
+        assertNull(user.getCard().getMark());
+    }
 
 }

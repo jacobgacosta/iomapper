@@ -1,6 +1,6 @@
 package io.dojogeek.sayamapper;
 
-public class SourceObject extends ManagementObject {
+public class SourceObject {
 
     private Object source;
 
@@ -8,9 +8,17 @@ public class SourceObject extends ManagementObject {
         this.source = source;
     }
 
-    @Override
-    protected InspectableObject getInspectableObject() {
-        return new InspectableObject(this.source);
+    public FlexibleField findMatchingFieldWithName(String fieldName) {
+        FlexibleField flexibleField = null;
+
+        for (FlexibleField declaredField : new InspectableObject(this.source).getDeclaredFields()) {
+            if (declaredField.getName().toLowerCase().contains(fieldName) ||
+                    fieldName.toLowerCase().contains(declaredField.getName())) {
+                flexibleField = declaredField;
+            }
+        }
+
+        return flexibleField;
     }
 
 }

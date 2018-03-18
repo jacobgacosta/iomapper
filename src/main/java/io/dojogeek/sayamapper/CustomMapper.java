@@ -4,8 +4,10 @@ import java.util.HashMap;
 
 public class CustomMapper extends HashMap<String, String> {
 
-    public Object relate(String sourceField, String targetField) {
-        return super.put(sourceField, targetField);
+    public CustomMapper relate(String sourceField, String targetField) {
+        super.put(sourceField, targetField);
+
+        return this;
     }
 
 }

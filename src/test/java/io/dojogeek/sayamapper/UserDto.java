@@ -7,6 +7,7 @@ public class UserDto {
     private String email;
     private String address;
     private BankCardDto cardDto;
+    private JobDto jobDto;
 
     public String getName() {
         return name;
@@ -48,4 +49,11 @@ public class UserDto {
         this.cardDto = cardDto;
     }
 
+    public JobDto getJobDto() {
+        return jobDto;
+    }
+
+    public void setJobDto(JobDto jobDto) {
+        this.jobDto = jobDto;
+    }
 }

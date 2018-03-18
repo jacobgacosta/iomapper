@@ -1,9 +1,11 @@
 package io.dojogeek.sayamapper;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class IgnorableList extends ArrayList<String> {
 
+    private final static Logger LOGGER = Logger.getLogger(IgnorableList.class.getName());
     private static final int SINGLE_FIELD = 1;
 
     public IgnorableList ignore(String fieldName) {
@@ -12,10 +14,11 @@ public class IgnorableList extends ArrayList<String> {
         return this;
     }
 
-    public boolean hasFieldNamed(String field) {
-        for (String fieldName : this) {
-            if (field.split("\\.").length == SINGLE_FIELD &&
-                    (fieldName.equals(field) || fieldName.contains(field))) {
+    public boolean hasFieldNamed(String fieldName) {
+        for (String item : this) {
+            if (item.split("\\.").length == SINGLE_FIELD && (item.equals(fieldName) || item.contains(fieldName))) {
+                this.remove(item);
+
                 return true;
             }
         }
@@ -23,21 +26,20 @@ public class IgnorableList extends ArrayList<String> {
         return false;
     }
 
-    public String findNestedIgnorableFor(String name) {
-        String firstField = "";
-        String nestedFields = "";
+    public IgnorableList getIgnorableFor(String fieldName) {
+        IgnorableList ignorableFields = new IgnorableList();
 
-        for (String fieldName : this) {
-            if (fieldName.split("\\.").length > SINGLE_FIELD) {
-                firstField = fieldName.substring(0, fieldName.indexOf("."));
-            }
+        for (String item : this) {
+            if (item.split("\\.").length > SINGLE_FIELD) {
+                String name = item.substring(0, item.lastIndexOf("."));
 
-
-            if (firstField.equals(name) || firstField.contains(name)) {
-                nestedFields = fieldName.substring(fieldName.indexOf("."));
+                if (name.equals(fieldName)) {
+                    ignorableFields.add(item.substring(item.lastIndexOf(".") + 1));
+                }
             }
         }
 
-        return nestedFields;
+        return ignorableFields;
     }
+
 }

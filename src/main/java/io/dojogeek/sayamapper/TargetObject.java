@@ -2,24 +2,31 @@ package io.dojogeek.sayamapper;
 
 import java.util.logging.Logger;
 
-public class TargetObject extends ManagementObject {
+public class TargetObject<T> extends ManagementObject {
 
     private final static Logger LOGGER = Logger.getLogger(TargetObject.class.getName());
 
-    private Object target;
+    private Class<T> target;
     private SourceObject source;
-    private IgnorableList ignorableList;
+    private CustomMapper customMapper;
+    private IgnorableList ignorableFieldsToMerge;
 
-    public <T> T getFilledInstanceOf(Class<T> targetClass) {
+    public TargetObject(Class<T> targetClass) {
+        this.target = targetClass;
+    }
+
+    public T getFilledInstance() {
+        Object target = null;
+
         try {
-            this.target = targetClass.newInstance();
+            target = this.target.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            LOGGER.info("An error occurred when instantiating: " + target + "\n" + e.getMessage());
+            LOGGER.info("An error occurred when instantiating: " + this.target + "\n" + e.getMessage());
         }
 
-        this.populateFrom(this.source, this.ignorableList);
+        super.merge(this.source, target, this.ignorableFieldsToMerge);
 
-        return (T) this.target;
+        return (T) target;
     }
 
     public void fillWith(SourceObject source) {
@@ -27,15 +34,11 @@ public class TargetObject extends ManagementObject {
     }
 
     public void ignoreFieldsForMapping(IgnorableList ignorableList) {
-        this.ignorableList = ignorableList;
+        this.ignorableFieldsToMerge = ignorableList;
     }
 
-    public void applyCustomRelations(Customizable customizable) {
-    }
-
-    @Override
-    protected InspectableObject getInspectableObject() {
-        return new InspectableObject(this.target);
+    public void setCustomMapping(CustomMapper customFields) {
+        this.customMapper = customFields;
     }
 
 }
