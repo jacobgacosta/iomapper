@@ -9,6 +9,7 @@ public class User {
     private BankCard card;
     private String gender;
     private String jobTitle;
+    private String id;
 
     public String getName() {
         return name;
@@ -64,5 +65,13 @@ public class User {
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

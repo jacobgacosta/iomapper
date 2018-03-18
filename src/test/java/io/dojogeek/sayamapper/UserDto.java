@@ -8,6 +8,7 @@ public class UserDto {
     private String address;
     private BankCardDto cardDto;
     private JobDto jobDto;
+    private String user;
 
     public String getName() {
         return name;
@@ -55,5 +56,13 @@ public class UserDto {
 
     public void setJobDto(JobDto jobDto) {
         this.jobDto = jobDto;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }

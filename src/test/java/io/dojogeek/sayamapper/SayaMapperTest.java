@@ -72,4 +72,17 @@ public class SayaMapperTest {
         assertNull(user.getCard().getMark());
     }
 
+    @Test
+    public void shouldMapCustomFieldsAtFirstLevel() {
+        UserDto userDto = new UserDto();
+        userDto.setUser("JGAcosta24");
+
+        User user = map.from(userDto).relate(customMapping ->
+                customMapping.relate("user", "id")
+        ).to(User.class);
+
+        assertNotNull(user);
+        assertEquals(userDto.getUser(), user.getId());
+    }
+
 }

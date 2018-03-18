@@ -35,7 +35,7 @@ public class ForeignField extends FlexibleField {
 
         this.setValue(instance);
 
-        super.merge(new SourceObject(flexibleField.getValue()), instance, this.getIgnorable());
+        super.merge(new SourceObject(flexibleField.getValue()), instance, this.getIgnorable(), null);
     }
 
 }

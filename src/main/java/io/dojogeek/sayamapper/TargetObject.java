@@ -24,7 +24,7 @@ public class TargetObject<T> extends ManagementObject {
             LOGGER.info("An error occurred when instantiating: " + this.target + "\n" + e.getMessage());
         }
 
-        super.merge(this.source, target, this.ignorableFieldsToMerge);
+        super.merge(this.source, target, this.ignorableFieldsToMerge, this.customMapper);
 
         return (T) target;
     }
