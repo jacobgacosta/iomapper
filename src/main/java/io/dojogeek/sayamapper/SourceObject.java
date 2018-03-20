@@ -8,11 +8,15 @@ public class SourceObject {
         this.source = source;
     }
 
-    public FlexibleField findMatchingFieldWithName(String fieldName) {
+    public FlexibleField findFieldWithName(String fieldName) {
         FlexibleField flexibleField = null;
 
+        if (fieldName == null) {
+            return flexibleField;
+        }
+
         for (FlexibleField declaredField : new InspectableObject(this.source).getDeclaredFields()) {
-            if (declaredField.getName().toLowerCase().contains(fieldName) ||
+            if (declaredField.getName().toLowerCase().contains(fieldName.toLowerCase()) ||
                     fieldName.toLowerCase().contains(declaredField.getName())) {
                 flexibleField = declaredField;
             }

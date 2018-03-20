@@ -29,10 +29,10 @@ public class InspectableObject {
                 return;
             }
 
-            IgnorableList ignorableFIelds = ignorableList.getIgnorableFor(field.getName());
+            IgnorableList ignorableFields = ignorableList.getIgnorableFor(field.getName());
 
-            if (!ignorableFIelds.isEmpty()) {
-                field.setIgnorable(ignorableFIelds);
+            if (!ignorableFields.isEmpty()) {
+                field.setIgnorable(ignorableFields);
             }
         });
 

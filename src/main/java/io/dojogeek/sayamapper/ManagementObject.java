@@ -1,12 +1,11 @@
 package io.dojogeek.sayamapper;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class ManagementObject {
 
-    protected void merge(SourceObject sourceObject, Object target) {
-        this.merge(sourceObject, new InspectableObject(target).getDeclaredFields());
-    }
+    private final static Logger LOGGER = Logger.getLogger(ManagementObject.class.getName());
 
     protected void merge(SourceObject sourceObject, Object target, IgnorableList ignorableList, CustomMapper customMapper) {
         this.merge(sourceObject, new InspectableObject(target).getDeclaredFieldsIgnoring(ignorableList), customMapper);
@@ -18,19 +17,19 @@ public abstract class ManagementObject {
                 return;
             }
 
-            if (!customMapper.isEmpty()) {
-                String sourceField = customMapper.getSourceFor(field.getName());
+            if (customMapper != null) {
+                CustomTarget customTarget = customMapper.getTargetFor(field);
 
-                if (!sourceField.isEmpty()) {
-                    FlexibleField sourceMatchedField = sourceObject.findMatchingFieldWithName(sourceField);
+                CustomSource customSource = customMapper.getSourceFor(customTarget);
 
-                    if (sourceMatchedField != null && sourceMatchedField.getValue() != null) {
-                        field.setValue(sourceMatchedField);
-                    }
+                FlexibleField sourceMatchedField = sourceObject.findFieldWithName(customSource.getRootField());
+
+                if (sourceMatchedField != null && sourceMatchedField.getValue() != null) {
+                    field.setValue(sourceMatchedField);
                 }
             }
 
-            FlexibleField sourceMatchedField = sourceObject.findMatchingFieldWithName(field.getName());
+            FlexibleField sourceMatchedField = sourceObject.findFieldWithName(field.getName());
 
             if (sourceMatchedField != null && sourceMatchedField.getValue() != null) {
                 field.setValue(sourceMatchedField);

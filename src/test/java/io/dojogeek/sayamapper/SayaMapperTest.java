@@ -85,4 +85,20 @@ public class SayaMapperTest {
         assertEquals(userDto.getUser(), user.getId());
     }
 
+    @Test
+    public void shouldMapCustomNestedFields() {
+        JobDto jobDto = new JobDto();
+        jobDto.setJobTitle("Developer");
+
+        UserDto userDto = new UserDto();
+        userDto.setJobDto(jobDto);
+
+        User user = map.relate(customMapping ->
+                customMapping.relate("jobDto.jobTitle", "jobTitle")
+        ).from(userDto).to(User.class);
+
+        assertNotNull(user);
+        assertEquals(jobDto.getJobTitle(), user.getJobTitle());
+    }
+
 }

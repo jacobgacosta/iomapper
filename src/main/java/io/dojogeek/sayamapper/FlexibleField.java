@@ -1,7 +1,6 @@
 package io.dojogeek.sayamapper;
 
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class FlexibleField extends ManagementObject {
@@ -10,8 +9,9 @@ public abstract class FlexibleField extends ManagementObject {
 
     protected Field field;
     protected Object parentObject;
-    protected boolean isIgnorable = false;
     protected IgnorableList ignorable;
+    protected CustomMapper customable;
+    protected boolean isIgnorable = false;
 
     protected FlexibleField(Field field, Object parentObject) {
         this.field = field;
@@ -56,11 +56,15 @@ public abstract class FlexibleField extends ManagementObject {
         return this.isIgnorable;
     }
 
+    public IgnorableList getIgnorable() {
+        return this.ignorable;
+    }
+
     public void setIgnorable(IgnorableList ignorable) {
         this.ignorable = ignorable;
     }
 
-    public IgnorableList getIgnorable() {
-        return this.ignorable;
+    public void setCustomable(CustomMapper customable) {
+        this.customable = customable;
     }
 }
