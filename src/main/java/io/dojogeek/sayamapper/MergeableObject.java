@@ -6,7 +6,7 @@ public abstract class MergeableObject {
 
     private final static Logger LOGGER = Logger.getLogger(MergeableObject.class.getName());
 
-    protected void merge(SourceObject sourceObject, Object target, IgnorableList ignorableList, CustomMapper customMapper) {
+    protected void merge(SourceObject sourceObject, Object target, UnwantedTargetList unwantedTargetList, CustomMapper customMapper) {
         new InspectableObject(target)
                 .getDeclaredFields()
                 .forEach(flexibleField -> {

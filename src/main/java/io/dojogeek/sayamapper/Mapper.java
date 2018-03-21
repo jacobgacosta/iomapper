@@ -1,13 +1,13 @@
 package io.dojogeek.sayamapper;
 
-public interface Mapper {
+public interface Mapper<T, T2> {
 
-    <T> T to(Class<T> clazz);
+    Mapper<T, T2> from(T source);
 
-    SayaMapper from(Object source);
+    Mapper<T, T2> to(Class<T2> target);
 
-    SayaMapper ignoring(Ignorable fieldList);
+    Mapper<T, T2> ignoring(Ignorable fieldList);
 
-    SayaMapper relate(Customizable customizable);
+    T2 build();
 
 }

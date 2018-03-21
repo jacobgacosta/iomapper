@@ -4,7 +4,7 @@ public class UserDto {
 
     private String name;
     private int age;
-    private String email;
+    private String emailAddress;
     private BankCardDto cardDto;
     private JobDto jobDto;
     private String user;
@@ -25,12 +25,12 @@ public class UserDto {
         this.age = age;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public BankCardDto getCardDto() {
