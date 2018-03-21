@@ -5,6 +5,8 @@ package io.dojogeek.sayamapper;
  */
 public class CustomTarget {
 
+    private static final String SEPARATOR = ".";
+
     private String rootField;
     private String remainingTargetMapping;
 
@@ -17,11 +19,18 @@ public class CustomTarget {
     }
 
     public String getRootField() {
-        return rootField;
+        return this.rootField;
     }
 
     public void setRootField(String currentField) {
         this.rootField = currentField;
     }
 
+    public boolean hasNestedFields() {
+        return this.remainingTargetMapping != null;
+    }
+
+    public String getFullMappingPath() {
+        return this.rootField + SEPARATOR+ this.remainingTargetMapping;
+    }
 }

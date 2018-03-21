@@ -17,8 +17,6 @@ public class JavaField extends FlexibleField {
             super.setValue(flexibleField);
             return;
         }
-
-        super.merge(new SourceObject(flexibleField), this.field, null, null);
     }
 
 }

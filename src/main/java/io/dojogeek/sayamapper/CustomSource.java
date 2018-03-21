@@ -5,15 +5,17 @@ package io.dojogeek.sayamapper;
  */
 public class CustomSource {
 
+    private static final String SEPARATOR = ".";
+
     private String rootField;
     private String remainingSourceMapping;
 
-    public void setRootField(String rootField) {
-        this.rootField = rootField;
-    }
-
     public String getRootField() {
         return rootField;
+    }
+
+    public void setRootField(String rootField) {
+        this.rootField = rootField;
     }
 
     public void setRemainingFields(String remainingSourceMapping) {
@@ -21,6 +23,11 @@ public class CustomSource {
     }
 
     public String getRemainingSourceMapping() {
-        return remainingSourceMapping;
+        return this.remainingSourceMapping;
     }
+
+    public String getFullMappingPath() {
+        return this.rootField + SEPARATOR+ this.remainingSourceMapping;
+    }
+
 }

@@ -23,19 +23,9 @@ public class ForeignField extends FlexibleField {
     }
 
     private void merge(Object instance, FlexibleField flexibleField) {
-        if (flexibleField instanceof JavaField) {
-            FlexibleField sourceMatchedField = new SourceObject(instance).findFieldWithName(flexibleField.getName());
-
-            if (sourceMatchedField != null && sourceMatchedField.getValue() != null) {
-                flexibleField.setValue(sourceMatchedField);
-            }
-
-            return;
-        }
-
         this.setValue(instance);
 
-        super.merge(new SourceObject(flexibleField.getValue()), instance, this.getIgnorable(), null);
+        this.merge(new SourceObject(flexibleField.getValue()), instance, null, null);
     }
 
 }

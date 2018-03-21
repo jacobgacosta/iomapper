@@ -58,7 +58,6 @@ public class CustomMapper extends HashMap<String, String> {
 
                     break;
                 }
-
                 customSource.setRootField(entry.getKey());
             }
         }
@@ -66,4 +65,8 @@ public class CustomMapper extends HashMap<String, String> {
         return customSource;
     }
 
+    public void removeCurrentFieldFor(CustomSource source, CustomTarget target) {
+
+
+    }
 }
