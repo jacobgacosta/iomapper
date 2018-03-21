@@ -1,5 +1,8 @@
 package io.dojogeek.sayamapper;
 
+import io.dojogeek.dtos.BankCardDto;
+import io.dojogeek.dtos.UserDto;
+import io.dojogeek.models.User;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package io.dojogeek.sayamapper;
+package io.dojogeek.dtos;
 
 public class UserDto {
 

@@ -1,4 +1,4 @@
-package io.dojogeek.sayamapper;
+package io.dojogeek.dtos;
 
 /**
  * Created by norveo on 12/27/17.
