@@ -13,7 +13,7 @@ public class JavaField extends FlexibleField {
 
     @Override
     protected void setValue(FlexibleField flexibleField) {
-        if (flexibleField.getValue() == null) {
+        if (flexibleField != null && flexibleField.getValue() == null) {
             return;
         }
 

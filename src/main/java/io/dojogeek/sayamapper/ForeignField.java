@@ -23,13 +23,13 @@ public class ForeignField extends FlexibleField {
     }
 
     private void merge(Object instance, FlexibleField flexibleField) {
-        if (flexibleField.getValue() == null) {
+        if (flexibleField != null && flexibleField.getValue() == null) {
             return;
         }
 
         this.setValue(instance);
 
-        this.merge(new SourceObject(flexibleField.getValue()), instance, null, null);
+        this.merge(new SourceObject(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
     }
 
 }

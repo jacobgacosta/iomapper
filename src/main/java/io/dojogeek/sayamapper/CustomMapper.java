@@ -6,9 +6,8 @@ import java.util.logging.Logger;
 
 public class CustomMapper extends HashMap<String, String> {
 
-    private static final int SINGLE_FIELD = 1;
     private static final int DOT_POSITION = 1;
-    private static final String SEPARATOR = ".";
+    private static final String SEPARATOR = "\\.";
     private final static Logger LOGGER = Logger.getLogger(CustomMapper.class.getName());
 
     public CustomMapper relate(String sourceField, String targetField) {
@@ -17,56 +16,54 @@ public class CustomMapper extends HashMap<String, String> {
         return this;
     }
 
-    public CustomTarget getTargetFor(FlexibleField flexibleField) {
-        CustomTarget customTarget = new CustomTarget();
 
+    public boolean hasATargetFor(String name) {
         for (Map.Entry<String, String> entry : this.entrySet()) {
-            if (entry.getValue().split("\\.").length > SINGLE_FIELD) {
-                String rootField = entry.getValue().substring(0, entry.getValue().indexOf(SEPARATOR));
-
-                if (rootField.equals(flexibleField.getName())) {
-                    customTarget.setRootField(rootField);
-                    customTarget.setRemainingFields(
-                            entry.getValue()
-                                    .substring(entry.getValue().indexOf(SEPARATOR) + DOT_POSITION)
-                    );
-                }
-            }
-
-            if (entry.getValue().equals(flexibleField.getName())) {
-                customTarget.setRootField(entry.getValue());
+            if (this.popRootField(entry.getValue()).equals(name)) {
+                return true;
             }
         }
 
-        return customTarget;
+        return false;
     }
 
-    public CustomSource getSourceFor(CustomTarget customTarget) {
-        String targetField = customTarget.getRootField() +
-                (customTarget.getRemainingTargetMapping() != null ? SEPARATOR + customTarget.getRemainingTargetMapping() : "");
-
-        CustomSource customSource = new CustomSource();
+    public String getSourceFor(String name) {
+        String field = "";
 
         for (Map.Entry<String, String> entry : this.entrySet()) {
-            if (entry.getValue().equals(targetField)) {
-                if (entry.getKey().split("\\.").length > SINGLE_FIELD) {
-                    customSource.setRootField(entry.getKey().substring(0, entry.getKey().indexOf(SEPARATOR)));
-                    customSource.setRemainingFields(
-                            entry.getKey()
-                                    .substring(entry.getKey().indexOf(SEPARATOR) + DOT_POSITION)
-                    );
+            String rootTarget = this.popRootField(entry.getValue());
 
-                    break;
-                }
-                customSource.setRootField(entry.getKey());
+            if (rootTarget.equals(name)) {
+                return this.popRootField(entry.getKey());
             }
         }
 
-        return customSource;
+        return field;
     }
 
-    public void removeCurrentFieldFor(CustomSource source, CustomTarget target) {
+    public void removeRootFields(String sourceField, String targetField) {
+        Map<String, String> mapCopy = new HashMap<>();
+        mapCopy.putAll(this);
 
+        for (Map.Entry<String, String> entry : mapCopy.entrySet()) {
+            if (this.popRootField(entry.getValue()).equals(targetField)) {
+                this.remove(entry.getKey());
 
+                this.put(this.removeRootField(entry.getKey()), this.removeRootField(entry.getValue()));
+            }
+        }
     }
+
+    private String popRootField(String path) {
+        return this.getSplitFieldsFrom(path)[0];
+    }
+
+    private String[] getSplitFieldsFrom(String path) {
+        return path.split(SEPARATOR);
+    }
+
+    private String removeRootField(String path) {
+        return path.substring(path.indexOf(".") + DOT_POSITION);
+    }
+
 }

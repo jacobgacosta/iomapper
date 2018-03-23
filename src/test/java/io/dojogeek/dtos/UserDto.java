@@ -3,11 +3,10 @@ package io.dojogeek.dtos;
 public class UserDto {
 
     private String name;
-    private int age;
     private String emailAddress;
     private BankCardDto cardDto;
-    private JobDto jobDto;
     private String user;
+    private AddressDto addressDto;
 
     public String getName() {
         return name;
@@ -15,14 +14,6 @@ public class UserDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getEmailAddress() {
@@ -41,14 +32,6 @@ public class UserDto {
         this.cardDto = cardDto;
     }
 
-    public JobDto getJobDto() {
-        return jobDto;
-    }
-
-    public void setJobDto(JobDto jobDto) {
-        this.jobDto = jobDto;
-    }
-
     public String getUser() {
         return user;
     }
@@ -56,4 +39,14 @@ public class UserDto {
     public void setUser(String user) {
         this.user = user;
     }
+
+
+    public AddressDto getAddressDto() {
+        return addressDto;
+    }
+
+    public void setAddressDto(AddressDto addressDto) {
+        this.addressDto = addressDto;
+    }
+
 }

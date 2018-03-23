@@ -9,6 +9,8 @@ public abstract class FlexibleField extends MergeableObject {
 
     protected Field field;
     private Object parentObject;
+    protected CustomMapper customMappings;
+    protected UnwantedTargetList ignorableNestedFields;
 
     protected FlexibleField(Field field, Object parentObject) {
         this.field = field;
@@ -45,5 +47,11 @@ public abstract class FlexibleField extends MergeableObject {
         }
     }
 
+    public void setIgnorableFields(UnwantedTargetList unwantedTargetList) {
+        this.ignorableNestedFields = unwantedTargetList;
+    }
 
+    public void setCustomMappings(CustomMapper customMappings) {
+        this.customMappings = customMappings;
+    }
 }

@@ -3,7 +3,7 @@ package io.dojogeek.dtos;
 public class JobDto {
 
     private String jobTitle;
-    private String yearsOfService;
+    private int yearsOfService;
 
     public String getJobTitle() {
         return jobTitle;
@@ -13,11 +13,11 @@ public class JobDto {
         this.jobTitle = jobTitle;
     }
 
-    public String getYearsOfService() {
+    public int getYearsOfService() {
         return yearsOfService;
     }
 
-    public void setYearsOfService(String yearsOfService) {
+    public void setYearsOfService(int yearsOfService) {
         this.yearsOfService = yearsOfService;
     }
 
