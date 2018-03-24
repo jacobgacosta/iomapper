@@ -13,7 +13,7 @@ public class JavaField extends FlexibleField {
 
     @Override
     protected void setValue(FlexibleField flexibleField) {
-        if (flexibleField != null && flexibleField.getValue() == null) {
+        if (flexibleField == null || flexibleField.getValue() == null) {
             return;
         }
 
@@ -21,6 +21,8 @@ public class JavaField extends FlexibleField {
             super.setValue(flexibleField);
             return;
         }
+
+        this.merge(flexibleField, this, this.customMappings);
     }
 
 }

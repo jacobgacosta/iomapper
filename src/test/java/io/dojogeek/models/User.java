@@ -8,6 +8,7 @@ public class User {
     private String jobTitle;
     private String id;
     private Address address;
+    private String schoolGrade;
 
     public String getName() {
         return name;
@@ -55,6 +56,14 @@ public class User {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getSchoolGrade() {
+        return schoolGrade;
+    }
+
+    public void setSchoolGrade(String schoolGrade) {
+        this.schoolGrade = schoolGrade;
     }
 
 }

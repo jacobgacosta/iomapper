@@ -7,6 +7,7 @@ public class UserDto {
     private BankCardDto cardDto;
     private String user;
     private AddressDto addressDto;
+    private ScholarShipDto scholarShipDto;
 
     public String getName() {
         return name;
@@ -47,6 +48,14 @@ public class UserDto {
 
     public void setAddressDto(AddressDto addressDto) {
         this.addressDto = addressDto;
+    }
+
+    public ScholarShipDto getScholarShipDto() {
+        return scholarShipDto;
+    }
+
+    public void setScholarShipDto(ScholarShipDto scholarShipDto) {
+        this.scholarShipDto = scholarShipDto;
     }
 
 }

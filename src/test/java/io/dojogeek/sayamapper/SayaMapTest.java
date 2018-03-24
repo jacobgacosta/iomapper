@@ -2,6 +2,7 @@ package io.dojogeek.sayamapper;
 
 import io.dojogeek.dtos.AddressDto;
 import io.dojogeek.dtos.BankCardDto;
+import io.dojogeek.dtos.ScholarShipDto;
 import io.dojogeek.dtos.UserDto;
 import io.dojogeek.models.User;
 import org.junit.Test;
@@ -88,34 +89,31 @@ public class SayaMapTest {
     }
 
     @Test
-    public void shouldMapCustomRelationsAtFirstNestedLevelWithTheSameTypes() {
-        UserDto userDto = new UserDto();
-        userDto.setUser("jgacosta");
-
-        User user = map.from(userDto).to(User.class).relate(customMapping ->
-                customMapping.relate("user", "id")
-        ).build();
-
-        assertEquals(userDto.getUser(), user.getId());
-    }
-
-    @Test
-    public void shouldMapNestedCustomRelationsWithTheSameTypes() {
+    public void shouldMapCustomRelationsWithTheSameTypes() {
         AddressDto addressDto = new AddressDto();
         addressDto.setAvenue("Popocatepetl");
         addressDto.setLocation("372 Int. 401");
 
+        ScholarShipDto scholarShipDto = new ScholarShipDto();
+        scholarShipDto.setGrade("Engineering");
+
         UserDto userDto = new UserDto();
+        userDto.setUser("JGAcosta");
         userDto.setAddressDto(addressDto);
+        userDto.setScholarShipDto(scholarShipDto);
 
         User user = map.from(userDto).to(User.class).relate(customMapping ->
-                customMapping
-                        .relate("addressDto.avenue", "address.street")
-                        .relate("addressDto.location", "address.number")
+                        customMapping
+                                .relate("scholarShipDto.grade", "schoolGrade")
+                                .relate("user", "id")
+                                .relate("addressDto.avenue", "address.street")
+                                .relate("addressDto.location", "address.number")
         ).build();
 
+        assertEquals(userDto.getUser(), user.getId());
         assertEquals(addressDto.getAvenue(), user.getAddress().getStreet());
         assertEquals(addressDto.getLocation(), user.getAddress().getNumber());
+        assertEquals(userDto.getScholarShipDto().getGrade(), user.getSchoolGrade());
     }
 
 }

@@ -41,4 +41,21 @@ public abstract class MergeableObject {
                 });
     }
 
+    protected void merge(FlexibleField source, FlexibleField target, CustomMapper customMapper) {
+        new InspectableObject(source.getValue())
+                .getDeclaredFields()
+                .forEach(flexibleField -> {
+                    if (!customMapper.hasASourceFor(flexibleField.getName())) {
+                        return;
+                    }
+
+                    if (customMapper.hasNestedSourceFieldsFor(flexibleField.getName())) {
+                        customMapper.removeRootFields(source.getName(), target.getName());
+                        flexibleField.setCustomMappings(customMapper);
+                    }
+
+                    target.setValue(flexibleField);
+                });
+    }
+
 }

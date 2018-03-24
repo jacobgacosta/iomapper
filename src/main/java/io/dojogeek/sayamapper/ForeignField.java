@@ -23,7 +23,7 @@ public class ForeignField extends FlexibleField {
     }
 
     private void merge(Object instance, FlexibleField flexibleField) {
-        if (flexibleField != null && flexibleField.getValue() == null) {
+        if (flexibleField == null || flexibleField.getValue() == null) {
             return;
         }
 
