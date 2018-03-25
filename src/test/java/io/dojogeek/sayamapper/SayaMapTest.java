@@ -11,13 +11,13 @@ import static org.junit.Assert.*;
 
 public class SayaMapTest {
 
-    private Mapper<UserDto, User> map = new SayaMap<>();
+    private BridgeMap<UserDto, User> map = new SayaMapBridge<>();
 
     @Test
     public void shouldReturnANotNullTargetInstance() {
         UserDto userDto = new UserDto();
 
-        User user = map.from(userDto).to(User.class).build();
+        User user = map.inner().from(userDto).to(User.class).build();
 
         assertNotNull(user);
     }
@@ -27,7 +27,7 @@ public class SayaMapTest {
         UserDto userDto = new UserDto();
         userDto.setName("Jacob");
 
-        User user = map.from(userDto).to(User.class).build();
+        User user = map.inner().from(userDto).to(User.class).build();
 
         assertEquals(userDto.getName(), user.getName());
     }
@@ -37,7 +37,7 @@ public class SayaMapTest {
         UserDto userDto = new UserDto();
         userDto.setEmailAddress("jgacosta@dojogeek.io");
 
-        User user = map.from(userDto).to(User.class).build();
+        User user = map.inner().from(userDto).to(User.class).build();
 
         assertEquals(userDto.getEmailAddress(), user.getEmail());
     }
@@ -51,7 +51,7 @@ public class SayaMapTest {
         UserDto userDto = new UserDto();
         userDto.setCardDto(bankCardDto);
 
-        User user = map.from(userDto).to(User.class).build();
+        User user = map.inner().from(userDto).to(User.class).build();
 
         assertEquals(bankCardDto.getTrademark(), user.getCard().getMark());
         assertEquals(bankCardDto.getNumber(), user.getCard().getNumber());
@@ -63,7 +63,7 @@ public class SayaMapTest {
         userDto.setEmailAddress("jgacosta@dojogee.io");
         userDto.setName("Jacob G. Acosta");
 
-        User user = map.from(userDto).to(User.class).ignoring(unwantedTargetList ->
+        User user = map.inner().from(userDto).to(User.class).ignoring(unwantedTargetList ->
                 unwantedTargetList.ignore("email").ignore("name")
         ).build();
 
@@ -80,7 +80,7 @@ public class SayaMapTest {
         UserDto userDto = new UserDto();
         userDto.setCardDto(bankCardDto);
 
-        User user = map.from(userDto).to(User.class).ignoring(unwantedTargetList ->
+        User user = map.inner().from(userDto).to(User.class).ignoring(unwantedTargetList ->
                 unwantedTargetList.ignore("card.number").ignore("card.mark")
         ).build();
 
@@ -102,7 +102,7 @@ public class SayaMapTest {
         userDto.setAddressDto(addressDto);
         userDto.setScholarShipDto(scholarShipDto);
 
-        User user = map.from(userDto).to(User.class).relate(customMapping ->
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
                         customMapping
                                 .relate("scholarShipDto.grade", "schoolGrade")
                                 .relate("user", "id")

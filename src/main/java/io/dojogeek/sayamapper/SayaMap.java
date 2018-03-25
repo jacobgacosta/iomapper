@@ -54,4 +54,5 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
 
         return targetObject.getFilledInstanceFrom(new SourceObject(this.source));
     }
+
 }
