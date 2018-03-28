@@ -4,6 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * CustomMapper is a extension of an HashMap for the custom mapping fields.
+ *
+ * @author norvek
+ */
 public class CustomMapper extends HashMap<String, String> {
 
     private static final int SINGLE_FIELD = 1;
@@ -11,16 +16,29 @@ public class CustomMapper extends HashMap<String, String> {
     private static final String SEPARATOR = "\\.";
     private final static Logger LOGGER = Logger.getLogger(CustomMapper.class.getName());
 
+    /**
+     * Add a relation source-target.
+     *
+     * @param sourceField  the source field.
+     * @param targetField  ths target field.
+     * @return             a CustomMapper
+     */
     public CustomMapper relate(String sourceField, String targetField) {
         super.put(sourceField, targetField);
 
         return this;
     }
 
-
-    public boolean hasATargetFor(String name) {
+    /**
+     * Check if a field name is present into a target mapping path.
+     *
+     * @param fieldName    the field name.
+     * @return             <code>true</code> if the field exist into target path
+     *                     <code>false</code> if the field no exist into target path
+     */
+    public boolean hasATargetFor(String fieldName) {
         for (Map.Entry<String, String> entry : this.entrySet()) {
-            if (this.popRootField(entry.getValue()).equals(name)) {
+            if (this.popRootField(entry.getValue()).equals(fieldName)) {
                 return true;
             }
         }
@@ -28,13 +46,19 @@ public class CustomMapper extends HashMap<String, String> {
         return false;
     }
 
-    public String getSourceFor(String name) {
+    /**
+     * Gets the full source path to the given field name.
+     *
+     * @param fieldName    the field name.
+     * @return             the source path
+     */
+    public String getSourceFor(String fieldName) {
         String field = "";
 
         for (Map.Entry<String, String> entry : this.entrySet()) {
             String rootTarget = this.popRootField(entry.getValue());
 
-            if (rootTarget.equals(name)) {
+            if (rootTarget.equals(fieldName)) {
                 return this.popRootField(entry.getKey());
             }
         }
@@ -42,6 +66,12 @@ public class CustomMapper extends HashMap<String, String> {
         return field;
     }
 
+    /**
+     * Removes the root fields of the source and target mapping paths.
+     *
+     * @param sourceField    the source field name.
+     * @param targetField    the target field name.
+     */
     public void removeRootFields(String sourceField, String targetField) {
         Map<String, String> mapCopy = new HashMap<>();
         mapCopy.putAll(this);
@@ -55,9 +85,16 @@ public class CustomMapper extends HashMap<String, String> {
         }
     }
 
-    public boolean hasASourceFor(String name) {
+    /**
+     * Check if a field name is present into a source mapping path.
+     *
+     * @param fieldName    the field name.
+     * @return             <code>true</code> if the field exist into source path
+     *                     <code>false</code> if the field no exist into source path
+     */
+    public boolean hasASourceFor(String fieldName) {
         for (Map.Entry<String, String> entry : this.entrySet()) {
-            if (this.popRootField(entry.getKey()).equals(name)) {
+            if (this.popRootField(entry.getKey()).equals(fieldName)) {
                 return true;
             }
         }
@@ -65,9 +102,16 @@ public class CustomMapper extends HashMap<String, String> {
         return false;
     }
 
-    public boolean hasNestedSourceFieldsFor(String name) {
+    /**
+     * Checks if the field name has nested fields.
+     *
+     * @param fieldName    the field name.
+     * @return             <code>true</code> if the field has nested fields
+     *                     <code>false</code> if the field has not nested fields
+     */
+    public boolean hasNestedSourceFieldsFor(String fieldName) {
         for (Map.Entry<String, String> entry : this.entrySet()) {
-            if (this.popRootField(entry.getKey()).equals(name)) {
+            if (this.popRootField(entry.getKey()).equals(fieldName)) {
                 if (entry.getKey().split(SEPARATOR).length > SINGLE_FIELD) {
                     return true;
                 }
@@ -77,14 +121,29 @@ public class CustomMapper extends HashMap<String, String> {
         return false;
     }
 
+    /**
+     * Gets the root field name.
+     *
+     * @param path  the path of fields.
+     */
     private String popRootField(String path) {
         return this.getSplitFieldsFrom(path)[0];
     }
 
+    /**
+     * Gets an array of fields.
+     *
+     * @param path  the path of fields.
+     */
     private String[] getSplitFieldsFrom(String path) {
         return path.split(SEPARATOR);
     }
 
+    /**
+     * Remove the root field name.
+     *
+     * @param path  the path of fields.
+     */
     private String removeRootField(String path) {
         return path.substring(path.indexOf(".") + DOT_POSITION);
     }

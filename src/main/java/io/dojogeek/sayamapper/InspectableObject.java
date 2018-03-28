@@ -4,14 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * InspectableObject is a wrapper to inspect easily a object.
+ *
+ * @author norvek
+ */
 public class InspectableObject {
 
     private Object object;
 
+    /**
+     * InspectableObject constructor.
+     *
+     * @param object  the object to inspect.
+     */
     public InspectableObject(Object object) {
         this.object = object;
     }
 
+    /**
+     * Returns a list of FlexibleField
+     *
+     * @return a FlexibleField object.
+     */
     public List<FlexibleField> getDeclaredFields() {
         List<FlexibleField> fields = new ArrayList<>();
 
