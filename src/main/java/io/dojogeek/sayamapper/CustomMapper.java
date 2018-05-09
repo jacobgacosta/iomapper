@@ -14,6 +14,7 @@ public class CustomMapper extends HashMap<String, String> {
     private static final int SINGLE_FIELD = 1;
     private static final int DOT_POSITION = 1;
     private static final String SEPARATOR = "\\.";
+    private static final int SEPARATOR_POSITION = 1;
     private final static Logger LOGGER = Logger.getLogger(CustomMapper.class.getName());
 
     /**
@@ -38,6 +39,17 @@ public class CustomMapper extends HashMap<String, String> {
      */
     public boolean hasATargetFor(String fieldName) {
         for (Map.Entry<String, String> entry : this.entrySet()) {
+            String [] values = entry.getValue().split(",");
+
+            if (values.length > 0) {
+                for (String value : values) {
+                    String field = value.trim();
+                    if (field.equals(fieldName)) {
+                        return true;
+                    }
+                }
+            }
+
             if (this.popRootField(entry.getValue()).equals(fieldName)) {
                 return true;
             }
@@ -56,9 +68,18 @@ public class CustomMapper extends HashMap<String, String> {
         String field = "";
 
         for (Map.Entry<String, String> entry : this.entrySet()) {
-            String rootTarget = this.popRootField(entry.getValue());
+            String [] values = entry.getValue().split(",");
 
-            if (rootTarget.equals(fieldName)) {
+            if (values.length > 0) {
+                for (String value : values) {
+                    field = value.trim();
+                    if (field.equals(fieldName)) {
+                        return this.popRootField(entry.getKey());
+                    }
+                }
+            }
+
+            if (this.popRootField(entry.getValue()).equals(fieldName)) {
                 return this.popRootField(entry.getKey());
             }
         }
@@ -77,6 +98,21 @@ public class CustomMapper extends HashMap<String, String> {
         mapCopy.putAll(this);
 
         for (Map.Entry<String, String> entry : mapCopy.entrySet()) {
+            String [] values = entry.getValue().split(",");
+
+            if (values.length > 0) {
+                for (String value : values) {
+                    String field = value.trim();
+                    if (field.equals(targetField)) {
+                        this.remove(entry.getKey());
+
+                        this.put(this.removeRootField(entry.getKey()), this.removeFirstField(entry.getValue()));
+
+                        return;
+                    }
+                }
+            }
+
             if (this.popRootField(entry.getValue()).equals(targetField)) {
                 this.remove(entry.getKey());
 
@@ -146,6 +182,10 @@ public class CustomMapper extends HashMap<String, String> {
      */
     private String removeRootField(String path) {
         return path.substring(path.indexOf(".") + DOT_POSITION);
+    }
+
+    private String removeFirstField(String fields) {
+        return fields.substring(fields.indexOf(",") + SEPARATOR_POSITION);
     }
 
 }

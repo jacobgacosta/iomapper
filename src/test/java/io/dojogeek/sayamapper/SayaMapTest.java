@@ -1,9 +1,7 @@
 package io.dojogeek.sayamapper;
 
-import io.dojogeek.dtos.AddressDto;
-import io.dojogeek.dtos.BankCardDto;
-import io.dojogeek.dtos.ScholarShipDto;
-import io.dojogeek.dtos.UserDto;
+import io.dojogeek.dtos.*;
+import io.dojogeek.models.Numeric;
 import io.dojogeek.models.User;
 import org.junit.Test;
 
@@ -103,11 +101,11 @@ public class SayaMapTest {
         userDto.setScholarShipDto(scholarShipDto);
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-                        customMapping
-                                .relate("scholarShipDto.grade", "schoolGrade")
-                                .relate("user", "id")
-                                .relate("addressDto.avenue", "address.street")
-                                .relate("addressDto.location", "address.number")
+                customMapping
+                        .relate("scholarShipDto.grade", "schoolGrade")
+                        .relate("user", "id")
+                        .relate("addressDto.avenue", "address.street")
+                        .relate("addressDto.location", "address.number")
         ).build();
 
         assertEquals(userDto.getUser(), user.getId());
