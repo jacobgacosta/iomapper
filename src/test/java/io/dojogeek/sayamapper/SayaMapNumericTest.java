@@ -58,4 +58,18 @@ public class SayaMapNumericTest {
         assertEquals(127.0, numeric.getFloatValue(), 0.001);
     }
 
+    @Test
+    public void shouldMapLongTypeWithWiderOtherNumbersThroughOfCustomRelations() {
+        NumericDto numericDto = new NumericDto();
+        numericDto.setLongValue(127);
+
+        Numeric numeric = numericMap.inner().from(numericDto).to(Numeric.class).relate(customMapping ->
+                customMapping
+                        .relate("longValue", "doubleValue, floatValue")
+        ).build();
+
+        assertEquals(127.0, numeric.getDoubleValue(), 0.001);
+        assertEquals(127.0, numeric.getFloatValue(), 0.001);
+    }
+
 }
