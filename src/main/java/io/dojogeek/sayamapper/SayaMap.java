@@ -58,7 +58,7 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
      * @return              a <bold>SayaMap</bold> instance.
      */
     @Override
-    public Mapper<T, T2> relate(Customizable customizable) {
+    public SayaMap<T, T2> relate(Customizable customizable) {
         this.customizable = customizable;
 
         return this;
