@@ -72,4 +72,17 @@ public class SayaMapNumericTest {
         assertEquals(127.0, numeric.getFloatValue(), 0.001);
     }
 
+    @Test
+    public void shouldMapFloatTypeWithWiderOtherNumbersThroughOfCustomRelations() {
+        NumericDto numericDto = new NumericDto();
+        numericDto.setFloatValue(127);
+
+        Numeric numeric = numericMap.inner().from(numericDto).to(Numeric.class).relate(customMapping ->
+                customMapping
+                        .relate("floatValue", "doubleValue")
+        ).build();
+
+        assertEquals(127.0, numeric.getDoubleValue(), 0.001);
+    }
+
 }
