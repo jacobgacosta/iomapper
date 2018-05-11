@@ -69,7 +69,7 @@ public abstract class FlexibleField extends MergeableObject {
         try {
             this.field.setAccessible(true);
             this.field.set(this.parentObject, value);
-        } catch (IllegalAccessException | RuntimeException e) {
+        } catch (IllegalAccessException e) {
             LOGGER.info("An error occurred when assigning the value: " + value + " to field: " + this.field + "\n" + e.getMessage());
         }
     }
