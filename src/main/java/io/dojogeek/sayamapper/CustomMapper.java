@@ -184,6 +184,11 @@ public class CustomMapper extends HashMap<String, String> {
         return path.substring(path.indexOf(".") + DOT_POSITION);
     }
 
+    /**
+     * Remove the first element of a chain of elements separated by commas.
+     *
+     * @param fields  the path of fields.
+     */
     private String removeFirstField(String fields) {
         return fields.substring(fields.indexOf(",") + SEPARATOR_POSITION);
     }
