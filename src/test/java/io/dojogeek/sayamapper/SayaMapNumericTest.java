@@ -17,14 +17,10 @@ public class SayaMapNumericTest {
 
         Numeric numeric = numericMap.inner().from(numericDto).to(Numeric.class).relate(customMapping ->
                 customMapping
-                        .relate("byteValue", "shortValue, intValue, longValue, doubleValue, floatValue")
+                        .relate("byteValue", "shortValue")
         ).build();
 
         assertEquals(127, numeric.getShortValue());
-        assertEquals(127, numeric.getIntValue());
-        assertEquals(127, numeric.getLongValue());
-        assertEquals(127.0, numeric.getDoubleValue(), 0.001);
-        assertEquals(127.0, numeric.getFloatValue(), 0.001);
     }
 
     @Test(expected = IllegalArgumentException.class)
