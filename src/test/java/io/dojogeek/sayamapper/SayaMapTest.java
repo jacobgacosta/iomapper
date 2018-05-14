@@ -116,4 +116,17 @@ public class SayaMapTest {
         assertEquals(userDto.getScholarShipDto().getGrade(), user.getSchoolGrade());
     }
 
+    @Test
+    public void shouldMapAFieldToSeveralOnesThroughCustomMapping() {
+        UserDto userDto = new UserDto();
+        userDto.setUser("jgacosta@dojogeek.io");
+
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
+            customMapping.relate("user", "email, id")
+        ).build();
+
+        assertEquals(userDto.getUser(), user.getId());
+        assertEquals(userDto.getUser(), user.getEmail());
+    }
+
 }
