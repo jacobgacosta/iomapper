@@ -71,15 +71,6 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
      */
     @Override
     public T2 build() {
-        return this.populateTarget();
-    }
-
-    /**
-     * Builds a target object for the mapping process.
-     *
-     * @return a target object instance.
-     */
-    private T2 populateTarget() {
         TargetObject<T2> targetObject = new TargetObject(this.target);
 
         if (this.ignorable != null) {
@@ -92,5 +83,5 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
 
         return targetObject.getFilledInstanceFrom(new SourceObject(this.source));
     }
-
+    
 }
