@@ -33,7 +33,7 @@ public class SayaMapTest {
     }
 
     @Test
-    public void shouldMapTwoFieldsWithIdenticalNamesAndTypesAtFirstNestedLevel() {
+    public void shouldMapTwoFieldsWithSimilarNamesAndTypesAtFirstNestedLevel() {
         UserDto userDto = new UserDto();
         userDto.setEmailAddress("jgacosta@dojogeek.io");
 
@@ -117,7 +117,7 @@ public class SayaMapTest {
     }
 
     @Test
-    public void shouldMapAFieldToSeveralOnesThroughCustomMapping() {
+    public void shouldMapAStringFieldToSeveralOnesOfTheSameTypeThroughCustomMapping() {
         UserDto userDto = new UserDto();
         userDto.setUser("jgacosta@dojogeek.io");
 
