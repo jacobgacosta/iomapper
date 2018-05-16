@@ -129,4 +129,18 @@ public class SayaMapTest {
         assertEquals(userDto.getUser(), user.getEmail());
     }
 
+    @Test
+    public void shouldConcatenateMultiplesStringFieldsToOneOfTheSameType() {
+        UserDto userDto = new UserDto();
+        userDto.setName("Jacob");
+        userDto.setFirstSurname("Guzman");
+        userDto.setSecondSurname("Acosta");
+
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
+                customMapping.relate("(name + firstSurname + secondSurname)", "name")
+        ).build();
+
+        assertEquals("Jacob Guzman Acosta", user.getName());
+    }
+
 }
