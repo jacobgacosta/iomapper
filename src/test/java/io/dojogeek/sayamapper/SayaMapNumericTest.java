@@ -34,4 +34,18 @@ public class SayaMapNumericTest {
         ).build();
     }
 
+    @Test
+    public void shouldAddMultiplesNumericFieldsToOneOfTheSameType() {
+        NumericDto numericDto = new NumericDto();
+        numericDto.setByteValue((byte) 120);
+        numericDto.setShortValue((short) 220);
+        numericDto.setIntValue(450);
+
+        Numeric numeric = numericMap.inner().from(numericDto).to(Numeric.class).relate(customMapping ->
+                customMapping.relate("(byte + short + int)", "intValue")
+        ).build();
+
+        assertEquals(790, numeric.getIntValue());
+    }
+
 }
