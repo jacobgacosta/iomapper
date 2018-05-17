@@ -12,7 +12,7 @@ public class SourceObject {
     /**
      * SourceObject constructor.
      *
-     * @param source  the source instance.
+     * @param source the source instance.
      */
     public SourceObject(Object source) {
         this.source = source;
@@ -21,8 +21,8 @@ public class SourceObject {
     /**
      * Finds a matching field into the source instance.
      *
-     * @param fieldName  the field name.
-     * @return           a <bold>FlexibleField</bold>
+     * @param fieldName the field name.
+     * @return a <bold>FlexibleField</bold>
      */
     public FlexibleField findMatchingFor(String fieldName) {
         FlexibleField flexibleField = null;
