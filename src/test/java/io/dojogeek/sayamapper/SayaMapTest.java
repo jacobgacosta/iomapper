@@ -137,7 +137,7 @@ public class SayaMapTest {
         userDto.setSecondSurname("Acosta");
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-                customMapping.relate("(name + firstSurname + secondSurname)", "name")
+                customMapping.relate("concat(name, firstSurname, secondSurname)", "name")
         ).build();
 
         assertEquals("Jacob Guzman Acosta", user.getName());

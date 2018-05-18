@@ -42,7 +42,7 @@ public class SayaMapNumericTest {
         numericDto.setIntValue(450);
 
         Numeric numeric = numericMap.inner().from(numericDto).to(Numeric.class).relate(customMapping ->
-                customMapping.relate("(byte + short + int)", "intValue")
+                customMapping.relate("sum(byte, short, int)", "intValue")
         ).build();
 
         assertEquals(790, numeric.getIntValue());
