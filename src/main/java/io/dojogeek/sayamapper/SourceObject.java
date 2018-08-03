@@ -24,7 +24,7 @@ public class SourceObject {
      * @param fieldName the field name.
      * @return a <bold>FlexibleField</bold>
      */
-    public FlexibleField findMatchingFor(String fieldName) {
+    public FlexibleField getMatchingFieldFor(String fieldName) {
         FlexibleField flexibleField = null;
 
         for (FlexibleField declaredField : new InspectableObject(this.source).getDeclaredFields()) {
