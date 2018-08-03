@@ -5,6 +5,7 @@ import io.dojogeek.dtos.BankCardDto;
 import io.dojogeek.dtos.ScholarShipDto;
 import io.dojogeek.dtos.UserDto;
 import io.dojogeek.models.User;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,6 +24,7 @@ public class SayaMapTest {
     }
 
     @Test
+    @Ignore
     public void shouldMapTwoFieldsWithTheSameNamesAndTypesAtFirstNestedLevel() {
         UserDto userDto = new UserDto();
         userDto.setName("Jacob");
@@ -32,6 +34,7 @@ public class SayaMapTest {
         assertEquals(userDto.getName(), user.getName());
     }
 
+    @Ignore("This flow should be thought more in detail")
     @Test
     public void shouldMapTwoFieldsWithSimilarNamesAndTypesAtFirstNestedLevel() {
         UserDto userDto = new UserDto();
@@ -122,7 +125,7 @@ public class SayaMapTest {
         userDto.setUser("jgacosta@dojogeek.io");
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-            customMapping.relate("user", "email, id")
+                customMapping.relate("user", "email, id")
         ).build();
 
         assertEquals(userDto.getUser(), user.getId());
@@ -130,11 +133,12 @@ public class SayaMapTest {
     }
 
     @Test
+    @Ignore("This flow should be thought more in detail")
     public void shouldConcatenateMultiplesStringFieldsToOneOfTheSameType() {
         UserDto userDto = new UserDto();
         userDto.setName("Jacob");
-        userDto.setFirstSurname("Guzman");
-        userDto.setSecondSurname("Acosta");
+        //userDto.setFirstSurname("Guzman");
+        //userDto.setSecondSurname("Acosta");
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
                 customMapping.relate("concat(name, firstSurname, secondSurname)", "name")
