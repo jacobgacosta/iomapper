@@ -26,9 +26,18 @@ public abstract class MergeableObject {
         targetFields.forEach(flexibleField -> {
             unwantedTargetList.get().forEach(item -> {
                 if (item.getRootField().equals(flexibleField.getName())) {
+                    item.removeRootField();
 
+                    if (!item.hasMoreFields()) {
+                        return;
+                    }
+
+                    flexibleField.setIgnorableFields(unwantedTargetList);
                 }
             });
+
+            FlexibleField sourceField = sourceObject.getMatchingFieldFor(flexibleField.getName());
+            flexibleField.setValue(sourceField);
         });
     }
 
@@ -39,7 +48,7 @@ public abstract class MergeableObject {
      * @param target       the target instance.
      * @param customMapper a mapper with the custom relations for mapping.
      */
-    protected void merge(FlexibleField source, FlexibleField target, CustomMapper customMapper) {
+    protected void merge(FlexibleField source, FlexibleField target, UnwantedTargetList unwantedTargetList, CustomMapper customMapper) {
         new InspectableObject(source.getValue())
                 .getDeclaredFields()
                 .forEach(flexibleField -> {
