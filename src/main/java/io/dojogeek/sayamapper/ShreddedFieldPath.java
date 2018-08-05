@@ -10,7 +10,7 @@ import java.util.List;
 public class FieldPath {
 
     private static final String SEPARATOR = "\\.";
-    private static int SINGLE_FIELD;
+    private static int SINGLE_FIELD = 1;
 
     private List<String> fields = new ArrayList<>();
 
@@ -21,7 +21,7 @@ public class FieldPath {
     }
 
     public String getRootField() {
-        return this.fields.get(0);
+        return this.fields.isEmpty() ? "" : this.fields.get(0);
     }
 
     public boolean hasMoreFields() {
@@ -31,4 +31,5 @@ public class FieldPath {
     public void removeRootField() {
         this.fields.remove(0);
     }
+
 }
