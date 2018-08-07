@@ -7,21 +7,20 @@ import java.util.List;
 /**
  * Created by norveo on 8/2/18.
  */
-public class FieldPath {
+public class FieldPathShredder {
 
-    private static final String SEPARATOR = "\\.";
-    private static int SINGLE_FIELD = 1;
+    private static final int SINGLE_FIELD = 1;
 
     private List<String> fields = new ArrayList<>();
 
-    public FieldPath(String path) {
+    public FieldPathShredder(String path) {
         Arrays
-                .asList(path.split(this.SEPARATOR))
+                .asList(path.split(Delimiters.DOT_SEPARATOR))
                 .forEach(field -> fields.add(field));
     }
 
-    public String getRootField() {
-        return this.fields.isEmpty() ? "" : this.fields.get(0);
+    public RootField getRootField() {
+        return this.fields.isEmpty() ? new RootField("") : new RootField(this.fields.get(0));
     }
 
     public boolean hasMoreFields() {
