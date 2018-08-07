@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class SayaMapTest {
 
@@ -20,7 +21,7 @@ public class SayaMapTest {
         assertNotNull(user);
     }
 
-     @Test
+    @Test
     public void shouldMapFieldWithTheSameTypeAndName() {
         UserDto userDto = new UserDto();
         userDto.setName("Jacob");
@@ -30,5 +31,20 @@ public class SayaMapTest {
 
         assertEquals("Jacob", user.getName());
         assertEquals("Programmer", user.getJob());
-     }
+    }
+
+    @Test
+    public void shouldIgnoreFields() {
+        UserDto userDto = new UserDto();
+        userDto.setName("Jacob");
+        userDto.setJob("Programmer");
+
+        User user = map.inner().from(userDto).to(User.class).ignoring(target ->
+            target.ignore("name").ignore("job")
+        ).build();
+
+        assertNull(user.getName());
+        assertNull(user.getJob());
+    }
+
 }
