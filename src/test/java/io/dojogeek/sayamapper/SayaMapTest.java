@@ -47,4 +47,17 @@ public class SayaMapTest {
         assertNull(user.getJob());
     }
 
+    @Test
+    public void shouldDoAnExplicitMapping() {
+        UserDto userDto = new UserDto();
+        userDto.setEmail("dosek17@gmail.com");
+
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
+            customMapping
+                    .relate("email", "userId")
+        ).build();
+
+        assertEquals("dosek17@gmail.com", user.getUserId());
+    }
+
 }
