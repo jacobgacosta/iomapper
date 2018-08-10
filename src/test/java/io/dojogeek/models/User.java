@@ -7,6 +7,7 @@ public class User {
 
     private String name;
     private String job;
+    private String userId;
 
     public String getName() {
         return name;
@@ -24,4 +25,11 @@ public class User {
         this.job = job;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }
