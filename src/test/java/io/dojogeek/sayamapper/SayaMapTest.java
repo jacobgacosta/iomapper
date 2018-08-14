@@ -1,5 +1,6 @@
 package io.dojogeek.sayamapper;
 
+import io.dojogeek.dtos.AddressDto;
 import io.dojogeek.dtos.UserDto;
 import io.dojogeek.models.User;
 import org.junit.Test;
@@ -58,6 +59,23 @@ public class SayaMapTest {
         ).build();
 
         assertEquals("dosek17@gmail.com", user.getUserId());
+    }
+
+    @Test
+    public void shouldIgnoreNestedFields() {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setState("CDMX");
+        addressDto.setZip("03400");
+
+        UserDto userDto = new UserDto();
+        userDto.setAddressDto(addressDto);
+
+        User user = map.inner().from(userDto).to(User.class).ignoring(ignorableFields ->
+                ignorableFields.ignore("zip")
+        ).build();
+
+        assertEquals("CDMX", user.getAddress().getState());
+        assertNull(user.getAddress().getZip());
     }
 
 }
