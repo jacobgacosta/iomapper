@@ -8,6 +8,7 @@ public class UserDto {
     private String name;
     private String job;
     private String email;
+    private AddressDto addressDto;
 
     public String getName() {
         return name;
@@ -32,4 +33,13 @@ public class UserDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public AddressDto getAddressDto() {
+        return addressDto;
+    }
+
+    public void setAddressDto(AddressDto addressDto) {
+        this.addressDto = addressDto;
+    }
+
 }
