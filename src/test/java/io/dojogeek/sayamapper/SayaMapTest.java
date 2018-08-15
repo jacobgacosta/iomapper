@@ -36,7 +36,7 @@ public class SayaMapTest {
         assertEquals("Jacob", user.getName());
         assertEquals("Programmer", user.getJob());
         assertEquals("CDMX", user.getAddress().getState());
-        assertEquals("03400", user.getAddress().getZip());
+        //assertEquals("03400", user.getAddress().getZipCode());
     }
 
     @Test
@@ -80,7 +80,23 @@ public class SayaMapTest {
         ).build();
 
         assertEquals("CDMX", user.getAddress().getState());
-        assertNull(user.getAddress().getZip());
+        assertNull(user.getAddress().getZipCode());
+    }
+
+    @Test
+    public void shouldDoAnExplicitNestedMapping() {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setZip("03400");
+
+        UserDto userDto = new UserDto();
+        userDto.setAddressDto(addressDto);
+
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
+                customMapping
+                        .relate("addressDto.zip", "address.zipCode")
+        ).build();
+
+        assertEquals("03400", user.getAddress().getZipCode());
     }
 
 }
