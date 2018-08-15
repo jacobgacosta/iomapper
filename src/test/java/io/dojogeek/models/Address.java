@@ -6,7 +6,7 @@ package io.dojogeek.models;
 public class Address {
 
     private String state;
-    private String zip;
+    private String zipCode;
 
     public String getState() {
         return state;
@@ -16,12 +16,12 @@ public class Address {
         this.state = state;
     }
 
-    public String getZip() {
-        return zip;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setZip(String zip) {
-        this.zip = zip;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
 }
