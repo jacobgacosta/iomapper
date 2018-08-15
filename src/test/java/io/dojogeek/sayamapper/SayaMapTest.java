@@ -5,9 +5,7 @@ import io.dojogeek.dtos.UserDto;
 import io.dojogeek.models.User;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class SayaMapTest {
 
@@ -24,14 +22,21 @@ public class SayaMapTest {
 
     @Test
     public void shouldMapFieldWithTheSameTypeAndName() {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setState("CDMX");
+        addressDto.setZip("03400");
+
         UserDto userDto = new UserDto();
         userDto.setName("Jacob");
         userDto.setJob("Programmer");
+        userDto.setAddressDto(addressDto);
 
         User user = map.inner().from(userDto).to(User.class).build();
 
         assertEquals("Jacob", user.getName());
         assertEquals("Programmer", user.getJob());
+        assertEquals("CDMX", user.getAddress().getState());
+        assertEquals("03400", user.getAddress().getZip());
     }
 
     @Test
