@@ -6,6 +6,8 @@ package io.dojogeek.dtos;
 public class UserDto {
 
     private String name;
+    private String middleName;
+    private String lastName;
     private String job;
     private String email;
     private AddressDto addressDto;
@@ -40,6 +42,22 @@ public class UserDto {
 
     public void setAddressDto(AddressDto addressDto) {
         this.addressDto = addressDto;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }
