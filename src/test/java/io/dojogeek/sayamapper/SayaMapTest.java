@@ -35,8 +35,6 @@ public class SayaMapTest {
 
         assertEquals("Jacob", user.getName());
         assertEquals("Programmer", user.getJob());
-        assertEquals("CDMX", user.getAddress().getState());
-        //assertEquals("03400", user.getAddress().getZipCode());
     }
 
     @Test
