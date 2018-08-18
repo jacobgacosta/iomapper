@@ -12,8 +12,8 @@ public class TargetObject<T> extends MergeableObject {
     private final static Logger LOGGER = Logger.getLogger(TargetObject.class.getName());
 
     private Class<T> target;
-    private CustomMapper customRelations;
-    private UnwantedTargetList unwantedTargetList;
+    private CustomMappings customRelations;
+    private IgnorableFields ignorableFields;
 
     /**
      * TargetObject constructor.
@@ -39,7 +39,7 @@ public class TargetObject<T> extends MergeableObject {
             LOGGER.info("An error occurred when instantiating: " + this.target + "\n" + e.getMessage());
         }
 
-        super.merge(source, target, this.unwantedTargetList, this.customRelations);
+        super.merge(source, target, this.ignorableFields, this.customRelations);
 
         return (T) target;
     }
@@ -47,19 +47,19 @@ public class TargetObject<T> extends MergeableObject {
     /**
      * Sets a list of fields to fill.
      *
-     * @param unwantedTargetList  a list of fields to fill.
+     * @param ignorableFields  a list of fields to fill.
      */
-    public void ignore(UnwantedTargetList unwantedTargetList) {
-        this.unwantedTargetList = unwantedTargetList;
+    public void ignore(IgnorableFields ignorableFields) {
+        this.ignorableFields = ignorableFields;
     }
 
     /**
      * Sets a fill of the custom relations mapping.
      *
-     * @param customMapper  a fill with the custom relations.
+     * @param customMappings  a fill with the custom relations.
      */
-    public void relate(CustomMapper customMapper) {
-        this.customRelations = customMapper;
+    public void relate(CustomMappings customMappings) {
+        this.customRelations = customMappings;
     }
 
 }
