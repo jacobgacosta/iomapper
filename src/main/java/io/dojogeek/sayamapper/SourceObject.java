@@ -28,7 +28,11 @@ public class SourceObject {
         FlexibleField flexibleField = null;
 
         for (FlexibleField declaredField : new InspectableObject(this.source).getDeclaredFields()) {
-            if (declaredField.getName().toLowerCase().contains(fieldName.toLowerCase())) {
+            if (declaredField.getName().toLowerCase().equals(fieldName.toLowerCase())) {
+                flexibleField = declaredField;
+            }
+
+            if (flexibleField == null && declaredField.getName().toLowerCase().contains(fieldName.toLowerCase())) {
                 flexibleField = declaredField;
             }
         }
