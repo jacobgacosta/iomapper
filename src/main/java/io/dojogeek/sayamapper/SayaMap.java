@@ -74,11 +74,11 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
         TargetObject<T2> targetObject = new TargetObject(this.target);
 
         if (this.ignorable != null) {
-            targetObject.ignore(this.ignorable.fill(new UnwantedTargetList()));
+            targetObject.ignore(this.ignorable.fill(new IgnorableFields()));
         }
 
         if (this.customizable != null) {
-            targetObject.relate(this.customizable.fill(new CustomMapper()));
+            targetObject.relate(this.customizable.fill(new CustomMappings()));
         }
 
         return targetObject.getFilledInstanceFrom(new SourceObject(this.source));
