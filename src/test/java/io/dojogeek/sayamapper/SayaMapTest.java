@@ -52,7 +52,7 @@ public class SayaMapTest {
         assertNull(user.getJob());
     }
 
-    @Testq
+    @Test
     public void shouldDoAnExplicitMapping() {
         UserDto userDto = new UserDto();
         userDto.setEmail("dosek17@gmail.com");
