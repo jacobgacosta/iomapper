@@ -35,6 +35,7 @@ public class SayaMapTest {
 
         assertEquals("Jacob", user.getName());
         assertEquals("Programmer", user.getJob());
+        assertEquals("CDMX", user.getAddress().getState());
     }
 
     @Test
@@ -51,7 +52,7 @@ public class SayaMapTest {
         assertNull(user.getJob());
     }
 
-    @Test
+    @Testq
     public void shouldDoAnExplicitMapping() {
         UserDto userDto = new UserDto();
         userDto.setEmail("dosek17@gmail.com");
@@ -74,11 +75,10 @@ public class SayaMapTest {
         userDto.setAddressDto(addressDto);
 
         User user = map.inner().from(userDto).to(User.class).ignoring(ignorableFields ->
-                ignorableFields.ignore("zip")
+                ignorableFields.ignore("address.state")
         ).build();
 
-        assertEquals("CDMX", user.getAddress().getState());
-        assertNull(user.getAddress().getZipCode());
+        assertNull(user.getAddress().getState());
     }
 
     @Test
