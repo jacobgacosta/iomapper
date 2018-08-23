@@ -9,6 +9,7 @@ public class User {
     private String job;
     private String userId;
     private Address address;
+    private String fullAddress;
 
     public String getName() {
         return name;
@@ -42,4 +43,11 @@ public class User {
         this.address = address;
     }
 
+    public String getFullAddress() {
+        return fullAddress;
+    }
+
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
+    }
 }
