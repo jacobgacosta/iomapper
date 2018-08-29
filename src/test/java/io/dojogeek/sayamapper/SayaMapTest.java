@@ -126,6 +126,7 @@ public class SayaMapTest {
                         .relate("address.concat(state, zip)", "fullAddress")
         ).build();
 
+        assertEquals("03400CDMX", user.getFullAddress());
     }
 
 }
