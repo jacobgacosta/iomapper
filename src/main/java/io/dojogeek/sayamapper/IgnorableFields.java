@@ -8,10 +8,10 @@ import java.util.List;
  *
  * @author norvek
  */
-public class IgnorableField {
+public class IgnorableFields {
 
     private List<String> ignorableList = new ArrayList<>();
-    private List<FieldPath> fieldPaths = new ArrayList<>();
+    private List<IgnorableFieldPathShredder> ignorableFieldPathShredders = new ArrayList<>();
 
     /**
      * Add the name of the field to fill.
@@ -19,17 +19,17 @@ public class IgnorableField {
      * @param fieldName the field name.
      * @return a <bold>UnwantedTargetList</bold> instance
      */
-    public IgnorableField ignore(String fieldName) {
+    public IgnorableFields ignore(String fieldName) {
         ignorableList.add(fieldName);
 
-        fieldPaths.add(new FieldPath(fieldName));
+        ignorableFieldPathShredders.add(new IgnorableFieldPathShredder(fieldName));
 
         return this;
     }
 
     public boolean hasRootFieldWithName(String fieldName) {
-        for (FieldPath fieldPath : fieldPaths) {
-            if (fieldPath.getRootField().equals(fieldName)) {
+        for (IgnorableFieldPathShredder ignorableFieldPathShredder : ignorableFieldPathShredders) {
+            if (ignorableFieldPathShredder.getRootField().equals(fieldName)) {
                 return true;
             }
         }
@@ -38,8 +38,8 @@ public class IgnorableField {
     }
 
     public boolean hasNestedFieldsFor(String fieldName) {
-        for (FieldPath fieldPath : fieldPaths) {
-            if (fieldPath.getRootField().equals(fieldName) && fieldPath.hasMoreFields()) {
+        for (IgnorableFieldPathShredder ignorableFieldPathShredder : ignorableFieldPathShredders) {
+            if (ignorableFieldPathShredder.getRootField().equals(fieldName) && ignorableFieldPathShredder.hasNestedFields()) {
                 return true;
             }
         }
@@ -48,10 +48,15 @@ public class IgnorableField {
     }
 
     public void removeRootFieldsWithName(String fieldName) {
-        for (FieldPath fieldPath : fieldPaths) {
-            if (fieldPath.getRootField().equals(fieldName)) {
-                fieldPath.removeRootField();
+        for (IgnorableFieldPathShredder ignorableFieldPathShredder : ignorableFieldPathShredders) {
+            if (ignorableFieldPathShredder.getRootField().equals(fieldName)) {
+                ignorableFieldPathShredder.removeRootField();
             }
         }
     }
+
+    public boolean hasIgnorable() {
+        return !ignorableList.isEmpty();
+    }
+
 }
