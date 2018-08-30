@@ -12,6 +12,6 @@ public interface Customizable {
      *
      * @return the filled custom mapper.
      */
-    CustomMapper fill(CustomMapper customMapping);
+    CustomMappings fill(CustomMappings customMapping);
 
 }
