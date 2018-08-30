@@ -13,15 +13,15 @@ public abstract class FlexibleField extends MergeableObject {
     private final static Logger LOGGER = Logger.getLogger(FlexibleField.class.getName());
 
     protected Field field;
+    protected CustomMappings customMappings;
+    protected IgnorableFields ignorableNestedFields;
     private Object parentObject;
-    protected CustomMapper customMappings;
-    protected UnwantedTargetList ignorableNestedFields;
 
     /**
      * FlexibleField constructor.
      *
-     * @param field         the field.
-     * @param parentObject  the reference object that hosts the field.
+     * @param field        the field.
+     * @param parentObject the reference object that hosts the field.
      */
     protected FlexibleField(Field field, Object parentObject) {
         this.field = field;
@@ -54,16 +54,7 @@ public abstract class FlexibleField extends MergeableObject {
     /**
      * Set the value to property.
      *
-     * @param flexibleField  a flexible field.
-     */
-    protected void setValue(FlexibleField flexibleField) {
-        this.setValue(flexibleField.getValue());
-    }
-
-    /**
-     * Set the value to property.
-     *
-     * @param value  an object.
+     * @param value an object.
      */
     protected void setValue(Object value) {
         try {
@@ -75,20 +66,29 @@ public abstract class FlexibleField extends MergeableObject {
     }
 
     /**
+     * Set the value to property.
+     *
+     * @param flexibleField a flexible field.
+     */
+    protected void setValue(FlexibleField flexibleField) {
+        this.setValue(flexibleField.getValue());
+    }
+
+    /**
      * Sets the ignorable list for the nested fields of this field.
      *
-     * @param unwantedTargetList  the ignorable list.
+     * @param ignorableFields the ignorable list.
      */
-    public void setIgnorableFields(UnwantedTargetList unwantedTargetList) {
-        this.ignorableNestedFields = unwantedTargetList;
+    public void setIgnorableFields(IgnorableFields ignorableFields) {
+        this.ignorableNestedFields = ignorableFields;
     }
 
     /**
      * Sets the custom mapper for the nested fields of this field.
      *
-     * @param customMappings  the custom mapper.
+     * @param customMappings the custom mapper.
      */
-    public void setCustomMappings(CustomMapper customMappings) {
+    public void setCustomMappings(CustomMappings customMappings) {
         this.customMappings = customMappings;
     }
 
