@@ -12,6 +12,6 @@ public interface Ignorable {
      *
      * @return the filled list of ignorable.
      */
-    UnwantedTargetList fill(UnwantedTargetList unwantedTargetList);
+    IgnorableFields fill(IgnorableFields ignorableFields);
 
 }
