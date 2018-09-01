@@ -1,6 +1,5 @@
 package io.dojogeek.sayamapper;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -15,44 +14,54 @@ public abstract class MergeableObject {
     /**
      * Merge the source with the target object taking into account the ignorable fields and the custom relations.
      *
-     * @param sourceObject       the source object wrapper.
-     * @param target             the target instance.
-     * @param unwantedTargetList a list with the unwanted target fields.
-     * @param customMapper       a mapper with the custom relations for mapping.
+     * @param sourceObject    the source object wrapper.
+     * @param target          the target instance.
+     * @param ignorableFields a list with the unwanted target fields.
+     * @param customMappings  a mapper with the custom relations for mapping.
      */
-    protected void merge(SourceObject sourceObject, Object target, UnwantedTargetList unwantedTargetList, CustomMapper customMapper) {
-        List<FlexibleField> targetFields = new InspectableObject(target).getDeclaredFields();
+    protected void merge(SourceObject sourceObject, Object target, IgnorableFields ignorableFields, CustomMappings customMappings) {
+        new InspectableObject(target)
+                .getDeclaredFields()
+                .forEach(targetField -> {
+                    String targetFieldName = targetField.getName();
 
-        targetFields.forEach(flexibleField -> {
-            unwantedTargetList.get().forEach(item -> {
-                if (item.getRootField().equals(flexibleField.getName())) {
-                    item.removeRootField();
+                    if (ignorableFields != null && ignorableFields.hasRootFieldWithName(targetFieldName)) {
+                        if (!ignorableFields.hasNestedFieldsFor(targetFieldName)) {
+                            return;
+                        }
 
-                    if (!item.hasMoreFields()) {
+                        ignorableFields.removeRootFieldsWithName(targetFieldName);
+                    }
+
+                    if (customMappings != null && customMappings.hasCustomizable() && customMappings.hasTargetRootFieldWithName(targetFieldName)) {
+                        customMappings.applyMapping(sourceObject, targetField);
+
                         return;
                     }
 
-                    flexibleField.setIgnorableFields(unwantedTargetList);
-                }
-            });
+                    FlexibleField sourceField = sourceObject.getMatchingFieldFor(targetFieldName);
 
-            FlexibleField sourceField = sourceObject.getMatchingFieldFor(flexibleField.getName());
-            flexibleField.setValue(sourceField);
-        });
+                    if (sourceField != null) {
+                        targetField.setIgnorableFields(ignorableFields);
+                        targetField.setValue(sourceField);
+                    }
+                });
     }
 
     /**
      * Merge two fields taking into account the custom relations.
      *
-     * @param source       the source object wrapper.
-     * @param target       the target instance.
-     * @param customMapper a mapper with the custom relations for mapping.
+     * @param source         the source object wrapper.
+     * @param target         the target instance.
+     * @param customMappings a mapper with the custom relations for mapping.
      */
-    protected void merge(FlexibleField source, FlexibleField target, UnwantedTargetList unwantedTargetList, CustomMapper customMapper) {
+    protected void merge(FlexibleField source, FlexibleField target, IgnorableFields ignorableFields, CustomMappings customMappings) {
         new InspectableObject(source.getValue())
                 .getDeclaredFields()
-                .forEach(flexibleField -> {
-
+                .forEach(sourceField -> {
+                    if (customMappings.hasCustomizable()) {
+                        customMappings.applyMapping(new SourceObject(source.getValue()), target);
+                    }
                 });
     }
 
