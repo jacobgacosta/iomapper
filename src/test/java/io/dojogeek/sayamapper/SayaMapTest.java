@@ -113,7 +113,7 @@ public class SayaMapTest {
     }
 
     @Test
-    public void shouldExecuteAFunctionThroughTheANestedCustomMapping() {
+    public void shouldExecuteANestedFunctionThroughTheCustomMapping() {
         AddressDto addressDto = new AddressDto();
         addressDto.setZip("03400");
         addressDto.setState("CDMX");
@@ -123,10 +123,10 @@ public class SayaMapTest {
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
                 customMapping
-                        .relate("address.concat(state, zip)", "fullAddress")
+                        .relate("addressDto.concat(state, zip)", "fullAddress")
         ).build();
 
-        assertEquals("03400CDMX", user.getFullAddress());
+        assertEquals("CDMX03400", user.getFullAddress());
     }
 
 }
