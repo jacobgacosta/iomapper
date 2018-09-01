@@ -18,7 +18,6 @@ import static io.dojogeek.sayamapper.RootTypeEnum.*;
  */
 public class CustomMappings {
 
-    private FlexibleField customValueTo;
     private Map<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMappings = new HashMap<>();
 
     /**
@@ -48,9 +47,9 @@ public class CustomMappings {
         return false;
     }
 
-    public void applyMapping(String targetFieldName, SourceObject sourceObject, FlexibleField targetField) {
+    public void applyMapping(SourceObject sourceObject, FlexibleField targetField) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().equals(targetFieldName)) {
+            if (customMapping.getValue().getRootField().equals(targetField.getName())) {
                 if (customMapping.getKey().getRootType().equals(SINGLE)) {
                     FlexibleField sourceField = sourceObject.getMatchingFieldFor(customMapping.getKey().getRootField());
                     targetField.setValue(sourceField);
@@ -63,18 +62,29 @@ public class CustomMappings {
                 } else if (customMapping.getKey().getRootType().equals(METHOD)) {
                     String rootField = customMapping.getKey().getRootField();
 
-                    SignatureMethod signatureMethod = MethodShredder.dismantle(rootField);
+                    if (MethodShredder.isAMethod(rootField)) {
+                        List<Object> sourceFields = new ArrayList<>();
 
-                    List<Object> sourceFields = new ArrayList<>();
+                        SignatureMethod signatureMethod = MethodShredder.dismantle(rootField);
 
-                    signatureMethod.getArgs().forEach(arg -> {
-                        FlexibleField sourceField = sourceObject.getMatchingFieldFor(arg);
-                        sourceFields.add(sourceField.getValue());
-                    });
+                        signatureMethod.getArgs().forEach(arg -> {
+                            FlexibleField sourceField = sourceObject.getMatchingFieldFor(arg);
+                            sourceFields.add(sourceField.getValue());
+                        });
 
-                    Object result = Executor.executeFunction(signatureMethod.getName(), sourceFields);
+                        Object result = Executor.executeFunction(signatureMethod.getName(), sourceFields);
 
-                    targetField.setValue(result);
+                        targetField.setValue(result);
+
+                        return;
+                    }
+
+                    FlexibleField sourceField = sourceObject.getMatchingFieldFor(customMapping.getKey().getRootField());
+
+                    customMapping.getKey().removeRootField();
+
+                    targetField.setCustomMappings(this);
+                    targetField.setValue(sourceField);
                 }
             }
         }
