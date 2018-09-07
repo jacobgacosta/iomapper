@@ -33,7 +33,7 @@ public abstract class MergeableObject {
                         ignorableFields.removeRootFieldsWithName(targetFieldName);
                     }
 
-                    if (customMappings != null && customMappings.hasCustomizable() && customMappings.hasTargetRootFieldWithName(targetFieldName)) {
+                    if (customMappings != null && customMappings.hasCustomizable() && customMappings.hasSourceMappingFor(targetFieldName)) {
                         customMappings.applyMapping(sourceObject, targetField);
 
                         return;
@@ -55,12 +55,23 @@ public abstract class MergeableObject {
      * @param target         the target instance.
      * @param customMappings a mapper with the custom relations for mapping.
      */
-    protected void merge(FlexibleField source, FlexibleField target, IgnorableFields ignorableFields, CustomMappings customMappings) {
+    protected void merge(FlexibleField source, FlexibleField target, CustomMappings customMappings) {
         new InspectableObject(source.getValue())
                 .getDeclaredFields()
                 .forEach(sourceField -> {
-                    if (customMappings.hasCustomizable()) {
-                        customMappings.applyMapping(new SourceObject(source.getValue()), target);
+                    if (customMappings != null && customMappings.hasCustomizable()) {
+                        if (customMappings.hasSourceMappingFor(target.getName()) && customMappings.hasSourceFieldWithName(sourceField.getName())) {
+                            customMappings.applyMapping(new SourceObject(source.getValue()), target);
+
+                            return;
+                        }
+
+                        if (customMappings.hasSourceMappingFor(target.getName())
+                                && customMappings.hasAnApplicableFunctonFor(sourceField.getName())) {
+                            customMappings.applyMapping(new SourceObject(source.getValue()), target);
+
+                            return;
+                        }
                     }
                 });
     }
