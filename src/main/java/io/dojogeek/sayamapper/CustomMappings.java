@@ -4,10 +4,8 @@ import io.dojogeek.sayamapper.utils.Executor;
 import io.dojogeek.sayamapper.utils.MethodShredder;
 import io.dojogeek.sayamapper.utils.SignatureMethod;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static io.dojogeek.sayamapper.RootTypeEnum.*;
 
@@ -37,9 +35,29 @@ public class CustomMappings {
         return !customMappings.isEmpty();
     }
 
-    public boolean hasTargetRootFieldWithName(String targetFieldName) {
+    public boolean hasSourceMappingFor(String targetFieldName) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
             if (customMapping.getValue().getRootField().equals(targetFieldName)) {
+                return !customMapping.getValue().getRootField().isEmpty();
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasSourceRootFieldFor(String targetFieldName) {
+        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
+            if (customMapping.getValue().getRootField().equals(targetFieldName)) {
+                return !customMapping.getKey().getRootField().isEmpty();
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasSourceFor(String targetFieldName) {
+        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
+            if (customMapping.getValue().getRootField().equals(targetFieldName) && !customMapping.getKey().getRootField().isEmpty()) {
                 return true;
             }
         }
@@ -55,8 +73,19 @@ public class CustomMappings {
                     targetField.setValue(sourceField);
                 } else if (customMapping.getKey().getRootType().equals(NESTED)) {
                     FlexibleField sourceField = sourceObject.getMatchingFieldFor(customMapping.getKey().getRootField());
+
+                    if (customMapping.getKey().getRootType().equals(NESTED) && customMapping.getValue().getRootType().equals(SINGLE)) {
+                        customMapping.getKey().removeRootField();
+
+                        targetField.setCustomMappings(this);
+                        targetField.setValue(sourceField);
+
+                        return;
+                    }
+
                     customMapping.getKey().removeRootField();
                     customMapping.getValue().removeRootField();
+
                     targetField.setCustomMappings(this);
                     targetField.setValue(sourceField);
                 } else if (customMapping.getKey().getRootType().equals(METHOD)) {
@@ -90,4 +119,31 @@ public class CustomMappings {
         }
     }
 
+    public boolean hasAnApplicableFunctonFor(String name) {
+        String[] split = {};
+
+        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
+            if (Determiner.isFunction(customMapping.getKey().getRootField())) {
+                split = customMapping.getKey().getRootField().split("\\(|,|\\)");
+            }
+        }
+
+        for (String value : split) {
+            if (value.trim().equals(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasSourceFieldWithName(String name) {
+        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
+            if (customMapping.getKey().getRootField().equals(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
