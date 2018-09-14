@@ -91,12 +91,18 @@ public class CustomMappings {
                 } else if (customMapping.getKey().getRootType().equals(METHOD)) {
                     String rootField = customMapping.getKey().getRootField();
 
-                    if (MethodShredder.isAMethod(rootField)) {
+                    if (Determiner.isFunction(rootField)) {
                         List<Object> sourceFields = new ArrayList<>();
 
                         SignatureMethod signatureMethod = MethodShredder.dismantle(rootField);
 
                         signatureMethod.getArgs().forEach(arg -> {
+                            if (Determiner.isExtraArgument(arg)) {
+                                sourceFields.add(arg);
+
+                                return;
+                            }
+
                             FlexibleField sourceField = sourceObject.getMatchingFieldFor(arg);
                             sourceFields.add(sourceField.getValue());
                         });
