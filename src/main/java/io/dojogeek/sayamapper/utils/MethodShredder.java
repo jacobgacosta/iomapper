@@ -23,10 +23,4 @@ public class MethodShredder {
         return signatureMethod;
     }
 
-    public static boolean isAMethod(String rootField) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+\\([a-zA-Z0-9]+(,\\s[a-zA-Z0-9]+)*\\)");
-
-        return pattern.matcher(rootField).find();
-    }
-
 }
