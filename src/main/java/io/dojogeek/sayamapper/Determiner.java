@@ -20,9 +20,14 @@ public class Determiner {
     }
 
     public static boolean isFunction(String value) {
-        Pattern pattern = Pattern.compile("^([a-zA-Z0-9]+\\([a-zA-Z0-9]+(,\\s[a-zA-Z0-9]+)*\\))|[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+\\([a-zA-Z0-9]+(,\\s[a-zA-Z0-9]+)*\\)$");
+        Pattern pattern = Pattern.compile("^([a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*)\\([a-zA-Z0-9]+((,\\s[a-zA-Z0-9]+)*(,\\s\\[\\'\\w+\\'\\])?)\\)");
 
         return pattern.matcher(value).find();
     }
 
+    public static boolean isExtraArgument(String arg) {
+        Pattern pattern = Pattern.compile("^\\[\\'\\w+\\'\\]$");
+
+        return pattern.matcher(arg).find();
+    }
 }
