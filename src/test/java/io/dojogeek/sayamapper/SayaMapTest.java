@@ -109,10 +109,10 @@ public class SayaMapTest {
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
                 customMapping
-                        .relate("concat(name, middleName, lastName)", "name")
+                        .relate("concat(name, middleName, lastName, ['s'])", "name")
         ).build();
 
-        assertEquals("JacobGuzmanAcosta", user.getName());
+        assertEquals("Jacob Guzman Acosta", user.getName());
     }
 
     @Test
@@ -126,10 +126,10 @@ public class SayaMapTest {
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
                 customMapping
-                        .relate("addressDto.concat(state, zip)", "fullAddress")
+                        .relate("addressDto.concat(state, zip, ['s'])", "fullAddress")
         ).build();
 
-        assertEquals("CDMX03400", user.getFullAddress());
+        assertEquals("CDMX 03400", user.getFullAddress());
     }
 
 }
