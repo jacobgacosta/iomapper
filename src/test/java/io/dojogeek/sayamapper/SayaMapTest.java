@@ -45,7 +45,7 @@ public class SayaMapTest {
         userDto.setJob("Programmer");
 
         User user = map.inner().from(userDto).to(User.class).ignoring(target ->
-            target.ignore("name").ignore("job")
+                target.ignore("name").ignore("job")
         ).build();
 
         assertNull(user.getName());
@@ -58,8 +58,8 @@ public class SayaMapTest {
         userDto.setEmail("dosek17@gmail.com");
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-            customMapping
-                    .relate("email", "userId")
+                customMapping
+                        .relate("email", "userId")
         ).build();
 
         assertEquals("dosek17@gmail.com", user.getUserId());
@@ -130,6 +130,20 @@ public class SayaMapTest {
         ).build();
 
         assertEquals("CDMX 03400", user.getFullAddress());
+    }
+
+    @Test
+    public void shouldMapAFieldToMultipleFieldsThroughCustomMapping() {
+        UserDto userDto = new UserDto();
+        userDto.setName("Jacob");
+
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
+                customMapping
+                        .relate("name", "name, userId")
+        ).build();
+
+        assertEquals("Jacob", user.getName());
+        assertEquals("Jacob", user.getUserId());
     }
 
 }

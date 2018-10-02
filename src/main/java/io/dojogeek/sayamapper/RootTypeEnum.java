@@ -5,6 +5,6 @@ package io.dojogeek.sayamapper;
  */
 public enum RootTypeEnum {
 
-    SINGLE, NESTED, METHOD
+    SINGLE, NESTED, METHOD, MULTIPLE
 
 }

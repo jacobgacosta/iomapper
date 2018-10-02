@@ -30,4 +30,10 @@ public class Determiner {
 
         return pattern.matcher(arg).find();
     }
+
+    public static boolean isMultiple(String value) {
+        Pattern pattern = Pattern.compile("^\\w+(,\\s\\w+)+$");
+
+        return pattern.matcher(value).find();
+    }
 }

@@ -6,5 +6,6 @@ package io.dojogeek.sayamapper.utils;
 public class Delimiters {
 
     public static final String DOT_SEPARATOR = "\\.";
+    public static final String COMMA_SEPARATOR = ",";
 
 }

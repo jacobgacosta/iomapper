@@ -37,7 +37,7 @@ public class CustomMappings {
 
     public boolean hasSourceMappingFor(String targetFieldName) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().equals(targetFieldName)) {
+            if (customMapping.getValue().getRootField().trim().equals(targetFieldName)) {
                 return !customMapping.getValue().getRootField().isEmpty();
             }
         }
@@ -67,7 +67,7 @@ public class CustomMappings {
 
     public void applyMapping(SourceObject sourceObject, FlexibleField targetField) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().equals(targetField.getName())) {
+            if (customMapping.getValue().getRootField().trim().equals(targetField.getName())) {
                 if (customMapping.getKey().getRootType().equals(SINGLE)) {
                     FlexibleField sourceField = sourceObject.getMatchingFieldFor(customMapping.getKey().getRootField());
                     targetField.setValue(sourceField);
@@ -122,6 +122,10 @@ public class CustomMappings {
                     targetField.setValue(sourceField);
                 }
             }
+
+            if (customMapping.getValue().hasOtherFields()) {
+                customMapping.getValue().removeRootField();
+            }
         }
     }
 
@@ -152,4 +156,5 @@ public class CustomMappings {
 
         return false;
     }
+
 }

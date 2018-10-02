@@ -15,25 +15,29 @@ public class CustomizableFieldPathShredder {
 
     private String value;
     private RootTypeEnum rootTypeEnum;
-    private List<String> nestedFields;
+    private List<String> otherFields;
 
     public CustomizableFieldPathShredder(String value) {
         if (Determiner.isSingle(value)) {
             this.value = value;
             this.rootTypeEnum = SINGLE;
         } else if (Determiner.isNested(value)) {
-            nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
-            this.value = nestedFields.get(0);
+            otherFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
+            this.value = otherFields.get(0);
             this.rootTypeEnum = NESTED;
         } else if (Determiner.isFunction(value)) {
-            nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
-            this.value = nestedFields.get(0);
+            otherFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
+            this.value = otherFields.get(0);
             this.rootTypeEnum = METHOD;
+        } else if (Determiner.isMultiple(value)) {
+            otherFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.COMMA_SEPARATOR)));
+            this.value = otherFields.get(0);
+            this.rootTypeEnum = MULTIPLE;
         }
     }
 
     public String getRootField() {
-        return (nestedFields != null && !nestedFields.isEmpty()) ? nestedFields.get(0) : value;
+        return (otherFields != null && !otherFields.isEmpty()) ? otherFields.get(0) : value;
     }
 
     public RootTypeEnum getRootType() {
@@ -41,7 +45,11 @@ public class CustomizableFieldPathShredder {
     }
 
     public void removeRootField() {
-        this.nestedFields.remove(0);
+        this.otherFields.remove(0);
+    }
+
+    public boolean hasOtherFields() {
+        return this.otherFields != null && !this.otherFields.isEmpty();
     }
 
 }
