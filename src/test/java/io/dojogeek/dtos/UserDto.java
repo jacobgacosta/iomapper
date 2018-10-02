@@ -11,6 +11,7 @@ public class UserDto {
     private String job;
     private String email;
     private AddressDto addressDto;
+    private ScholarshipDto scholarship;
 
     public String getName() {
         return name;
@@ -58,6 +59,14 @@ public class UserDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public ScholarshipDto getScholarshipDto() {
+        return scholarship;
+    }
+
+    public void setScholarshipDto(ScholarshipDto scholarshipDto) {
+        this.scholarship = scholarshipDto;
     }
 
 }

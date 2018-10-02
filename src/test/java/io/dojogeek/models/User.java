@@ -10,6 +10,7 @@ public class User {
     private String userId;
     private Address address;
     private String fullAddress;
+    private String scholarship;
 
     public String getName() {
         return name;
@@ -50,4 +51,13 @@ public class User {
     public void setFullAddress(String fullAddress) {
         this.fullAddress = fullAddress;
     }
+
+    public String getScholarship() {
+        return scholarship;
+    }
+
+    public void setScholarship(String scholarship) {
+        this.scholarship = scholarship;
+    }
+
 }

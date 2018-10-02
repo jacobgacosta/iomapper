@@ -1,6 +1,7 @@
 package io.dojogeek.sayamapper;
 
 import io.dojogeek.dtos.AddressDto;
+import io.dojogeek.dtos.ScholarshipDto;
 import io.dojogeek.dtos.UserDto;
 import io.dojogeek.models.User;
 import org.junit.Test;
@@ -144,6 +145,20 @@ public class SayaMapTest {
 
         assertEquals("Jacob", user.getName());
         assertEquals("Jacob", user.getUserId());
+    }
+
+    @Test
+    public void shouldNotMapAnObjectWithAPrimitiveType() {
+        ScholarshipDto scholarshipDto = new ScholarshipDto();
+        scholarshipDto.setInstanceYears(4);
+        scholarshipDto.setSchoolName("Harvard");
+
+        UserDto userDto = new UserDto();
+        userDto.setScholarshipDto(scholarshipDto);
+
+        User user = map.inner().from(userDto).to(User.class).build();
+
+        assertNull(user.getScholarship());
     }
 
 }

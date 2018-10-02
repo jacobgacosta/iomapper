@@ -56,6 +56,10 @@ public abstract class MergeableObject {
      * @param customMappings a mapper with the custom relations for mapping.
      */
     protected void merge(FlexibleField source, FlexibleField target, CustomMappings customMappings) {
+        if (source.getValue() == null) {
+            return;
+        }
+
         new InspectableObject(source.getValue())
                 .getDeclaredFields()
                 .forEach(sourceField -> {
