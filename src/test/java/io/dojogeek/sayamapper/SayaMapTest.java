@@ -161,4 +161,19 @@ public class SayaMapTest {
         assertNull(user.getScholarship());
     }
 
+    @Test
+    public void shouldNotMapAnObjectWithAPrimitiveTypeThroughCustomMapping() {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setZip("03400");
+
+        UserDto userDto = new UserDto();
+        userDto.setAddressDto(addressDto);
+
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
+                customMapping.relate("addressDto", "address.zipCode")
+        ).build();
+
+        assertNull(user.getAddress().getZipCode());
+    }
+
 }
