@@ -11,6 +11,7 @@ public class User {
     private Address address;
     private String fullAddress;
     private String scholarship;
+    private byte age;
 
     public String getName() {
         return name;
@@ -58,6 +59,14 @@ public class User {
 
     public void setScholarship(String scholarship) {
         this.scholarship = scholarship;
+    }
+
+    public byte getAge() {
+        return age;
+    }
+
+    public void setAge(byte age) {
+        this.age = age;
     }
 
 }
