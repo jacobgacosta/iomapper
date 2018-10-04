@@ -176,4 +176,16 @@ public class SayaMapTest {
         assertNull(user.getAddress().getZipCode());
     }
 
+    @Test
+    public void shouldCastCustomMappingFields() {
+        UserDto userDto = new UserDto();
+        userDto.setYears((short) 303984984);
+
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
+                customMapping.relate("toByte(years)", "age")
+        ).build();
+
+        assertEquals(29016, user.getAge());
+    }
+
 }
