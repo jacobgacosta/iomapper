@@ -177,15 +177,15 @@ public class SayaMapTest {
     }
 
     @Test
-    public void shouldCastCustomMappingFields() {
+    public void shouldCastShortToByteFieldThroughCustomMapping() {
         UserDto userDto = new UserDto();
-        userDto.setYears((short) 303984984);
+        userDto.setYears((short) 10000);
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
                 customMapping.relate("toByte(years)", "age")
         ).build();
 
-        assertEquals(29016, user.getAge());
+        assertEquals(16, user.getAge());
     }
 
 }
