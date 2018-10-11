@@ -65,7 +65,7 @@ public class User {
         return age;
     }
 
-    public void setAge(byte age) {
+    public void setAge(byte years) {
         this.age = age;
     }
 

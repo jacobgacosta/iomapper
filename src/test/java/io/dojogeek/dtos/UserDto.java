@@ -12,7 +12,7 @@ public class UserDto {
     private String email;
     private AddressDto addressDto;
     private ScholarshipDto scholarship;
-    private short years;
+    private String years;
 
     public String getName() {
         return name;
@@ -70,12 +70,12 @@ public class UserDto {
         this.scholarship = scholarshipDto;
     }
 
-    public int getYears() {
+    public String getYears() {
         return years;
     }
 
-    public void setYears(short oldAge) {
-        this.years = oldAge;
+    public void setYears(String years) {
+        this.years = years;
     }
 
 }
