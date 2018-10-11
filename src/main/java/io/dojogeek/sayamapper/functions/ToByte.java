@@ -11,9 +11,17 @@ public class ToByte implements Executable {
     public Object execute(Object... args) {
         List<Object> values = (List<Object>) args[0];
 
-        short lastArgument = (short) values.get(values.size() - 1);
+        Object value = values.get(values.size() - 1);
 
-        return (byte) lastArgument;
+        byte byteValue;
+
+        if (value.getClass().getName().equals("java.lang.String")) {
+            byteValue = new Byte(value.toString());
+        } else {
+            byteValue = (byte) values.get(values.size() - 1);
+        }
+
+        return byteValue;
     }
 
 }
