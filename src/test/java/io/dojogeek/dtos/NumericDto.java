@@ -3,70 +3,70 @@ package io.dojogeek.dtos;
 /**
  * Created by norveo on 10/12/18.
  */
-public class NumberDto {
+public class NumericDto {
 
-    private byte byteField;
-    private short shortField;
-    private int IntField;
-    private long longField;
-    private float floatField;
-    private double doubleField;
-    private boolean booleanField;
+    private String byteField;
+    private String shortField;
+    private String IntField;
+    private String longField;
+    private String floatField;
+    private String doubleField;
+    private String booleanField;
 
-    public byte getByteField() {
+    public String getByteField() {
         return byteField;
     }
 
-    public void setByteField(byte byteField) {
+    public void setByteField(String byteField) {
         this.byteField = byteField;
     }
 
-    public short getShortField() {
+    public String getShortField() {
         return shortField;
     }
 
-    public void setShortField(short shortField) {
+    public void setShortField(String shortField) {
         this.shortField = shortField;
     }
 
-    public int getIntField() {
+    public String getIntField() {
         return IntField;
     }
 
-    public void setIntField(int intField) {
+    public void setIntField(String intField) {
         IntField = intField;
     }
 
-    public long getLongField() {
+    public String getLongField() {
         return longField;
     }
 
-    public void setLongField(long longField) {
+    public void setLongField(String longField) {
         this.longField = longField;
     }
 
-    public float getFloatField() {
+    public String getFloatField() {
         return floatField;
     }
 
-    public void setFloatField(float floatField) {
+    public void setFloatField(String floatField) {
         this.floatField = floatField;
     }
 
-    public double getDoubleField() {
+    public String getDoubleField() {
         return doubleField;
     }
 
-    public void setDoubleField(double doubleField) {
+    public void setDoubleField(String doubleField) {
         this.doubleField = doubleField;
     }
 
-    public boolean isBooleanField() {
+    public String getBooleanField() {
         return booleanField;
     }
 
-    public void setBooleanField(boolean booleanField) {
+    public void setBooleanField(String booleanField) {
         this.booleanField = booleanField;
     }
-
+    
 }
