@@ -3,7 +3,7 @@ package io.dojogeek.models;
 /**
  * Created by norveo on 10/12/18.
  */
-public class NumberModel {
+public class NumericModel {
 
     private byte byteField;
     private short shortField;
