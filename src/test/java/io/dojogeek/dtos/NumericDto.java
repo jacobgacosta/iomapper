@@ -5,68 +5,68 @@ package io.dojogeek.dtos;
  */
 public class NumericDto {
 
-    private String byteField;
-    private String shortField;
-    private String IntField;
-    private String longField;
-    private String floatField;
-    private String doubleField;
-    private String booleanField;
+    private String stringB;
+    private String stringS;
+    private String stringI;
+    private String stringL;
+    private String stringF;
+    private String stringD;
+    private String stringBo;
 
-    public String getByteField() {
-        return byteField;
+    public String getStringB() {
+        return stringB;
     }
 
-    public void setByteField(String byteField) {
-        this.byteField = byteField;
+    public void setStringB(String stringB) {
+        this.stringB = stringB;
     }
 
-    public String getShortField() {
-        return shortField;
+    public String getStringS() {
+        return stringS;
     }
 
-    public void setShortField(String shortField) {
-        this.shortField = shortField;
+    public void setStringS(String stringS) {
+        this.stringS = stringS;
     }
 
-    public String getIntField() {
-        return IntField;
+    public String getStringI() {
+        return stringI;
     }
 
-    public void setIntField(String intField) {
-        IntField = intField;
+    public void setStringI(String stringI) {
+        this.stringI = stringI;
     }
 
-    public String getLongField() {
-        return longField;
+    public String getStringL() {
+        return stringL;
     }
 
-    public void setLongField(String longField) {
-        this.longField = longField;
+    public void setStringL(String stringL) {
+        this.stringL = stringL;
     }
 
-    public String getFloatField() {
-        return floatField;
+    public String getStringF() {
+        return stringF;
     }
 
-    public void setFloatField(String floatField) {
-        this.floatField = floatField;
+    public void setStringF(String stringF) {
+        this.stringF = stringF;
     }
 
-    public String getDoubleField() {
-        return doubleField;
+    public String getStringD() {
+        return stringD;
     }
 
-    public void setDoubleField(String doubleField) {
-        this.doubleField = doubleField;
+    public void setStringD(String stringD) {
+        this.stringD = stringD;
     }
 
-    public String getBooleanField() {
-        return booleanField;
+    public String getStringBo() {
+        return stringBo;
     }
 
-    public void setBooleanField(String booleanField) {
-        this.booleanField = booleanField;
+    public void setStringBo(String stringBo) {
+        this.stringBo = stringBo;
     }
-    
+
 }
