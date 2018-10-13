@@ -7,7 +7,7 @@ public class NumericModel {
 
     private byte byteField;
     private short shortField;
-    private int IntField;
+    private int intField;
     private long longField;
     private float floatField;
     private double doubleField;
@@ -30,11 +30,11 @@ public class NumericModel {
     }
 
     public int getIntField() {
-        return IntField;
+        return intField;
     }
 
     public void setIntField(int intField) {
-        IntField = intField;
+       this.intField = intField;
     }
 
     public long getLongField() {
