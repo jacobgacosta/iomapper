@@ -14,7 +14,7 @@ public class SayaMapNumericTest {
     private BridgeMap<NumericDto, NumericModel> map = new SayaMapBridge<>();
 
     @Test
-    public void shouldCastStringToByteFieldThroughCustomMapping() {
+    public void shouldCastStringTypeToByteTypeThroughCustomMapping() {
         NumericDto numericDto = new NumericDto();
         numericDto.setStringB("127");
         numericDto.setStringS("10000");
