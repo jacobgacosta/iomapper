@@ -44,4 +44,16 @@ public class SayaMapNumericTest {
         assertEquals(true, numericModel.isBooleanField());
     }
 
+    @Test
+    public void shouldCastNumericTypeToStringTypeThroughCustomMapping() {
+        NumericModel numericModel = new NumericModel();
+        numericModel.setBooleanField(true);
+
+        NumericDto numericDto = map.outer().from(numericModel).to(NumericDto.class).relate(customMapping ->
+                customMapping.relate("toString(booleanField)", "stringBo")
+        ).build();
+
+        assertEquals("true", numericDto.getStringBo());
+    }
+
 }
