@@ -45,4 +45,5 @@ public class Concat implements Executable {
 
         return split[1];
     }
+
 }
