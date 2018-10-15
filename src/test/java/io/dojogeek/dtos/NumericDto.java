@@ -6,12 +6,19 @@ package io.dojogeek.dtos;
 public class NumericDto {
 
     private String stringB;
+    private byte bValue;
     private String stringS;
+    private short sValue;
     private String stringI;
+    private int iValue;
     private String stringL;
+    private long lValue;
     private String stringF;
+    private float fValue;
     private String stringD;
+    private double dValue;
     private String stringBo;
+    private boolean boValue;
 
     public String getStringB() {
         return stringB;
@@ -19,6 +26,14 @@ public class NumericDto {
 
     public void setStringB(String stringB) {
         this.stringB = stringB;
+    }
+
+    public byte getbValue() {
+        return bValue;
+    }
+
+    public void setbValue(byte bValue) {
+        this.bValue = bValue;
     }
 
     public String getStringS() {
@@ -29,12 +44,28 @@ public class NumericDto {
         this.stringS = stringS;
     }
 
+    public short getsValue() {
+        return sValue;
+    }
+
+    public void setsValue(short sValue) {
+        this.sValue = sValue;
+    }
+
     public String getStringI() {
         return stringI;
     }
 
     public void setStringI(String stringI) {
         this.stringI = stringI;
+    }
+
+    public int getiValue() {
+        return iValue;
+    }
+
+    public void setiValue(int iValue) {
+        this.iValue = iValue;
     }
 
     public String getStringL() {
@@ -45,12 +76,28 @@ public class NumericDto {
         this.stringL = stringL;
     }
 
+    public long getlValue() {
+        return lValue;
+    }
+
+    public void setlValue(long lValue) {
+        this.lValue = lValue;
+    }
+
     public String getStringF() {
         return stringF;
     }
 
     public void setStringF(String stringF) {
         this.stringF = stringF;
+    }
+
+    public float getfValue() {
+        return fValue;
+    }
+
+    public void setfValue(float fValue) {
+        this.fValue = fValue;
     }
 
     public String getStringD() {
@@ -61,12 +108,28 @@ public class NumericDto {
         this.stringD = stringD;
     }
 
+    public double getdValue() {
+        return dValue;
+    }
+
+    public void setdValue(double dValue) {
+        this.dValue = dValue;
+    }
+
     public String getStringBo() {
         return stringBo;
     }
 
     public void setStringBo(String stringBo) {
         this.stringBo = stringBo;
+    }
+
+    public boolean isBoValue() {
+        return boValue;
+    }
+
+    public void setBoValue(boolean boValue) {
+        this.boValue = boValue;
     }
 
 }
