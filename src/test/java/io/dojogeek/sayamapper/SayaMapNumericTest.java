@@ -56,4 +56,21 @@ public class SayaMapNumericTest {
         assertEquals("true", numericDto.getStringBo());
     }
 
+    @Test
+    public void shouldAddSomeNumbers() {
+        NumericModel numericModel = new NumericModel();
+        numericModel.setByteField((byte) 127);
+        numericModel.setShortField((short) 10000);
+        numericModel.setDoubleField(99.902);
+        numericModel.setFloatField(93.90f);
+
+        NumericDto numericDto = map.outer().from(numericModel).to(NumericDto.class).relate(customMapping ->
+                customMapping.relate("add(byteField, shortField)", "iValue")
+                             .relate("add(doubleField, floatField)", "dValue")
+        ).build();
+
+        assertEquals(10127, numericDto.getiValue());
+        assertEquals(193.8020015258789, numericDto.getdValue(), 0.001);
+    }
+
 }
