@@ -36,4 +36,5 @@ public class Determiner {
 
         return pattern.matcher(value).find();
     }
+
 }
