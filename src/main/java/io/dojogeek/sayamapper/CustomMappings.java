@@ -1,15 +1,7 @@
 package io.dojogeek.sayamapper;
 
-import io.dojogeek.sayamapper.utils.Executor;
-import io.dojogeek.sayamapper.utils.MethodShredder;
-import io.dojogeek.sayamapper.utils.SignatureMethod;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static io.dojogeek.sayamapper.RootTypeEnum.*;
 
 /**
  * CustomMappings is a extension of an HashMap for the custom mapping fields.
@@ -37,98 +29,14 @@ public class CustomMappings {
         return !customMappings.isEmpty();
     }
 
-    public boolean hasSourceMappingFor(String targetFieldName) {
-        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().trim().equals(targetFieldName)) {
-                return !customMapping.getValue().getRootField().isEmpty();
-            }
-        }
-
-        return false;
-    }
-
-    public boolean hasSourceRootFieldFor(String targetFieldName) {
-        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().equals(targetFieldName)) {
-                return !customMapping.getKey().getRootField().isEmpty();
-            }
-        }
-
-        return false;
-    }
-
     public boolean hasSourceFor(String targetFieldName) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().equals(targetFieldName) && !customMapping.getKey().getRootField().isEmpty()) {
+            if (customMapping.getValue().getRootField().trim().equals(targetFieldName) && !customMapping.getValue().getRootField().isEmpty()) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    public void applyMapping(SourceObject sourceObject, FlexibleField targetField) {
-        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().trim().equals(targetField.getName())) {
-                if (customMapping.getKey().getRootType().equals(SINGLE)) {
-                    FlexibleField sourceField = sourceObject.getMatchingFieldFor(customMapping.getKey().getRootField());
-                    targetField.setValue(sourceField);
-                } else if (customMapping.getKey().getRootType().equals(NESTED)) {
-                    FlexibleField sourceField = sourceObject.getMatchingFieldFor(customMapping.getKey().getRootField());
-
-                    if (customMapping.getKey().getRootType().equals(NESTED) && customMapping.getValue().getRootType().equals(SINGLE)) {
-                        customMapping.getKey().removeRootField();
-
-                        targetField.setCustomMappings(this);
-                        targetField.setValue(sourceField);
-
-                        return;
-                    }
-
-                    customMapping.getKey().removeRootField();
-                    customMapping.getValue().removeRootField();
-
-                    targetField.setCustomMappings(this);
-                    targetField.setValue(sourceField);
-                } else if (customMapping.getKey().getRootType().equals(METHOD)) {
-                    String rootField = customMapping.getKey().getRootField();
-
-                    if (Determiner.isFunction(rootField)) {
-                        List<Object> sourceFields = new ArrayList<>();
-
-                        SignatureMethod signatureMethod = MethodShredder.dismantle(rootField);
-
-                        signatureMethod.getArgs().forEach(arg -> {
-                            if (Determiner.isExtraArgument(arg)) {
-                                sourceFields.add(arg);
-
-                                return;
-                            }
-
-                            FlexibleField sourceField = sourceObject.getMatchingFieldFor(arg);
-                            sourceFields.add(sourceField.getValue());
-                        });
-
-                        Object result = Executor.executeFunction(signatureMethod.getName(), sourceFields);
-
-                        targetField.setValue(result);
-
-                        return;
-                    }
-
-                    FlexibleField sourceField = sourceObject.getMatchingFieldFor(customMapping.getKey().getRootField());
-
-                    customMapping.getKey().removeRootField();
-
-                    targetField.setCustomMappings(this);
-                    targetField.setValue(sourceField);
-                }
-            }
-
-            if (customMapping.getValue().hasOtherFields()) {
-                customMapping.getValue().removeRootField();
-            }
-        }
     }
 
     public boolean hasAnApplicableFunctonFor(String name) {
@@ -157,6 +65,34 @@ public class CustomMappings {
         }
 
         return false;
+    }
+
+    public Map<CustomizableFieldPathShredder, CustomizableFieldPathShredder> getRelations() {
+        return customMappings;
+    }
+
+    public boolean hasTargetWithName(String targetFieldName) {
+        return this.hasSourceFor(targetFieldName);
+    }
+
+    public CustomizableFieldPathShredder getSourceFor(String targetFieldName) {
+        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
+            if (customMapping.getValue().getRootField().trim().equals(targetFieldName)) {
+                return customMapping.getKey();
+            }
+        }
+
+        return new CustomizableFieldPathShredder("");
+    }
+
+    public CustomizableFieldPathShredder getTargetWithName(String targetFieldName) {
+        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
+            if (customMapping.getValue().getRootField().trim().equals(targetFieldName)) {
+                return customMapping.getValue();
+            }
+        }
+
+        return new CustomizableFieldPathShredder("");
     }
 
 }
