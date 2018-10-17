@@ -27,7 +27,7 @@ public class IgnorableFields {
         return this;
     }
 
-    public boolean hasRootFieldWithName(String fieldName) {
+    public boolean hasPresentTo(String fieldName) {
         for (IgnorableFieldPathShredder ignorableFieldPathShredder : ignorableFieldPathShredders) {
             if (ignorableFieldPathShredder.getRootField().equals(fieldName)) {
                 return true;
@@ -47,7 +47,7 @@ public class IgnorableFields {
         return false;
     }
 
-    public void removeRootFieldsWithName(String fieldName) {
+    public void removeParentFieldWithName(String fieldName) {
         for (IgnorableFieldPathShredder ignorableFieldPathShredder : ignorableFieldPathShredders) {
             if (ignorableFieldPathShredder.getRootField().equals(fieldName)) {
                 ignorableFieldPathShredder.removeRootField();
