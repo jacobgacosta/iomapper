@@ -30,7 +30,7 @@ public class TargetWrapper<T> extends MergeableObject {
      * @param source  the source object wrapper.
      * @return        a filled target instance.
      */
-    public TargetWrapper<T> populateWith(SourceObject source) {
+    public T populateWith(SourceObject source) {
         Object target = null;
 
         try {
@@ -41,17 +41,17 @@ public class TargetWrapper<T> extends MergeableObject {
 
         super.merge(source, target, this.ignorableFields, this.customRelations);
 
-        return this;
+        return (T) target;
     }
 
     /**
      * Sets a list of fields to fill.
      *
-     * @param ignorable  a list of fields to fill.
+     * @param ignorableFields  a list of fields to fill.
      */
     public TargetWrapper<T> ignore(IgnorableFields ignorableFields) {
-        if (ignorable != null) {
-            this.ignorableFields = ignorable.fill(new IgnorableFields());
+        if (ignorableFields != null) {
+            this.ignorableFields = ignorableFields;
         }
 
         return this;
@@ -64,14 +64,10 @@ public class TargetWrapper<T> extends MergeableObject {
      */
     public TargetWrapper<T> relate(CustomMappings customizable) {
         if (customizable != null) {
-            this.customRelations = customizable.fill(new CustomMappings());
+            this.customRelations = customizable;
         }
 
         return this;
-    }
-
-    public T done() {
-        return (T) target;
     }
 
 }
