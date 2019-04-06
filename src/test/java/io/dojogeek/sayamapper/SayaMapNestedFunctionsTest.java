@@ -23,7 +23,7 @@ public class SayaMapNestedFunctionsTest {
                     customMapping.relate("toString(add(byteField, shortField))", "stringI")
         ).build();
 
-        assertEquals("10127", numericDto.getStringI(), 0.001);
+        assertEquals("10127", numericDto.getStringI());
     }
 
 }
