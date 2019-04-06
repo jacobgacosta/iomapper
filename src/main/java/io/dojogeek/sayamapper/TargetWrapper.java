@@ -3,24 +3,24 @@ package io.dojogeek.sayamapper;
 import java.util.logging.Logger;
 
 /**
- * TargetObject is a wrapper to handle easily the target class filling.
+ * TargetWrapper is a wrapper to handle easily the target class filling.
  *
  * @author norvek
  */
-public class TargetObject<T> extends MergeableObject {
+public class TargetWrapper<T> extends MergeableObject {
 
-    private final static Logger LOGGER = Logger.getLogger(TargetObject.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(TargetWrapper.class.getName());
 
     private Class<T> target;
     private CustomMappings customRelations;
     private IgnorableFields ignorableFields;
 
     /**
-     * TargetObject constructor.
+     * TargetWrapper constructor.
      *
      * @param targetClass  the target class.
      */
-    public TargetObject(Class<T> targetClass) {
+    public TargetWrapper(Class<T> targetClass) {
         this.target = targetClass;
     }
 
@@ -30,7 +30,7 @@ public class TargetObject<T> extends MergeableObject {
      * @param source  the source object wrapper.
      * @return        a filled target instance.
      */
-    public T getFilledInstanceFrom(SourceObject source) {
+    public TargetWrapper<T> populateWith(SourceObject source) {
         Object target = null;
 
         try {
@@ -41,25 +41,37 @@ public class TargetObject<T> extends MergeableObject {
 
         super.merge(source, target, this.ignorableFields, this.customRelations);
 
-        return (T) target;
+        return this;
     }
 
     /**
      * Sets a list of fields to fill.
      *
-     * @param ignorableFields  a list of fields to fill.
+     * @param ignorable  a list of fields to fill.
      */
-    public void ignore(IgnorableFields ignorableFields) {
-        this.ignorableFields = ignorableFields;
+    public TargetWrapper<T> ignore(IgnorableFields ignorableFields) {
+        if (ignorable != null) {
+            this.ignorableFields = ignorable.fill(new IgnorableFields());
+        }
+
+        return this;
     }
 
     /**
      * Sets a fill of the custom relations mapping.
      *
-     * @param customMappings  a fill with the custom relations.
+     * @param customizable  a fill with the custom relations.
      */
-    public void relate(CustomMappings customMappings) {
-        this.customRelations = customMappings;
+    public TargetWrapper<T> relate(CustomMappings customizable) {
+        if (customizable != null) {
+            this.customRelations = customizable.fill(new CustomMappings());
+        }
+
+        return this;
+    }
+
+    public T done() {
+        return (T) target;
     }
 
 }
