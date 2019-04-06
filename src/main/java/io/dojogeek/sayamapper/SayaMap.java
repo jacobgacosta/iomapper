@@ -81,7 +81,9 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
             targetWrapper.relate(this.customizable.fill(new CustomMappings()));
         }
 
-        return targetWrapper.populateWith(new SourceObject(this.source));
+        return targetWrapper
+                .populateWith(new SourceObject(this.source))
+                .get();
     }
     
 }
