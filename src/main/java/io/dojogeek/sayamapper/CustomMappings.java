@@ -31,7 +31,7 @@ public class CustomMappings {
 
     public boolean hasSourceFor(String targetFieldName) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().trim().equals(targetFieldName) && !customMapping.getValue().getRootField().isEmpty()) {
+            if (!customMapping.getValue().getRootField().isEmpty() && customMapping.getValue().getRootField().trim().equals(targetFieldName)) {
                 return true;
             }
         }
