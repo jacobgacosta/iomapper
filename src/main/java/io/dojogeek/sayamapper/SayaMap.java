@@ -9,8 +9,8 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
 
     private T source;
     private Class<T2> target;
-    private Ignorable ignorable;
-    private Customizable customizable;
+    private IgnorableFields ignorableFields;
+    private CustomMappings customMappings;
 
     /**
      * Sets the source object to fill.
@@ -46,7 +46,9 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
      */
     @Override
     public SayaMap<T, T2> ignoring(Ignorable ignorable) {
-        this.ignorable = ignorable;
+        if (ignorable != null) {
+            this.ignorableFields = ignorable.fill(new IgnorableFields());
+        }
 
         return this;
     }
@@ -59,7 +61,9 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
      */
     @Override
     public SayaMap<T, T2> relate(Customizable customizable) {
-        this.customizable = customizable;
+        if (customizable != null) {
+            this.customMappings = customizable.fill(new CustomMappings());
+        }
 
         return this;
     }
@@ -71,17 +75,9 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
      */
     @Override
     public T2 build() {
-        TargetWrapper<T2> targetWrapper = new TargetWrapper<>(this.target);
-
-        if (this.ignorable != null) {
-            targetWrapper.ignore(this.ignorable.fill(new IgnorableFields()));
-        }
-
-        if (this.customizable != null) {
-            targetWrapper.relate(this.customizable.fill(new CustomMappings()));
-        }
-
-        return targetWrapper
+        return new TargetWrapper<>(this.target)
+                .ignore(this.ignorableFields)
+                .relate(this.customMappings)
                 .populateWith(new SourceObject(this.source))
                 .get();
     }
