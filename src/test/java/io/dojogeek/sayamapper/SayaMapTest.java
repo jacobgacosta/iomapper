@@ -45,8 +45,8 @@ public class SayaMapTest {
         userDto.setName("Jacob");
         userDto.setJob("Programmer");
 
-        User user = map.inner().from(userDto).to(User.class).ignoring(target ->
-                target.ignore("name").ignore("job")
+        User user = map.inner().from(userDto).to(User.class).ignoring(ignorableFields ->
+                ignorableFields.ignore("name").ignore("job")
         ).build();
 
         assertNull(user.getName());

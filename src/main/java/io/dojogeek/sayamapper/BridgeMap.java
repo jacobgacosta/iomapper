@@ -5,7 +5,7 @@ package io.dojogeek.sayamapper;
  *
  * @author norvek
  */
-public interface BridgeMap<T, T2>  {
+public interface BridgeMap<T, T2> {
 
     /**
      * Return a new instance of SayaMap with a T like source object
