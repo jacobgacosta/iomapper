@@ -7,20 +7,20 @@ import java.util.regex.Pattern;
  */
 public class Determiner {
 
-    public static boolean isNested(String value) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+$");
-
-        return pattern.matcher(value).find();
-    }
-
     public static boolean isSingle(String value) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
 
         return pattern.matcher(value).find();
     }
 
+    public static boolean isNested(String value) {
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+$");
+
+        return pattern.matcher(value).find();
+    }
+
     public static boolean isFunction(String value) {
-        Pattern pattern = Pattern.compile("^([a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*)\\([a-zA-Z0-9]+((,\\s[a-zA-Z0-9]+)*(,\\s\\[\\'\\w+\\'\\])?)\\)");
+        Pattern pattern = Pattern.compile("^([a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*)\\([a-zA-Z0-9]+(,\\s[a-zA-Z0-9]+)*(,\\s\\[\\'\\w+\\'\\])?\\)");
 
         return pattern.matcher(value).find();
     }
