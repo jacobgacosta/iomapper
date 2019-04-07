@@ -19,7 +19,7 @@ public class TargetWrapper<T> extends MergeableObject {
     /**
      * TargetWrapper constructor.
      *
-     * @param targetClass  the target class.
+     * @param targetClass the target class.
      */
     public TargetWrapper(Class<T> targetClass) {
         this.target = targetClass;
@@ -28,8 +28,8 @@ public class TargetWrapper<T> extends MergeableObject {
     /**
      * Returns a target filled instance from source object.
      *
-     * @param source  the source object wrapper.
-     * @return        a TargetWrapper object.
+     * @param source the source object wrapper.
+     * @return a TargetWrapper object.
      */
     public TargetWrapper<T> populateWith(SourceObject source) {
 
@@ -47,7 +47,7 @@ public class TargetWrapper<T> extends MergeableObject {
     /**
      * Sets a list of fields to fill.
      *
-     * @param ignorableFields  a list of fields to fill.
+     * @param ignorableFields a list of fields to fill.
      */
     public TargetWrapper<T> ignore(IgnorableFields ignorableFields) {
         if (ignorableFields != null) {
@@ -60,7 +60,7 @@ public class TargetWrapper<T> extends MergeableObject {
     /**
      * Sets a fill of the custom relations mapping.
      *
-     * @param customizable  a fill with the custom relations.
+     * @param customizable a fill with the custom relations.
      */
     public TargetWrapper<T> relate(CustomMappings customizable) {
         if (customizable != null) {
