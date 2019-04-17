@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class IgnorableFields {
 
-    private List<String> ignorableList = new ArrayList<>();
     private List<IgnorableFieldPathShredder> ignorableFieldPathShredders = new ArrayList<>();
 
     /**
@@ -20,8 +19,6 @@ public class IgnorableFields {
      * @return a <bold>UnwantedTargetList</bold> instance
      */
     public IgnorableFields ignore(String fieldName) {
-        ignorableList.add(fieldName);
-
         ignorableFieldPathShredders.add(new IgnorableFieldPathShredder(fieldName));
 
         return this;
@@ -56,7 +53,7 @@ public class IgnorableFields {
     }
 
     public boolean isEmpty() {
-        return ignorableList.isEmpty();
+        return ignorableFieldPathShredders.isEmpty();
     }
 
 }
