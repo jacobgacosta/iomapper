@@ -32,4 +32,5 @@ public class IgnorableFieldPathShredder {
     public void removeRootField() {
         fields.remove(0);
     }
+
 }
