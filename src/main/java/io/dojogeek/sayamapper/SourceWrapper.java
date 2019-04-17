@@ -1,20 +1,20 @@
 package io.dojogeek.sayamapper;
 
 /**
- * SourceObject is a wrapper object of the source instance.
+ * SourceWrapper is a wrapper object of the source instance.
  *
  * @author norvek
  */
-public class SourceObject {
+public class SourceWrapper {
 
     private Object source;
 
     /**
-     * SourceObject constructor.
+     * SourceWrapper constructor.
      *
      * @param source the source instance.
      */
-    public SourceObject(Object source) {
+    public SourceWrapper(Object source) {
         this.source = source;
     }
 

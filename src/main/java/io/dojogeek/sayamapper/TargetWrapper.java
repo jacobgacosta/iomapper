@@ -12,7 +12,7 @@ public class TargetWrapper<T> extends MergeableObject {
     private final static Logger LOGGER = Logger.getLogger(TargetWrapper.class.getName());
 
     private Class<T> target;
-    private SourceObject sourceObject;
+    private SourceWrapper sourceWrapper;
     private Object targetInstance;
     private CustomMappings customRelations;
     private IgnorableFields ignorableFields;
@@ -32,8 +32,8 @@ public class TargetWrapper<T> extends MergeableObject {
      * @param source the source object wrapper.
      * @return a TargetWrapper object.
      */
-    public TargetWrapper<T> populateWith(SourceObject source) {
-        this.sourceObject = source;
+    public TargetWrapper<T> populateWith(SourceWrapper source) {
+        this.sourceWrapper = source;
 
         return this;
     }
@@ -71,7 +71,7 @@ public class TargetWrapper<T> extends MergeableObject {
             LOGGER.info("An error occurred when instantiating: " + this.target + "\n" + e.getMessage());
         }
 
-        super.merge(this.sourceObject, this.targetInstance, this.ignorableFields, this.customRelations);
+        super.merge(this.sourceWrapper, this.targetInstance, this.ignorableFields, this.customRelations);
 
         return (T) this.targetInstance;
     }

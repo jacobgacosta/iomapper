@@ -78,7 +78,7 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
         return new TargetWrapper<>(this.target)
                 .ignore(this.ignorableFields)
                 .relate(this.customMappings)
-                .populateWith(new SourceObject(this.source))
+                .populateWith(new SourceWrapper(this.source))
                 .get();
     }
     
