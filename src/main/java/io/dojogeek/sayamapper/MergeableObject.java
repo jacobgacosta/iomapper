@@ -33,7 +33,7 @@ public abstract class MergeableObject {
                 .forEach(targetField -> {
                     String targetFieldName = targetField.getName();
 
-                    if (ignorableFields != null && ignorableFields.hasPresentTo(targetFieldName)) {
+                    if (!ignorableFields.isEmpty() && ignorableFields.hasPresentTo(targetFieldName)) {
                         if (!ignorableFields.hasNestedFieldsFor(targetFieldName)) {
                             return;
                         }

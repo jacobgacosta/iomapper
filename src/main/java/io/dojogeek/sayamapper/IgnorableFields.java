@@ -55,8 +55,8 @@ public class IgnorableFields {
         }
     }
 
-    public boolean hasIgnorable() {
-        return !ignorableList.isEmpty();
+    public boolean isEmpty() {
+        return ignorableList.isEmpty();
     }
 
 }
