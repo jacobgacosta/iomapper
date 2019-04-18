@@ -16,7 +16,7 @@ public class InspectableObject {
     /**
      * InspectableObject constructor.
      *
-     * @param object  the object to inspect.
+     * @param object the object to inspect.
      */
     public InspectableObject(Object object) {
         this.object = object;

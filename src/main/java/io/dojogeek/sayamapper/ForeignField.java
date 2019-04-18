@@ -51,7 +51,7 @@ public class ForeignField extends FlexibleField {
 
         this.setValue(instance);
 
-        this.merge(new SourceObject(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
+        this.merge(new SourceWrapper(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
     }
 
 }

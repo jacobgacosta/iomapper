@@ -14,7 +14,7 @@ public abstract class FlexibleField extends MergeableObject {
 
     protected Field field;
     protected CustomMappings customMappings;
-    protected IgnorableFields ignorableNestedFields;
+    protected IgnorableFields ignorableNestedFields = new IgnorableFields();
     private Object parentObject;
 
     /**

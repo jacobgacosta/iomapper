@@ -22,18 +22,18 @@ public abstract class MergeableObject {
     /**
      * Merge the source with the target object taking into account the ignorable fields and the custom relations.
      *
-     * @param sourceObject    the source object wrapper.
+     * @param sourceWrapper    the source object wrapper.
      * @param target          the target instance.
      * @param ignorableFields a list with the unwanted target fields.
      * @param customMappings  a mapper with the custom relations for mapping.
      */
-    protected void merge(SourceObject sourceObject, Object target, IgnorableFields ignorableFields, CustomMappings customMappings) {
+    protected void merge(SourceWrapper sourceWrapper, Object target, IgnorableFields ignorableFields, CustomMappings customMappings) {
         new InspectableObject(target)
                 .getDeclaredFields()
                 .forEach(targetField -> {
                     String targetFieldName = targetField.getName();
 
-                    if (ignorableFields != null && ignorableFields.hasPresentTo(targetFieldName)) {
+                    if (!ignorableFields.isEmpty() && ignorableFields.hasPresentTo(targetFieldName)) {
                         if (!ignorableFields.hasNestedFieldsFor(targetFieldName)) {
                             return;
                         }
@@ -46,12 +46,12 @@ public abstract class MergeableObject {
                             customMappings.hasTargetWithName(targetFieldName) &&
                             customMappings.hasSourceFor(targetFieldName)) {
 
-                        this.mergeCustomMapping(sourceObject, targetField, customMappings);
+                        this.mergeCustomMapping(sourceWrapper, targetField, customMappings);
 
                         return;
                     }
 
-                    FlexibleField sourceField = sourceObject.getMatchingFieldFor(targetFieldName);
+                    FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(targetFieldName);
 
                     if (sourceField != null) {
                         targetField.setIgnorableFields(ignorableFields);
@@ -60,16 +60,16 @@ public abstract class MergeableObject {
                 });
     }
 
-    private void mergeCustomMapping(SourceObject sourceObject, FlexibleField targetField, CustomMappings customMappings) {
+    private void mergeCustomMapping(SourceWrapper sourceWrapper, FlexibleField targetField, CustomMappings customMappings) {
         CustomizableFieldPathShredder sourceMapping = customMappings.getSourceFor(targetField.getName());
 
         CustomizableFieldPathShredder targetMapping = customMappings.getTargetWithName(targetField.getName());
 
         if (sourceMapping.getRootType().equals(SINGLE)) {
-            FlexibleField sourceField = sourceObject.getMatchingFieldFor(sourceMapping.getRootField());
+            FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(sourceMapping.getRootField());
             targetField.setValue(sourceField);
         } else if (sourceMapping.getRootType().equals(NESTED)) {
-            FlexibleField sourceField = sourceObject.getMatchingFieldFor(sourceMapping.getRootField());
+            FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(sourceMapping.getRootField());
 
             if (sourceMapping.getRootType().equals(NESTED) && targetMapping.getRootType().equals(SINGLE)) {
                 sourceMapping.removeRootField();
@@ -100,7 +100,7 @@ public abstract class MergeableObject {
                         return;
                     }
 
-                    FlexibleField sourceField = sourceObject.getMatchingFieldFor(arg);
+                    FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(arg);
                     sourceFields.add(sourceField.getValue());
                 });
 
@@ -111,7 +111,7 @@ public abstract class MergeableObject {
                 return;
             }
 
-            FlexibleField sourceField = sourceObject.getMatchingFieldFor(rootField);
+            FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(rootField);
 
             sourceMapping.removeRootField();
 
@@ -141,14 +141,14 @@ public abstract class MergeableObject {
                 .forEach(sourceField -> {
                     if (customMappings != null && customMappings.hasCustomizable()) {
                         if (customMappings.hasSourceFor(target.getName()) && customMappings.hasSourceFieldWithName(sourceField.getName())) {
-                            this.mergeCustomMapping(new SourceObject(source.getValue()), target, customMappings);
+                            this.mergeCustomMapping(new SourceWrapper(source.getValue()), target, customMappings);
 
                             return;
                         }
 
                         if (customMappings.hasSourceFor(target.getName())
                                 && customMappings.hasAnApplicableFunctonFor(sourceField.getName())) {
-                            this.mergeCustomMapping(new SourceObject(source.getValue()), target, customMappings);
+                            this.mergeCustomMapping(new SourceWrapper(source.getValue()), target, customMappings);
 
                             return;
                         }
