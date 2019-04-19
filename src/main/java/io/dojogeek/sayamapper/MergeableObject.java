@@ -22,7 +22,7 @@ public abstract class MergeableObject {
     /**
      * Merge the source with the target object taking into account the ignorable fields and the custom relations.
      *
-     * @param sourceWrapper    the source object wrapper.
+     * @param sourceWrapper   the source object wrapper.
      * @param target          the target instance.
      * @param ignorableFields a list with the unwanted target fields.
      * @param customMappings  a mapper with the custom relations for mapping.
@@ -33,12 +33,19 @@ public abstract class MergeableObject {
                 .forEach(targetField -> {
                     String targetFieldName = targetField.getName();
 
-                    if (!ignorableFields.isEmpty() && ignorableFields.hasPresentTo(targetFieldName)) {
-                        if (!ignorableFields.hasNestedFieldsFor(targetFieldName)) {
+                    if (!ignorableFields.isEmpty() && ignorableFields.containsTo(targetFieldName)) {
+                        if (!ignorableFields.hasIgnorableNestedFor(targetFieldName)) {
                             return;
                         }
 
-                        ignorableFields.removeParentFieldWithName(targetFieldName);
+                        ignorableFields.markAsIgnoredTo(targetFieldName);
+
+                        FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(ignorableFields.LASTED_DELETED);
+
+                        if (sourceField != null) {
+                            targetField.setIgnorableFields(ignorableFields);
+                            targetField.setValue(sourceField);
+                        }
                     }
 
                     if (customMappings != null &&
