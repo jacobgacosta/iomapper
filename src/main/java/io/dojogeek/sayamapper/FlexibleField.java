@@ -1,5 +1,7 @@
 package io.dojogeek.sayamapper;
 
+import io.dojogeek.sayamapper.exceptions.NullValueException;
+
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
 
@@ -57,6 +59,10 @@ public abstract class FlexibleField extends MergeableObject {
      * @param value an object.
      */
     protected void setValue(Object value) {
+        if (value == null) {
+            throw new NullValueException("The value should not be null.");
+        }
+
         try {
             this.field.setAccessible(true);
             this.field.set(this.parentObject, value);
@@ -71,6 +77,10 @@ public abstract class FlexibleField extends MergeableObject {
      * @param flexibleField a flexible field.
      */
     protected void setValue(FlexibleField flexibleField) {
+        if (flexibleField.getValue() == null) {
+            throw new NullValueException("The value should not be null.");
+        }
+
         this.setValue(flexibleField.getValue());
     }
 

@@ -1,5 +1,7 @@
 package io.dojogeek.sayamapper;
 
+import io.dojogeek.sayamapper.exceptions.NullValueException;
+
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
 
@@ -29,8 +31,9 @@ public class JavaField extends FlexibleField {
      */
     @Override
     protected void setValue(FlexibleField flexibleField) {
-        if (flexibleField instanceof JavaField) {
+        if (flexibleField != null && flexibleField.getValue() != null && flexibleField instanceof JavaField) {
             super.setValue(flexibleField);
+
             return;
         }
 
