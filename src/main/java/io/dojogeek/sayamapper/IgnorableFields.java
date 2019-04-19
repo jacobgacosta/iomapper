@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class IgnorableFields {
 
+    public static String LASTED_DELETED = "";
+
     private List<IgnorableFieldPathShredder> ignorableFieldPathShredders = new ArrayList<>();
 
     /**
@@ -19,13 +21,17 @@ public class IgnorableFields {
      * @return a <bold>UnwantedTargetList</bold> instance
      */
     public IgnorableFields ignore(String fieldName) {
-        ignorableFieldPathShredders.add(new IgnorableFieldPathShredder(fieldName));
+        this.ignorableFieldPathShredders.add(new IgnorableFieldPathShredder(fieldName));
 
         return this;
     }
 
-    public boolean hasPresentTo(String fieldName) {
-        for (IgnorableFieldPathShredder ignorableFieldPathShredder : ignorableFieldPathShredders) {
+    public boolean isEmpty() {
+        return this.ignorableFieldPathShredders.isEmpty();
+    }
+
+    public boolean containsTo(String fieldName) {
+        for (IgnorableFieldPathShredder ignorableFieldPathShredder : this.ignorableFieldPathShredders) {
             if (ignorableFieldPathShredder.getRootField().equals(fieldName)) {
                 return true;
             }
@@ -34,7 +40,17 @@ public class IgnorableFields {
         return false;
     }
 
-    public boolean hasNestedFieldsFor(String fieldName) {
+    public void markAsIgnoredTo(String fieldName) {
+        LASTED_DELETED = fieldName;
+
+        for (IgnorableFieldPathShredder ignorableFieldPathShredder : this.ignorableFieldPathShredders) {
+            if (ignorableFieldPathShredder.hasNestedFields() && ignorableFieldPathShredder.getRootField().equals(fieldName)) {
+                ignorableFieldPathShredder.removeRootField();
+            }
+        }
+    }
+
+    public boolean hasIgnorableNestedFor(String fieldName) {
         for (IgnorableFieldPathShredder ignorableFieldPathShredder : ignorableFieldPathShredders) {
             if (ignorableFieldPathShredder.getRootField().equals(fieldName) && ignorableFieldPathShredder.hasNestedFields()) {
                 return true;
@@ -42,18 +58,6 @@ public class IgnorableFields {
         }
 
         return false;
-    }
-
-    public void removeParentFieldWithName(String fieldName) {
-        for (IgnorableFieldPathShredder ignorableFieldPathShredder : ignorableFieldPathShredders) {
-            if (ignorableFieldPathShredder.getRootField().equals(fieldName)) {
-                ignorableFieldPathShredder.removeRootField();
-            }
-        }
-    }
-
-    public boolean isEmpty() {
-        return ignorableFieldPathShredders.isEmpty();
     }
 
 }
