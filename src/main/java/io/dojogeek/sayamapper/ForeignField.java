@@ -38,7 +38,7 @@ public class ForeignField extends FlexibleField {
         }
 
         try {
-            Object instance = this.field.getType().newInstance();
+            Object instance = super.field.getType().newInstance();
 
             this.merge(instance, flexibleField);
         } catch (InstantiationException | IllegalAccessException e) {
@@ -53,9 +53,9 @@ public class ForeignField extends FlexibleField {
      * @param flexibleField a flexible field.
      */
     private void merge(Object instance, FlexibleField flexibleField) {
-        this.setValue(instance);
+        super.setValue(instance);
 
-        this.merge(new SourceWrapper(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
+        super.merge(new SourceWrapper(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
     }
 
 }
