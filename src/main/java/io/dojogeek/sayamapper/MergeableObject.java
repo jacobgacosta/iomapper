@@ -43,7 +43,7 @@ public abstract class MergeableObject {
                         targetField.setIgnorableFields(ignorable);
                     }
 
-                    if (customMappings != null &&
+                    if (!customMappings.isEmpty() &&
                             customMappings.hasCustomizable() &&
                             customMappings.hasTargetWithName(targetFieldName) &&
                             customMappings.hasSourceFor(targetFieldName)) {
