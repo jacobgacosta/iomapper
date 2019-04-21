@@ -40,7 +40,7 @@ public class CustomizableFieldPathShredder {
         return (otherFields != null && !otherFields.isEmpty()) ? otherFields.get(0) : value;
     }
 
-    public RootTypeEnum getRootType() {
+    public RootTypeEnum getType() {
         return rootTypeEnum;
     }
 
