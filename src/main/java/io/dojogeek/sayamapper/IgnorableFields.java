@@ -40,7 +40,7 @@ public class IgnorableFields {
         return false;
     }
 
-    public void markAsIgnoredTo(String fieldName) {
+    public void removeRootFieldWithName(String fieldName) {
         LASTED_DELETED = fieldName;
 
         for (IgnorableFieldPathShredder ignorableFieldPathShredder : this.ignorableFieldPathShredders) {
