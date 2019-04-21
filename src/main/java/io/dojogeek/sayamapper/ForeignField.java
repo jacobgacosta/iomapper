@@ -31,7 +31,9 @@ public class ForeignField extends FlexibleField {
      */
     @Override
     protected void setValue(FlexibleField flexibleField) {
-        if (flexibleField == null || flexibleField.getValue() == null) {
+        if (flexibleField == null ||
+                flexibleField.getValue() == null ||
+                        flexibleField instanceof JavaField) {
             return;
         }
 
