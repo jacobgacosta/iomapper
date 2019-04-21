@@ -17,8 +17,8 @@ public class ForeignField extends FlexibleField {
     /**
      * ForeignField constructor.
      *
-     * @param field            the field.
-     * @param parentObject     the reference object that hosts the field.
+     * @param field        the field.
+     * @param parentObject the reference object that hosts the field.
      */
     public ForeignField(Field field, Object parentObject) {
         super(field, parentObject);
@@ -27,7 +27,7 @@ public class ForeignField extends FlexibleField {
     /**
      * Sets the value to property.
      *
-     * @param flexibleField  a flexible field.
+     * @param flexibleField a flexible field.
      */
     @Override
     protected void setValue(FlexibleField flexibleField) {
@@ -47,8 +47,8 @@ public class ForeignField extends FlexibleField {
     /**
      * Merge an object instance.
      *
-     * @param instance       an object instance.
-     * @param flexibleField  a flexible field.
+     * @param instance      an object instance.
+     * @param flexibleField a flexible field.
      */
     private void merge(Object instance, FlexibleField flexibleField) {
         this.setValue(instance);
