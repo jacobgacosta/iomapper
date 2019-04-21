@@ -17,8 +17,8 @@ public class ForeignField extends FlexibleField {
     /**
      * ForeignField constructor.
      *
-     * @param field            the field.
-     * @param parentObject     the reference object that hosts the field.
+     * @param field        the field.
+     * @param parentObject the reference object that hosts the field.
      */
     public ForeignField(Field field, Object parentObject) {
         super(field, parentObject);
@@ -27,16 +27,18 @@ public class ForeignField extends FlexibleField {
     /**
      * Sets the value to property.
      *
-     * @param flexibleField  a flexible field.
+     * @param flexibleField a flexible field.
      */
     @Override
     protected void setValue(FlexibleField flexibleField) {
-        if (flexibleField == null || flexibleField.getValue() == null) {
+        if (flexibleField == null ||
+                flexibleField.getValue() == null ||
+                flexibleField instanceof JavaField) {
             return;
         }
 
         try {
-            Object instance = this.field.getType().newInstance();
+            Object instance = super.field.getType().newInstance();
 
             this.merge(instance, flexibleField);
         } catch (InstantiationException | IllegalAccessException e) {
@@ -47,13 +49,13 @@ public class ForeignField extends FlexibleField {
     /**
      * Merge an object instance.
      *
-     * @param instance       an object instance.
-     * @param flexibleField  a flexible field.
+     * @param instance      an object instance.
+     * @param flexibleField a flexible field.
      */
     private void merge(Object instance, FlexibleField flexibleField) {
-        this.setValue(instance);
+        super.setValue(instance);
 
-        this.merge(new SourceWrapper(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
+        super.merge(new SourceWrapper(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
     }
 
 }

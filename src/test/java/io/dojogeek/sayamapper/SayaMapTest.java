@@ -162,7 +162,7 @@ public class SayaMapTest {
     }
 
     @Test
-    public void shouldNotMapAnObjectWithAPrimitiveTypeThroughCustomMapping() {
+    public void shouldNotMapAnObjectWithAPrimitiveFieldThroughCustomMapping() {
         AddressDto addressDto = new AddressDto();
         addressDto.setZip("03400");
 
@@ -174,6 +174,18 @@ public class SayaMapTest {
         ).build();
 
         assertNull(user.getAddress().getZipCode());
+    }
+
+    @Test
+    public void shouldNotMapAPrimitiveFieldWithAnObjectThroughCustomMapping() {
+        UserDto userDto = new UserDto();
+        userDto.setJob("Developer");
+
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
+                customMapping.relate("job", "address")
+        ).build();
+
+        assertNull(user.getAddress());
     }
 
 }
