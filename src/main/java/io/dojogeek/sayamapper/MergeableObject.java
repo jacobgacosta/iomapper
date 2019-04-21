@@ -44,7 +44,6 @@ public abstract class MergeableObject {
                     }
 
                     if (!customMappings.isEmpty() &&
-                            customMappings.hasCustomizable() &&
                             customMappings.hasTargetWithName(targetFieldName) &&
                             customMappings.hasSourceFor(targetFieldName)) {
 
@@ -138,7 +137,7 @@ public abstract class MergeableObject {
         new InspectableObject(source.getValue())
                 .getDeclaredFields()
                 .forEach(sourceField -> {
-                    if (customMappings != null && customMappings.hasCustomizable()) {
+                    if (customMappings != null && !customMappings.isEmpty()) {
                         if (customMappings.hasSourceFor(target.getName()) && customMappings.hasSourceFieldWithName(sourceField.getName())) {
                             this.mergeCustomMapping(new SourceWrapper(source.getValue()), target, customMappings);
 

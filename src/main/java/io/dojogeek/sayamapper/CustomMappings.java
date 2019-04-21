@@ -25,10 +25,6 @@ public class CustomMappings {
         return this;
     }
 
-    public boolean hasCustomizable() {
-        return !customMappings.isEmpty();
-    }
-
     public boolean hasSourceFor(String targetFieldName) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
             if (!customMapping.getValue().getRootField().isEmpty() && customMapping.getValue().getRootField().trim().equals(targetFieldName)) {
