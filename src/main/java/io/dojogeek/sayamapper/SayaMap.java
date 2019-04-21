@@ -9,7 +9,7 @@ public class SayaMap<T, T2> implements Mapper<T, T2> {
 
     private T source;
     private Class<T2> target;
-    private IgnorableFields ignorableFields = new IgnorableFields();
+    private IgnorableFields ignorableFields;
     private CustomMappings customMappings;
 
     /**

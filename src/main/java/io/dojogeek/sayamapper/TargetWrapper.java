@@ -14,8 +14,8 @@ public class TargetWrapper<T> extends MergeableObject {
     private Class<T> target;
     private SourceWrapper sourceWrapper;
     private Object targetInstance;
-    private CustomMappings customRelations;
-    private IgnorableFields ignorableFields;
+    private CustomMappings customRelations = new CustomMappings();
+    private IgnorableFields ignorableFields = new IgnorableFields();
 
     /**
      * TargetWrapper constructor.

@@ -15,7 +15,7 @@ public abstract class FlexibleField extends MergeableObject {
     private final static Logger LOGGER = Logger.getLogger(FlexibleField.class.getName());
 
     protected Field field;
-    protected CustomMappings customMappings;
+    protected CustomMappings customMappings = new CustomMappings();
     protected IgnorableFields ignorableNestedFields = new IgnorableFields();
     private Object parentObject;
 

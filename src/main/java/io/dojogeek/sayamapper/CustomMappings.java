@@ -95,4 +95,8 @@ public class CustomMappings {
         return new CustomizableFieldPathShredder("");
     }
 
+    public boolean isEmpty() {
+        return this.customMappings.isEmpty();
+    }
+
 }
