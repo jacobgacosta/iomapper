@@ -45,7 +45,7 @@ public abstract class MergeableObject {
 
                     if (!customMappings.isEmpty() &&
                             customMappings.hasTargetWithName(targetFieldName) &&
-                            customMappings.hasSourceFor(targetFieldName)) {
+                            customMappings.hasTargetFor(targetFieldName)) {
 
                         this.mergeCustomMapping(source, targetField, customMappings);
 
@@ -63,26 +63,21 @@ public abstract class MergeableObject {
 
         CustomizableFieldPathShredder targetPath = customMappings.getTargetWithName(targetField.getName());
 
-        if (sourcePath.getType().equals(SINGLE)) {
-            FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(sourcePath.getRootField());
-            targetField.setValue(sourceField);
-        } else if (sourcePath.getType().equals(NESTED)) {
-            FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(sourcePath.getRootField());
+        FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(sourcePath.getRootField());
+
+        if (sourcePath.getType().equals(NESTED)) {
+            sourcePath.removeRootField();
+
+            targetField.setCustomMappings(customMappings);
 
             if (targetPath.getType().equals(SINGLE)) {
-                sourcePath.removeRootField();
-
-                targetField.setCustomMappings(customMappings);
                 targetField.setValue(sourceField);
 
                 return;
             }
 
-            sourcePath.removeRootField();
             targetPath.removeRootField();
 
-            targetField.setCustomMappings(customMappings);
-            targetField.setValue(sourceField);
         } else if (sourcePath.getType().equals(METHOD)) {
             String rootField = sourcePath.getRootField();
 
@@ -98,8 +93,7 @@ public abstract class MergeableObject {
                         return;
                     }
 
-                    FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(arg);
-                    sourceFields.add(sourceField.getValue());
+                    sourceFields.add(sourceWrapper.getMatchingFieldFor(arg).getValue());
                 });
 
                 Object result = Executor.executeFunction(signatureMethod.getName(), sourceFields);
@@ -109,13 +103,13 @@ public abstract class MergeableObject {
                 return;
             }
 
-            FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(rootField);
-
             sourcePath.removeRootField();
 
             targetField.setCustomMappings(customMappings);
             targetField.setValue(sourceField);
         }
+
+        targetField.setValue(sourceField);
 
         if (targetPath.hasOtherFields()) {
             targetPath.removeRootField();
@@ -130,21 +124,17 @@ public abstract class MergeableObject {
      * @param customMappings a mapper with the custom relations for mapping.
      */
     protected void merge(FlexibleField source, FlexibleField target, CustomMappings customMappings) {
-        if (source == null || source.getValue() == null) {
-            return;
-        }
-
         new InspectableObject(source.getValue())
                 .getDeclaredFields()
                 .forEach(sourceField -> {
                     if (customMappings != null && !customMappings.isEmpty()) {
-                        if (customMappings.hasSourceFor(target.getName()) && customMappings.hasSourceFieldWithName(sourceField.getName())) {
+                        if (customMappings.hasSourceFieldWithName(sourceField.getName()) && customMappings.hasTargetFor(target.getName())) {
                             this.mergeCustomMapping(new SourceWrapper(source.getValue()), target, customMappings);
 
                             return;
                         }
 
-                        if (customMappings.hasSourceFor(target.getName())
+                        if (customMappings.hasTargetFor(target.getName())
                                 && customMappings.hasAnApplicableFunctonFor(sourceField.getName())) {
                             this.mergeCustomMapping(new SourceWrapper(source.getValue()), target, customMappings);
 
