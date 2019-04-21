@@ -33,7 +33,7 @@ public class ForeignField extends FlexibleField {
     protected void setValue(FlexibleField flexibleField) {
         if (flexibleField == null ||
                 flexibleField.getValue() == null ||
-                        flexibleField instanceof JavaField) {
+                flexibleField instanceof JavaField) {
             return;
         }
 
