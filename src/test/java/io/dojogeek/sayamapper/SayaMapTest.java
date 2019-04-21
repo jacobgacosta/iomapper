@@ -176,4 +176,16 @@ public class SayaMapTest {
         assertNull(user.getAddress().getZipCode());
     }
 
+    @Test
+    public void shouldNotMapAPrimitiveFieldWithAnObjectThroughCustomMapping() {
+        UserDto userDto = new UserDto();
+        userDto.setJob("Developer");
+
+        User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
+                customMapping.relate("job", "address")
+        ).build();
+
+        assertNull(user.getAddress());
+    }
+
 }
