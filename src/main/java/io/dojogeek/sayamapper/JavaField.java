@@ -31,7 +31,11 @@ public class JavaField extends FlexibleField {
      */
     @Override
     protected void setValue(FlexibleField flexibleField) {
-        if (flexibleField != null && flexibleField.getValue() != null && flexibleField instanceof JavaField) {
+        if (flexibleField == null || flexibleField.getValue() == null) {
+            return;
+        }
+
+        if (flexibleField instanceof JavaField) {
             super.setValue(flexibleField);
 
             return;
