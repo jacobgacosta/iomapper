@@ -162,7 +162,7 @@ public class SayaMapTest {
     }
 
     @Test
-    public void shouldNotMapAnObjectWithAPrimitiveTypeThroughCustomMapping() {
+    public void shouldNotMapAnObjectWithAPrimitiveFieldThroughCustomMapping() {
         AddressDto addressDto = new AddressDto();
         addressDto.setZip("03400");
 
