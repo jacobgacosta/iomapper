@@ -25,7 +25,7 @@ public class CustomMappings {
         return this;
     }
 
-    public boolean hasSourceFor(String targetFieldName) {
+    public boolean hasTargetFor(String targetFieldName) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
             if (!customMapping.getValue().getRootField().isEmpty() && customMapping.getValue().getRootField().trim().equals(targetFieldName)) {
                 return true;
@@ -68,7 +68,7 @@ public class CustomMappings {
     }
 
     public boolean hasTargetWithName(String targetFieldName) {
-        return this.hasSourceFor(targetFieldName);
+        return this.hasTargetFor(targetFieldName);
     }
 
     public CustomizableFieldPathShredder getSourceFor(String targetFieldName) {
