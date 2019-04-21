@@ -41,7 +41,7 @@ public class JavaField extends FlexibleField {
             return;
         }
 
-        this.merge(flexibleField, this, this.customMappings);
+        super.merge(flexibleField, this, super.customMappings);
     }
 
 }
