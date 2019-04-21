@@ -63,13 +63,13 @@ public abstract class MergeableObject {
 
         CustomizableFieldPathShredder targetPath = customMappings.getTargetWithName(targetField.getName());
 
-        if (sourcePath.getRootType().equals(SINGLE)) {
+        if (sourcePath.getType().equals(SINGLE)) {
             FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(sourcePath.getRootField());
             targetField.setValue(sourceField);
-        } else if (sourcePath.getRootType().equals(NESTED)) {
+        } else if (sourcePath.getType().equals(NESTED)) {
             FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(sourcePath.getRootField());
 
-            if (targetPath.getRootType().equals(SINGLE)) {
+            if (targetPath.getType().equals(SINGLE)) {
                 sourcePath.removeRootField();
 
                 targetField.setCustomMappings(customMappings);
@@ -83,7 +83,7 @@ public abstract class MergeableObject {
 
             targetField.setCustomMappings(customMappings);
             targetField.setValue(sourceField);
-        } else if (sourcePath.getRootType().equals(METHOD)) {
+        } else if (sourcePath.getType().equals(METHOD)) {
             String rootField = sourcePath.getRootField();
 
             if (Determiner.isFunction(rootField)) {
