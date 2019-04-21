@@ -38,12 +38,9 @@ public abstract class MergeableObject {
                             return;
                         }
 
-                        ignorable.markAsIgnoredTo(targetFieldName);
-
-                        FlexibleField sourceField = source.getMatchingFieldFor(ignorable.LASTED_DELETED);
+                        ignorable.removeRootFieldWithName(targetFieldName);
 
                         targetField.setIgnorableFields(ignorable);
-                        targetField.setValue(sourceField);
                     }
 
                     if (customMappings != null &&
@@ -58,7 +55,6 @@ public abstract class MergeableObject {
 
                     FlexibleField sourceField = source.getMatchingFieldFor(targetFieldName);
 
-                    targetField.setIgnorableFields(ignorable);
                     targetField.setValue(sourceField);
                 });
     }
