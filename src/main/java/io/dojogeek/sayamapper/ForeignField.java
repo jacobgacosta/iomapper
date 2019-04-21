@@ -31,6 +31,10 @@ public class ForeignField extends FlexibleField {
      */
     @Override
     protected void setValue(FlexibleField flexibleField) {
+        if (flexibleField == null || flexibleField.getValue() == null) {
+            return;
+        }
+
         try {
             Object instance = this.field.getType().newInstance();
 
@@ -47,14 +51,6 @@ public class ForeignField extends FlexibleField {
      * @param flexibleField  a flexible field.
      */
     private void merge(Object instance, FlexibleField flexibleField) {
-        if (instance == null) {
-            return;
-        }
-
-        if (flexibleField == null || flexibleField.getValue() == null) {
-            return;
-        }
-
         this.setValue(instance);
 
         this.merge(new SourceWrapper(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
