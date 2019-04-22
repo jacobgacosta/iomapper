@@ -1,7 +1,5 @@
 package io.dojogeek.sayamapper;
 
-import io.dojogeek.sayamapper.exceptions.NullValueException;
-
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
 
@@ -41,7 +39,7 @@ public class JavaField extends FlexibleField {
             return;
         }
 
-        super.merge(flexibleField, this, super.customMappings);
+        super.mergeCustomMappings(new SourceWrapper(flexibleField.getValue()), this, super.customMappings);
     }
 
 }
