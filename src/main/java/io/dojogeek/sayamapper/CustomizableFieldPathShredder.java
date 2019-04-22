@@ -13,43 +13,51 @@ import static io.dojogeek.sayamapper.RootTypeEnum.*;
  */
 public class CustomizableFieldPathShredder {
 
-    private String value;
+    private String root;
     private RootTypeEnum rootTypeEnum;
-    private List<String> otherFields;
+    private List<String> nestedFields;
 
     public CustomizableFieldPathShredder(String value) {
         if (Determiner.isSingle(value)) {
-            this.value = value;
+            this.root = value;
             this.rootTypeEnum = SINGLE;
         } else if (Determiner.isNested(value)) {
-            otherFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
-            this.value = otherFields.get(0);
-            this.rootTypeEnum = NESTED;
+            this.nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
+            this.root = nestedFields.get(0);
+            this.rootTypeEnum = NESTED_FIELD;
         } else if (Determiner.isFunction(value)) {
-            otherFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
-            this.value = otherFields.get(0);
-            this.rootTypeEnum = METHOD;
+            this.nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
+            this.root = nestedFields.get(0);
+            this.rootTypeEnum = SINGLE_METHOD;
         } else if (Determiner.isMultiple(value)) {
-            otherFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.COMMA_SEPARATOR)));
-            this.value = otherFields.get(0);
+            this.nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.COMMA_SEPARATOR)));
+            this.root = nestedFields.get(0);
             this.rootTypeEnum = MULTIPLE;
+        } else if (Determiner.isNestedMethod(value)) {
+            this.nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.COMMA_SEPARATOR)));
+            this.root = nestedFields.get(0);
+            this.rootTypeEnum = NESTED_METHOD;
         }
     }
 
     public String getRootField() {
-        return (otherFields != null && !otherFields.isEmpty()) ? otherFields.get(0) : value;
+        if (this.nestedFields != null && !this.nestedFields.isEmpty()) {
+            return this.nestedFields.get(0);
+        } else {
+            return this.root;
+        }
     }
 
     public RootTypeEnum getType() {
-        return rootTypeEnum;
+        return this.rootTypeEnum;
     }
 
     public void removeRootField() {
-        this.otherFields.remove(0);
+        this.nestedFields.remove(0);
     }
 
     public boolean hasOtherFields() {
-        return this.otherFields != null && !this.otherFields.isEmpty();
+        return this.nestedFields != null && !this.nestedFields.isEmpty();
     }
 
 }
