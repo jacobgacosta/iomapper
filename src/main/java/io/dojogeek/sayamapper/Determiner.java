@@ -37,4 +37,10 @@ public class Determiner {
         return pattern.matcher(value).find();
     }
 
+    public static boolean isNestedMethod(String value) {
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+\\([a-zA-Z0-9]+([a-zA-Z0-9]+\\()*(,\\s\\[\\'\\w+\\'\\])?\\)");
+
+        return pattern.matcher(value).find();
+    }
+
 }
