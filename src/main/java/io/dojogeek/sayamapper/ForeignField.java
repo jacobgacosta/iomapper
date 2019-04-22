@@ -40,22 +40,12 @@ public class ForeignField extends FlexibleField {
         try {
             Object instance = super.field.getType().newInstance();
 
-            this.merge(instance, flexibleField);
+            super.setValue(instance);
+
+            super.merge(new SourceWrapper(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
         } catch (InstantiationException | IllegalAccessException e) {
             LOGGER.info("An error occurred when instantiating: " + this.field.getType() + "\n" + e.getMessage());
         }
-    }
-
-    /**
-     * Merge an object instance.
-     *
-     * @param instance      an object instance.
-     * @param flexibleField a flexible field.
-     */
-    private void merge(Object instance, FlexibleField flexibleField) {
-        super.setValue(instance);
-
-        super.merge(new SourceWrapper(flexibleField.getValue()), instance, this.ignorableNestedFields, this.customMappings);
     }
 
 }

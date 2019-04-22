@@ -20,7 +20,7 @@ public class Determiner {
     }
 
     public static boolean isFunction(String value) {
-        Pattern pattern = Pattern.compile("^([a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*)\\([a-zA-Z0-9]+(,\\s[a-zA-Z0-9]+)*(,\\s\\[\\'\\w+\\'\\])?\\)");
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*\\([a-zA-Z0-9]+(,\\s[a-zA-Z0-9]+)*(,\\s\\[\\'\\w+\\'\\])?\\)");
 
         return pattern.matcher(value).find();
     }
@@ -33,6 +33,12 @@ public class Determiner {
 
     public static boolean isMultiple(String value) {
         Pattern pattern = Pattern.compile("^\\w+(,\\s\\w+)+$");
+
+        return pattern.matcher(value).find();
+    }
+
+    public static boolean isNestedMethod(String value) {
+        Pattern pattern = Pattern.compile("^([a-zA-Z0-9]+\\()+.+\\)$");
 
         return pattern.matcher(value).find();
     }
