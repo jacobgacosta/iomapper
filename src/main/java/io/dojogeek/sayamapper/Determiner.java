@@ -1,5 +1,7 @@
 package io.dojogeek.sayamapper;
 
+import io.dojogeek.parser.validators.SentenceValidator;
+
 import java.util.regex.Pattern;
 
 /**
@@ -38,9 +40,7 @@ public class Determiner {
     }
 
     public static boolean isNestedMethod(String value) {
-        Pattern pattern = Pattern.compile("^([a-zA-Z0-9]+\\()+.+\\)$");
-
-        return pattern.matcher(value).find();
+        return SentenceValidator.getInstance().validate(value);
     }
 
 }
