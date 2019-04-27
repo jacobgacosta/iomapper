@@ -35,7 +35,7 @@ public class SayaMapNestedFunctionsTest {
         ).build();
     }
 
-    @Ignore
+    @Test
     public void shouldSupportNestedFunctions() {
         NumericModel numericModel = new NumericModel();
         numericModel.setByteField((byte) 127);

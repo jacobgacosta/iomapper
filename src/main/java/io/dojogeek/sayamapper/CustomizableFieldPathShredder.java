@@ -34,8 +34,7 @@ public class CustomizableFieldPathShredder {
             this.root = nestedFields.get(0);
             this.rootTypeEnum = MULTIPLE;
         } else if (Determiner.isNestedMethod(value)) {
-            this.nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.COMMA_SEPARATOR)));
-            this.root = nestedFields.get(0);
+            this.root = value;
             this.rootTypeEnum = NESTED_METHOD;
         }
     }

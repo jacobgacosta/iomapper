@@ -111,7 +111,7 @@ public abstract class MergeableObject {
             targetField.setCustomMappings(customMappings);
             targetField.setValue(sourceField);
         } else if (sourcePath.getType().equals(NESTED_METHOD)) {
-            System.out.print("NESTED METHOD");
+
         }
 
         targetField.setValue(sourceField);
