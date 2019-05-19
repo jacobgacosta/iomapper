@@ -1,15 +1,18 @@
-package io.dojogeek.sayamapper.functions;
+package io.dojogeek.parser.functions;
+
+import io.dojogeek.parser.Callable;
+import io.dojogeek.parser.Result;
 
 import java.util.List;
 
 /**
  * Created by norveo on 10/12/18.
  */
-public class ToDouble implements Executable {
+public class ToDouble implements Callable {
 
     @Override
-    public Object execute(Object... args) {
-        List<Object> values = (List<Object>) args[0];
+    public Result invoke(String arguments) {
+        List<Object> values = (List<Object>) null;
 
         Object value = values.get(values.size() - 1);
 
@@ -21,7 +24,7 @@ public class ToDouble implements Executable {
             doubleValue = (double) values.get(values.size() - 1);
         }
 
-        return doubleValue;
+        return null;
     }
 
 }

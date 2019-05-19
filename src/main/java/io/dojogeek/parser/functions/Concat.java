@@ -1,20 +1,22 @@
-package io.dojogeek.sayamapper.functions;
+package io.dojogeek.parser.functions;
 
+import io.dojogeek.parser.Callable;
+import io.dojogeek.parser.Result;
 import io.dojogeek.sayamapper.Determiner;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Concat implements Executable {
+public class Concat implements Callable {
 
     private final static Logger LOGGER = Logger.getLogger(Concat.class.getName());
 
     @Override
-    public Object execute(Object... args) {
+    public Result invoke(String arguments) {
         String value = "";
         String delimiter = "";
 
-        List<Object> values = (List<Object>) args[0];
+        List<Object> values = (List<Object>) null;
 
         String lastArgument = (String) values.get(values.size() - 1);
 
@@ -37,7 +39,7 @@ public class Concat implements Executable {
             value += argument + delimiter;
         }
 
-        return value.trim();
+        return null; //value.trim();
     }
 
     public String getDelimiterFrom(String delimiter) {

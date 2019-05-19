@@ -1,14 +1,17 @@
-package io.dojogeek.sayamapper.functions;
+package io.dojogeek.parser.functions;
+
+import io.dojogeek.parser.Callable;
+import io.dojogeek.parser.Result;
 
 import java.util.List;
 
 /**
  * Created by norveo on 10/15/18.
  */
-public class Add implements Executable {
+public class Add implements Callable {
 
     @Override
-    public Object execute(Object... args) {
+    public Result invoke(String arguments) {
         byte byteValue = 0;
         short shortValue = 0;
         int intValue = 0;
@@ -16,7 +19,7 @@ public class Add implements Executable {
         float floatValue = 0;
         double doubleValue = 0.0;
 
-        List<Object> values = (List<Object>) args[0];
+        List<Object> values = (List<Object>) null;
 
         for (Object value : values) {
             if (value instanceof Double) {
@@ -33,14 +36,14 @@ public class Add implements Executable {
         }
 
         if (doubleValue != 0.0) {
-            return doubleValue + floatValue + longValue + intValue + byteValue + shortValue;
+            //return doubleValue + floatValue + longValue + intValue + byteValue + shortValue;
         } else if (floatValue != 0.0) {
-            return floatValue + longValue + intValue + byteValue + shortValue;
+            //return floatValue + longValue + intValue + byteValue + shortValue;
         }else if (longValue != 0) {
-            return longValue + intValue + byteValue + shortValue;
+            //return longValue + intValue + byteValue + shortValue;
         }
 
-        return intValue + byteValue + shortValue;
+        return null;//intValue + byteValue + shortValue;
     }
 
 }
