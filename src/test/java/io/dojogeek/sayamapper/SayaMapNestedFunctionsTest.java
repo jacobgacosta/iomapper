@@ -42,7 +42,7 @@ public class SayaMapNestedFunctionsTest {
         numericModel.setShortField((short) 10000);
 
         NumericDto numericDto = map.outer().from(numericModel).to(NumericDto.class).relate(customMapping ->
-                    customMapping.relate("toString(add(byteField, shortField))", "stringI")
+                    customMapping.relate("add(add(byteField, shortField))", "stringI")
         ).build();
 
         assertEquals("10127", numericDto.getStringI());
