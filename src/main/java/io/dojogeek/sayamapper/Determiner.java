@@ -1,6 +1,6 @@
 package io.dojogeek.sayamapper;
 
-import io.dojogeek.parser.validators.SentenceValidator;
+import io.dojogeek.parser.SentenceValidator;
 
 import java.util.regex.Pattern;
 
