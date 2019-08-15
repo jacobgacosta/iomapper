@@ -102,4 +102,8 @@ public abstract class FlexibleField extends MergeableObject {
         this.customMappings = customMappings;
     }
 
+    public Class<?> getType() {
+        return this.field.getType();
+    }
+
 }

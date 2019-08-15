@@ -1,5 +1,6 @@
 package io.dojogeek.sayamapper;
 
+import io.dojogeek.parser.Function;
 import io.dojogeek.sayamapper.utils.Executor;
 import io.dojogeek.sayamapper.utils.MethodShredder;
 import io.dojogeek.sayamapper.utils.SignatureMethod;
@@ -111,13 +112,33 @@ public abstract class MergeableObject {
             targetField.setCustomMappings(customMappings);
             targetField.setValue(sourceField);
         } else if (sourcePath.getType().equals(NESTED_METHOD)) {
+            Function rootFunction = new Function(sourcePath.getRootField());
 
-        }
+            if (rootFunction.hasNestedFunctions()) {
+                rootFunction.getNestedFunctionList().forEach(nestedFunction -> {
+                    nestedFunction.getArgumentsList().forEach(argument -> {
+                        FlexibleField srcField = sourceWrapper.getMatchingFieldFor(argument);
 
-        targetField.setValue(sourceField);
+                        if (srcField != null) {
+                            Object value = srcField.getValue();
 
-        if (targetPath.hasOtherFields()) {
-            targetPath.removeRootField();
+                            Class<?> type = srcField.getType();
+
+                            String argumentsReplaced = nestedFunction.getArguments().replace(argument, String.valueOf(value + "@" + type));
+
+                            nestedFunction.setArguments(argumentsReplaced);
+                        }
+                    });
+                });
+            }
+
+            targetField.setValue(rootFunction.execute().getValue());
+        } else {
+            targetField.setValue(sourceField);
+
+            if (targetPath.hasOtherFields()) {
+                targetPath.removeRootField();
+            }
         }
     }
 

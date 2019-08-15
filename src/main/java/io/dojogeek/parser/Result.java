@@ -5,13 +5,13 @@ package io.dojogeek.parser;
  */
 public class Result {
 
-    private int value;
+    private Object value;
 
-    public void setValue(int value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public Object getValue() {
         return value;
     }
 
