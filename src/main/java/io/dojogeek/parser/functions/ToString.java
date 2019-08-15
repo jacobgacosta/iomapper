@@ -12,9 +12,10 @@ public class ToString implements Callable {
 
     @Override
     public Result invoke(String arguments) {
-        List<Object> values = (List<Object>) null;
+        Result result = new Result();
+        result.setValue(arguments);
 
-        return null; //values.get(values.size() - 1).toString();
+        return result;
     }
 
 }

@@ -21,6 +21,7 @@ public class FunctionLoader {
         String[] functionsNames = new File(classLoader.getResource(functionsPathLocation).getFile()).list();
 
         List<String> cleanFunctionNames = Arrays.stream(functionsNames)
+                .filter(fileName -> !fileName.contains("$1"))
                 .map(fileName -> fileName.replace(".class", ""))
                 .collect(Collectors.toList());
 
@@ -30,7 +31,7 @@ public class FunctionLoader {
             try {
                 Callable callable = (Callable) Class.forName(classPath).newInstance();
 
-                FunctionLoader.callable.put(classPath, callable);
+                FunctionLoader.callable.put(functionName.toLowerCase(), callable);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

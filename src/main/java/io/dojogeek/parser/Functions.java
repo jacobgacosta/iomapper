@@ -5,22 +5,22 @@ import java.util.Map;
 
 public class Functions {
 
-    private List<Function> functionList;
+    private List<SingleFunction> singleFunctionList;
     private static Functions functions = new Functions();
 
     private Functions() {
     }
 
-    public static Functions wrap(List<Function> functionList) {
-        functions.setFunctionList(functionList);
+    public static Functions wrap(List<SingleFunction> singleFunctionList) {
+        functions.setSingleFunctionList(singleFunctionList);
 
         return functions;
     }
 
     public Functions validateAgainst(Map<String, Callable> functionInfo) {
-        this.functionList.forEach(function -> {
-            if (functionInfo.get(function.getMethodName()) == null) {
-                throw new RuntimeException("The '" + function.getMethodName() + "'" + " function doesn't exist.");
+        this.singleFunctionList.forEach(singleFunction -> {
+            if (functionInfo.get(singleFunction.getName().toLowerCase()) == null) {
+                throw new RuntimeException("The '" + singleFunction.getName() + "'" + " singleFunction doesn't exist.");
             }
         });
 
@@ -28,13 +28,29 @@ public class Functions {
     }
 
     public Result execute() {
-        Function executable = this.functionList.get(this.functionList.size() - 1);
+        SingleFunction rootFunction = this.singleFunctionList.get(this.singleFunctionList.size() - 1);
 
-        return executable.getCallable().invoke(executable.getArguments());
+        this.singleFunctionList.forEach(singleFunction -> {
+            if (singleFunction.getReferenceTo() != null) {
+                this.singleFunctionList.forEach(referencedFunction -> {
+                    if (referencedFunction.hash().equals(singleFunction.getReferenceTo())) {
+                        String replacedArguments = singleFunction.getArguments().replace(referencedFunction.hash(), referencedFunction.getResult().getValue().toString());
+
+                        singleFunction.setArguments(replacedArguments);
+
+                        singleFunction.execute();
+                    }
+                });
+            } else {
+                singleFunction.execute();
+            }
+        });
+
+        return rootFunction.execute();
     }
 
-    private void setFunctionList(List<Function> functionList) {
-        this.functionList = functionList;
+    private void setSingleFunctionList(List<SingleFunction> singleFunctionList) {
+        this.singleFunctionList = singleFunctionList;
     }
 
 }

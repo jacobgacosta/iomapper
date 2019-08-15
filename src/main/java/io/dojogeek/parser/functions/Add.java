@@ -1,49 +1,44 @@
 package io.dojogeek.parser.functions;
 
-import io.dojogeek.parser.Callable;
-import io.dojogeek.parser.Result;
+import io.dojogeek.parser.*;
 
 import java.util.List;
 
-/**
- * Created by norveo on 10/15/18.
- */
 public class Add implements Callable {
 
     @Override
     public Result invoke(String arguments) {
-        byte byteValue = 0;
-        short shortValue = 0;
-        int intValue = 0;
-        long longValue = 0;
-        float floatValue = 0;
-        double doubleValue = 0.0;
+        NumericArgumetValidator numericArgumetValidator = new NumericArgumetValidator(arguments);
 
-        List<Object> values = (List<Object>) null;
+        OperationTypeEnum operationType = numericArgumetValidator.getOperationType();
 
-        for (Object value : values) {
-            if (value instanceof Double) {
-                doubleValue += (double) value;
-            } else if (value instanceof Float) {
-                floatValue += (float) value;
-            } else if (value instanceof Long) {
-                longValue += (long) value;
-            } else if (value instanceof Byte) {
-                byteValue += (byte) value;
-            } else if (value instanceof Short) {
-                shortValue += (short) value;
-            }
+        Result result = new Result();
+
+        switch (operationType) {
+            case INT:
+                List<Integer> integerArguments = new NumberArgumentConverter<Integer>(",", new ArgumentCleaner(arguments).getCleanArguments(), Integer.class).getArguments();
+
+                int total = 0;
+
+                for (Integer argumen : integerArguments) {
+                    total += argumen;
+                }
+
+                result.setValue(total);
+            case LONG:
+                List<Long> longArguments = new NumberArgumentConverter<Long>(",", arguments, Long.class).getArguments();
+                break;
+            case FLOAT:
+                List<Float> floatArguments = new NumberArgumentConverter<Float>(",", arguments, Float.class).getArguments();
+                break;
+            case DOUBLE:
+                List<Double> doubleArguments = new NumberArgumentConverter<Double>(",", arguments, Double.class).getArguments();
+                break;
+            default:
+                System.out.print("Incompatible type");
         }
 
-        if (doubleValue != 0.0) {
-            //return doubleValue + floatValue + longValue + intValue + byteValue + shortValue;
-        } else if (floatValue != 0.0) {
-            //return floatValue + longValue + intValue + byteValue + shortValue;
-        }else if (longValue != 0) {
-            //return longValue + intValue + byteValue + shortValue;
-        }
-
-        return null;//intValue + byteValue + shortValue;
+        return result;
     }
 
 }
