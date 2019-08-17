@@ -24,7 +24,7 @@ public class SayaMapNestedFunctionsTest {
     @Test
     public void shouldThrowARuntimeExceptionForNonExistentFunction() {
         expectedEx.expect(RuntimeException.class);
-        expectedEx.expectMessage("The 'nonexistentFunction' function doesn't exist.");
+        expectedEx.expectMessage("The 'nonexistentFunction' singleFunction doesn't exist.");
 
         NumericModel numericModel = new NumericModel();
         numericModel.setByteField((byte) 127);
@@ -42,10 +42,10 @@ public class SayaMapNestedFunctionsTest {
         numericModel.setShortField((short) 10000);
 
         NumericDto numericDto = map.outer().from(numericModel).to(NumericDto.class).relate(customMapping ->
-                    customMapping.relate("toString(add(byteField, shortField))", "stringI")
+                    customMapping.relate("toString(add(add(byteField, shortField), 1))", "stringI")
         ).build();
 
-        assertEquals("10127", numericDto.getStringI());
+        assertEquals("10128", numericDto.getStringI());
     }
 
 }

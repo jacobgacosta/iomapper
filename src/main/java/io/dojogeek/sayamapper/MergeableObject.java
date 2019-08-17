@@ -1,11 +1,7 @@
 package io.dojogeek.sayamapper;
 
-import io.dojogeek.sayamapper.utils.Executor;
-import io.dojogeek.sayamapper.utils.MethodShredder;
-import io.dojogeek.sayamapper.utils.SignatureMethod;
+import io.dojogeek.parser.Function;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static io.dojogeek.sayamapper.RootTypeEnum.*;
@@ -85,23 +81,41 @@ public abstract class MergeableObject {
             String rootField = sourcePath.getRootField();
 
             if (Determiner.isFunction(rootField)) {
-                List<Object> sourceFields = new ArrayList<>();
+                Function rootFunction = new Function(sourcePath.getRootField());
 
-                SignatureMethod signatureMethod = MethodShredder.dismantle(rootField);
+                if (rootFunction.hasNestedFunctions()) {
+                    rootFunction.getNestedFunctionList().forEach(nestedFunction -> {
+                        nestedFunction.getArgumentsList().forEach(argument -> {
+                            FlexibleField srcField = sourceWrapper.getMatchingFieldFor(argument);
 
-                signatureMethod.getArgs().forEach(arg -> {
-                    if (Determiner.isExtraArgument(arg)) {
-                        sourceFields.add(arg);
+                            if (srcField != null) {
+                                Object value = srcField.getValue();
 
-                        return;
+                                Class<?> type = srcField.getType();
+
+                                String argumentsReplaced = nestedFunction.getArguments().replace(argument, String.valueOf(value + "@" + type));
+
+                                nestedFunction.setArguments(argumentsReplaced);
+                            }
+                        });
+                    });
+                }
+
+                rootFunction.getSingleFunction().getArgumentsList().forEach(argument -> {
+                    FlexibleField srcField = sourceWrapper.getMatchingFieldFor(argument);
+
+                    if (srcField != null) {
+                        Object value = srcField.getValue();
+
+                        Class<?> type = srcField.getType();
+
+                        String argumentsReplaced = rootFunction.getSingleFunction().getArguments().replace(argument, value + "@" + type);
+
+                        rootFunction.getSingleFunction().setArguments(argumentsReplaced);
                     }
-
-                    sourceFields.add(sourceWrapper.getMatchingFieldFor(arg).getValue());
                 });
 
-                Object result = Executor.executeFunction(signatureMethod.getName(), sourceFields);
-
-                targetField.setValue(result);
+                targetField.setValue(rootFunction.execute().getValue());
 
                 return;
             }
@@ -110,8 +124,32 @@ public abstract class MergeableObject {
 
             targetField.setCustomMappings(customMappings);
             targetField.setValue(sourceField);
-        } else if (sourcePath.getType().equals(NESTED_METHOD)) {
 
+            return;
+        } else if (sourcePath.getType().equals(NESTED_METHOD)) {
+            Function rootFunction = new Function(sourcePath.getRootField());
+
+            if (rootFunction.hasNestedFunctions()) {
+                rootFunction.getNestedFunctionList().forEach(nestedFunction -> {
+                    nestedFunction.getArgumentsList().forEach(argument -> {
+                        FlexibleField srcField = sourceWrapper.getMatchingFieldFor(argument);
+
+                        if (srcField != null) {
+                            Object value = srcField.getValue();
+
+                            Class<?> type = srcField.getType();
+
+                            String argumentsReplaced = nestedFunction.getArguments().replace(argument, value + "@" + type);
+
+                            nestedFunction.setArguments(argumentsReplaced);
+                        }
+                    });
+                });
+            }
+
+            targetField.setValue(rootFunction.execute().getValue());
+
+            return;
         }
 
         targetField.setValue(sourceField);

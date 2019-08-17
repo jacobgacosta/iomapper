@@ -67,7 +67,9 @@ public abstract class FlexibleField extends MergeableObject {
             this.field.setAccessible(true);
             this.field.set(this.parentObject, value);
         } catch (IllegalAccessException e) {
-            LOGGER.info("An error occurred when assigning the value: " + value + " to field: " + this.field + "\n" + e.getMessage());
+            LOGGER.info("An error occurred when assigning the value: " + value + " to field: " + this.field + "\n");
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("An error occurred when assigning the value: " + value + " to field: " + this.field + "\n");
         }
     }
 
@@ -100,6 +102,10 @@ public abstract class FlexibleField extends MergeableObject {
      */
     public void setCustomMappings(CustomMappings customMappings) {
         this.customMappings = customMappings;
+    }
+
+    public Class<?> getType() {
+        return this.field.getType();
     }
 
 }

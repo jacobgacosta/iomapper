@@ -1,4 +1,4 @@
-package io.dojogeek.parser.validators;
+package io.dojogeek.parser;
 
 import java.io.File;
 import java.util.Arrays;
@@ -14,25 +14,23 @@ public class SentenceValidator {
         return instance;
     }
 
-    public static boolean validate(String sentence) {
+    public boolean validate(String sentence) {
         sentence = sentence.trim();
 
-        if (!isValidSentence(sentence)) {
+        if (!this.isValidStructure(sentence)) {
             throw new RuntimeException("'" + sentence + "'" + " <- malformed sentence.");
         }
-
-        validateNestedFunctionsSentence(sentence);
 
         return true;
     }
 
-    private static boolean isValidSentence(String sentence) {
+    private boolean isValidStructure(String function) {
         char openParenthesis = '(';
         char closeParenthesis = ')';
 
         int parenthesisCount = -1;
 
-        char[] characters = sentence.toCharArray();
+        char[] characters = function.toCharArray();
 
         for (int index = 0; index <= characters.length - 1; index++) {
             if (characters[index] == openParenthesis) {
@@ -44,15 +42,15 @@ public class SentenceValidator {
             }
         }
 
-        return parenthesisCount != 0 && isAValidStartAndEndOfSentence(sentence);
+        return parenthesisCount != 0 && this.isAValidStartAndEndOfTheFunction(function);
     }
 
-    private static boolean isAValidStartAndEndOfSentence(String name) {
+    private boolean isAValidStartAndEndOfTheFunction(String name) {
         return name.matches("^([a-zA-Z]+\\()+.+\\)$");
     }
 
     private static void validateNestedFunctionsSentence(String sentence) {
-        String packageName = "io.dojogeek.sayamapper.functions";
+        String packageName = "io.dojogeek.parser.functions";
 
         String path = packageName.replace(".", "/");
 
