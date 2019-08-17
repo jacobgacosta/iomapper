@@ -83,6 +83,10 @@ public class SingleFunction {
         return referenceTo;
     }
 
+    public boolean hasAReference() {
+        return referenceTo != null;
+    }
+
     public void setReferenceTo(String referenceTo) {
         this.referenceTo = referenceTo;
     }

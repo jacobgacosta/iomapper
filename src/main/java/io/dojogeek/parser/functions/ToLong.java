@@ -12,19 +12,12 @@ public class ToLong implements Callable {
 
     @Override
     public Result invoke(String arguments) {
-        List<Object> values = (List<Object>) null;
+        String value = arguments.split("@")[0];
 
-        Object value = values.get(values.size() - 1);
+        Result result = new Result();
+        result.setValue(Long.valueOf(value));
 
-        long longValue;
-
-        if (value.getClass().getName().equals("java.lang.String")) {
-            longValue = new Long(value.toString());
-        } else {
-            longValue = (long) values.get(values.size() - 1);
-        }
-
-        return null;
+        return result;
     }
 
 }

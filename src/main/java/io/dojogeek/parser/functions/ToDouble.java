@@ -12,19 +12,12 @@ public class ToDouble implements Callable {
 
     @Override
     public Result invoke(String arguments) {
-        List<Object> values = (List<Object>) null;
+        String value = arguments.split("@")[0];
 
-        Object value = values.get(values.size() - 1);
+        Result result = new Result();
+        result.setValue(Double.valueOf(value));
 
-        double doubleValue;
-
-        if (value.getClass().getName().equals("java.lang.String")) {
-            doubleValue = new Double(value.toString());
-        } else {
-            doubleValue = (double) values.get(values.size() - 1);
-        }
-
-        return null;
+        return result;
     }
 
 }

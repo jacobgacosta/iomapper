@@ -1,6 +1,7 @@
 package io.dojogeek.parser.functions;
 
 import io.dojogeek.parser.Callable;
+import io.dojogeek.parser.NumericArgumetValidator;
 import io.dojogeek.parser.Result;
 
 import java.util.List;
@@ -12,19 +13,12 @@ public class ToByte implements Callable {
 
     @Override
     public Result invoke(String arguments) {
-        List<Object> values = (List<Object>) null;
+        String value = arguments.split("@")[0];
 
-        Object value = values.get(values.size() - 1);
+        Result result = new Result();
+        result.setValue(Byte.valueOf(value));
 
-        byte byteValue;
-
-        if (value.getClass().getName().equals("java.lang.String")) {
-            byteValue = new Byte(value.toString());
-        } else {
-            byteValue = (byte) values.get(values.size() - 1);
-        }
-
-        return null;
+        return result;
     }
 
 }

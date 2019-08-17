@@ -28,25 +28,23 @@ public class Functions {
     }
 
     public Result execute() {
-        SingleFunction rootFunction = this.singleFunctionList.get(this.singleFunctionList.size() - 1);
+        this.singleFunctionList.forEach(function -> {
+            if (function.hasAReference()) {
+                this.singleFunctionList.forEach(functionToCheck -> {
+                    if (functionToCheck.hash().equals(function.getReferenceTo())) {
+                        String replacedArguments = function.getArguments().replace(functionToCheck.hash(), functionToCheck.getResult().getValue().toString());
 
-        this.singleFunctionList.forEach(singleFunction -> {
-            if (singleFunction.getReferenceTo() != null) {
-                this.singleFunctionList.forEach(referencedFunction -> {
-                    if (referencedFunction.hash().equals(singleFunction.getReferenceTo())) {
-                        String replacedArguments = singleFunction.getArguments().replace(referencedFunction.hash(), referencedFunction.getResult().getValue().toString());
+                        function.setArguments(replacedArguments);
 
-                        singleFunction.setArguments(replacedArguments);
-
-                        singleFunction.execute();
+                        function.execute();
                     }
                 });
             } else {
-                singleFunction.execute();
+                function.execute();
             }
         });
 
-        return rootFunction.execute();
+        return this.singleFunctionList.get(this.singleFunctionList.size() - 1).getResult();
     }
 
     private void setSingleFunctionList(List<SingleFunction> singleFunctionList) {

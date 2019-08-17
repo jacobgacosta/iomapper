@@ -12,19 +12,12 @@ public class ToFloat implements Callable {
 
     @Override
     public Result invoke(String arguments) {
-        List<Object> values = (List<Object>) null;
+        String value = arguments.split("@")[0];
 
-        Object value = values.get(values.size() - 1);
+        Result result = new Result();
+        result.setValue(Float.valueOf(value));
 
-        float floatValue;
-
-        if (value.getClass().getName().equals("java.lang.String")) {
-            floatValue = new Float(value.toString());
-        } else {
-            floatValue = (float) values.get(values.size() - 1);
-        }
-
-        return null;
+        return result;
     }
 
 }

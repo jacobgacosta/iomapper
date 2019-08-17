@@ -18,21 +18,46 @@ public class Add implements Callable {
             case INT:
                 List<Integer> integerArguments = new NumberArgumentConverter<Integer>(",", new ArgumentCleaner(arguments).getCleanArguments(), Integer.class).getArguments();
 
-                int total = 0;
+                int totalInt = 0;
 
                 for (Integer argumen : integerArguments) {
-                    total += argumen;
+                    totalInt += argumen;
                 }
 
-                result.setValue(total);
+                result.setValue(totalInt);
+                break;
             case LONG:
-                List<Long> longArguments = new NumberArgumentConverter<Long>(",", arguments, Long.class).getArguments();
+                List<Long> longArguments = new NumberArgumentConverter<Long>(",", new ArgumentCleaner(arguments).getCleanArguments(), Long.class).getArguments();
+
+                long totalLong = 0;
+
+                for (Long argumen : longArguments) {
+                    totalLong += argumen;
+                }
+
+                result.setValue(totalLong);
                 break;
             case FLOAT:
-                List<Float> floatArguments = new NumberArgumentConverter<Float>(",", arguments, Float.class).getArguments();
+                List<Float> floatArguments = new NumberArgumentConverter<Float>(",", new ArgumentCleaner(arguments).getCleanArguments(), Float.class).getArguments();
+
+                float totalFloat = 0;
+
+                for (Float argumen : floatArguments) {
+                    totalFloat += argumen;
+                }
+
+                result.setValue(totalFloat);
                 break;
             case DOUBLE:
-                List<Double> doubleArguments = new NumberArgumentConverter<Double>(",", arguments, Double.class).getArguments();
+                List<Double> doubleArguments = new NumberArgumentConverter<Double>(",", new ArgumentCleaner(arguments).getCleanArguments(), Double.class).getArguments();
+
+                double totalDouble = 0.0;
+
+                for (Double argumen : doubleArguments) {
+                    totalDouble += argumen;
+                }
+
+                result.setValue(totalDouble);
                 break;
             default:
                 System.out.print("Incompatible type");

@@ -12,19 +12,12 @@ public class ToInt implements Callable {
 
     @Override
     public Result invoke(String arguments) {
-        List<Object> values = (List<Object>) null;
+        String value = arguments.split("@")[0];
 
-        Object value = values.get(values.size() - 1);
+        Result result = new Result();
+        result.setValue(Integer.valueOf(value));
 
-        int intValue;
-
-        if (value.getClass().getName().equals("java.lang.String")) {
-            intValue = new Integer(value.toString());
-        } else {
-            intValue = (int) values.get(values.size() - 1);
-        }
-
-        return null;
+        return result;
     }
 
 }

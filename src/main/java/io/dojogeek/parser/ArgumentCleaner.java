@@ -16,17 +16,34 @@ public class ArgumentCleaner {
 
         StringBuilder cleanArguments = new StringBuilder();
 
-        for (String argumen :  separateArguments) {
-            if (argumen.contains("@")) {
-                String[] singleArgument = argumen.split("@");
+        for (String argument : separateArguments) {
+            if (argument.contains("@")) {
+                String[] singleArgument = argument.split("@");
 
                 cleanArguments.append(singleArgument[0]);
             } else {
-                cleanArguments.append(argumen);
+                cleanArguments.append(argument);
             }
         }
 
         return cleanArguments.toString().replace(" ", ", ");
     }
 
+    public List<String> getCleanArgumentsList() {
+        List<String> cleanArguments = new ArrayList<>();
+
+        String[] separateArguments = this.arguments.split(",");
+
+        for (String argument : separateArguments) {
+            if (argument.contains("@")) {
+                String[] singleArgument = argument.split("@");
+
+                cleanArguments.add(singleArgument[0].trim());
+            } else {
+                cleanArguments.add(argument.trim());
+            }
+        }
+
+        return cleanArguments;
+    }
 }

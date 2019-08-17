@@ -12,19 +12,12 @@ public class ToShort implements Callable {
 
     @Override
     public Result invoke(String arguments) {
-        List<Object> values = (List<Object>) null;
+        String value = arguments.split("@")[0];
 
-        Object value = values.get(values.size() - 1);
+        Result result = new Result();
+        result.setValue(Short.valueOf(value));
 
-        short shortValue;
-
-        if (value.getClass().getName().equals("java.lang.String")) {
-            shortValue = new Short(value.toString());
-        } else {
-            shortValue = (short) values.get(values.size() - 1);
-        }
-
-        return null;
+        return result;
     }
 
 }

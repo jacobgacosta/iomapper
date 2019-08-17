@@ -22,13 +22,13 @@ public class Determiner {
     }
 
     public static boolean isFunction(String value) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*\\([a-zA-Z0-9]+(,\\s[a-zA-Z0-9]+)*(,\\s\\[\\'\\w+\\'\\])?\\)");
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*\\([a-zA-Z0-9]+(,\\s[a-zA-Z0-9]+)*(,\\s\\[\\'.+\\'\\])?\\)");
 
         return pattern.matcher(value).find();
     }
 
     public static boolean isExtraArgument(String arg) {
-        Pattern pattern = Pattern.compile("^\\[\\'\\w+\\'\\]$");
+        Pattern pattern = Pattern.compile("^\\[\\'.+\\'\\]$");
 
         return pattern.matcher(arg).find();
     }

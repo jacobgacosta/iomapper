@@ -24,7 +24,7 @@ public class SayaMapNestedFunctionsTest {
     @Test
     public void shouldThrowARuntimeExceptionForNonExistentFunction() {
         expectedEx.expect(RuntimeException.class);
-        expectedEx.expectMessage("The 'nonexistentFunction' function doesn't exist.");
+        expectedEx.expectMessage("The 'nonexistentFunction' singleFunction doesn't exist.");
 
         NumericModel numericModel = new NumericModel();
         numericModel.setByteField((byte) 127);

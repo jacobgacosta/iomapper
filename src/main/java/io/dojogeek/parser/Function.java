@@ -34,6 +34,10 @@ public class Function {
         return this.nestedFunctionList.size() > 1;
     }
 
+    public SingleFunction getSingleFunction() {
+        return this.nestedFunctionList.get(0);
+    }
+
     public List<SingleFunction> getNestedFunctionList() {
         return this.nestedFunctionList;
     }

@@ -127,10 +127,10 @@ public class SayaMapTest {
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
                 customMapping
-                        .relate("addressDto.concat(state, zip, ['s'])", "fullAddress")
+                        .relate("addressDto.concat(state, zip, ['*'])", "fullAddress")
         ).build();
 
-        assertEquals("CDMX 03400", user.getFullAddress());
+        assertEquals("CDMX*03400", user.getFullAddress());
     }
 
     @Test

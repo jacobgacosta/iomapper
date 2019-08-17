@@ -12,8 +12,16 @@ public class ToString implements Callable {
 
     @Override
     public Result invoke(String arguments) {
+        String value;
+
+        if (arguments.contains("@")) {
+            value = arguments.split("@")[0];
+        } else {
+            value = arguments;
+        }
+
         Result result = new Result();
-        result.setValue(arguments);
+        result.setValue(value);
 
         return result;
     }
