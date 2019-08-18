@@ -3,7 +3,7 @@ package io.dojogeek.parser.functions;
 import io.dojogeek.parser.ArgumentCleaner;
 import io.dojogeek.parser.Callable;
 import io.dojogeek.parser.Result;
-import io.dojogeek.sayamapper.Determiner;
+import io.dojogeek.iomapper.Determiner;
 
 import java.util.List;
 import java.util.logging.Logger;

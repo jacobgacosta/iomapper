@@ -13,7 +13,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 jar {
-    baseName = 'sayamapper'
+    baseName = 'iomapper'
     version =  '0.1.0'
 }
 
