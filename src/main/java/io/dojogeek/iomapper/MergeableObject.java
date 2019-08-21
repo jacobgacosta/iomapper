@@ -93,7 +93,7 @@ public abstract class MergeableObject {
 
                                 Class<?> type = srcField.getType();
 
-                                String argumentsReplaced = nestedFunction.getArguments().replace(argument, String.valueOf(value + "@" + type));
+                                String argumentsReplaced = nestedFunction.getArguments().replace(argument, value + "@" + type);
 
                                 nestedFunction.setArguments(argumentsReplaced);
                             }

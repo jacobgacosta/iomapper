@@ -1,9 +1,9 @@
 package io.dojogeek.parser.functions;
 
+import io.dojogeek.iomapper.Determiner;
 import io.dojogeek.parser.ArgumentCleaner;
 import io.dojogeek.parser.Callable;
 import io.dojogeek.parser.Result;
-import io.dojogeek.iomapper.Determiner;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -39,7 +39,7 @@ public class Concat implements Callable {
 
         for (int index = 0; index < values.size(); index++) {
             if (index < values.size() - 1) {
-                finalResult += values.get(index) +  delimiter;
+                finalResult += values.get(index) + delimiter;
 
                 continue;
             }

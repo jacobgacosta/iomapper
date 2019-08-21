@@ -15,8 +15,8 @@ public class JavaField extends FlexibleField {
     /**
      * JavaField constructor.
      *
-     * @param field            the field.
-     * @param declaringObject  the reference object that hosts the field.
+     * @param field           the field.
+     * @param declaringObject the reference object that hosts the field.
      */
     public JavaField(Field field, Object declaringObject) {
         super(field, declaringObject);
@@ -25,7 +25,7 @@ public class JavaField extends FlexibleField {
     /**
      * Set the value to property.
      *
-     * @param flexibleField  a flexible field.
+     * @param flexibleField a flexible field.
      */
     @Override
     protected void setValue(FlexibleField flexibleField) {
