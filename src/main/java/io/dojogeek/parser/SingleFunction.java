@@ -27,6 +27,10 @@ public class SingleFunction {
         return this.arguments;
     }
 
+    public void setArguments(String arguments) {
+        this.arguments = arguments;
+    }
+
     public List<String> getArgumentsList() {
         List<String> arguments = new ArrayList<>();
 
@@ -35,10 +39,6 @@ public class SingleFunction {
                 .forEach(arguments::add);
 
         return arguments;
-    }
-
-    public void setArguments(String arguments) {
-        this.arguments = arguments;
     }
 
     public Callable getCallable() {
@@ -83,12 +83,12 @@ public class SingleFunction {
         return referenceTo;
     }
 
-    public boolean hasAReference() {
-        return referenceTo != null;
-    }
-
     public void setReferenceTo(String referenceTo) {
         this.referenceTo = referenceTo;
+    }
+
+    public boolean hasAReference() {
+        return referenceTo != null;
     }
 
     public String getSetence() {

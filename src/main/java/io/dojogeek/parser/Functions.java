@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class Functions {
 
-    private List<SingleFunction> singleFunctionList;
     private static Functions functions = new Functions();
+    private List<SingleFunction> singleFunctionList;
 
     private Functions() {
     }
