@@ -1,9 +1,13 @@
 package dev.iomapper;
 
+import dev.iomapper.dtos.AddressDto;
 import dev.iomapper.dtos.NumericDto;
 import dev.iomapper.BridgeMap;
 import dev.iomapper.IOMapBridge;
+import dev.iomapper.dtos.UserDto;
+import dev.iomapper.models.NestedNumericModel;
 import dev.iomapper.models.NumericModel;
+import dev.iomapper.models.User;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -46,6 +50,22 @@ public class IOMapNestedFunctionsTest {
         ).build();
 
         assertEquals("10128", numericDto.getStringI());
+    }
+
+    @Test
+    public void shouldSupportNestedFunctionsOnNestedFields() {
+        NestedNumericModel nestedNumericModel = new NestedNumericModel();
+        nestedNumericModel.setNumber1(7);
+        nestedNumericModel.setNumber2(7);
+
+        NumericModel numericModel = new NumericModel();
+        numericModel.setNestedNumericModel(nestedNumericModel);
+
+        NumericDto numericDto = map.outer().from(numericModel).to(NumericDto.class).relate(customMapping ->
+            customMapping.relate("nestedNumericModel.toString(add(add(number1, number2), 7))", "stringI")
+        ).build();
+
+        assertEquals("21", numericDto.getStringI());
     }
 
 }
