@@ -48,8 +48,6 @@ public abstract class MergeableObject {
                             customMappings.hasTargetFor(targetFieldName)) {
 
                         this.mergeCustomMappings(sourceWrapper, targetFlexibleField, customMappings);
-
-                        return;
                     }
                 });
     }
