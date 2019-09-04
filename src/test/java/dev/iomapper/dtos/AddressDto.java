@@ -7,6 +7,7 @@ public class AddressDto {
 
     private String state;
     private String zip;
+    private int totalPopulation;
 
     public String getState() {
         return state;
@@ -22,6 +23,14 @@ public class AddressDto {
 
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    public int getTotalPopulation() {
+        return totalPopulation;
+    }
+
+    public void setTotalPopulation(int totalPopulation) {
+        this.totalPopulation = totalPopulation;
     }
 
 }
