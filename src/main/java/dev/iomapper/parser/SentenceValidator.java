@@ -60,11 +60,11 @@ public class SentenceValidator {
             }
         }
 
-        return parenthesisCount != 0 && this.isAValidStartAndEndOfTheFunction(function);
+        return parenthesisCount != 0 && this.isAValidFullSentence(function);
     }
 
-    private boolean isAValidStartAndEndOfTheFunction(String name) {
-        return name.matches("^([a-zA-Z]+\\()+.+\\)$");
+    private boolean isAValidFullSentence(String name) {
+        return name.matches("^[a-zA-Z]+(\\.[a-zA-Z0-9]+)*((\\([a-zA-Z0-9]+)*(,\\s[[a-zA-Z0-9]|\\[\\'[.|\\*]\\'\\]]+)*(\\))*)*$");
     }
 
 }

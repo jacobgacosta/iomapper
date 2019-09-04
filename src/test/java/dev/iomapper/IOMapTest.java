@@ -142,10 +142,10 @@ public class IOMapTest {
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
                 customMapping
-                        .relate("name", "name, userId")
+                        .relate("name", "alias, userId")
         ).build();
 
-        assertEquals("Jacob", user.getName());
+        assertEquals("Jacob", user.getAlias());
         assertEquals("Jacob", user.getUserId());
     }
 

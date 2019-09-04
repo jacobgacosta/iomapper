@@ -6,6 +6,7 @@ package dev.iomapper.models;
 public class User {
 
     private String name;
+    private String alias;
     private String job;
     private String userId;
     private Address address;
@@ -19,6 +20,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public String getJob() {
