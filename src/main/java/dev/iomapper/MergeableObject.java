@@ -1,10 +1,9 @@
 package dev.iomapper;
 
 import dev.iomapper.parser.Function;
+import dev.iomapper.utils.Delimiters;
 
 import java.util.logging.Logger;
-
-import static dev.iomapper.RootTypeEnum.*;
 
 /**
  * MergeableObject allows to mergeCustomMappings a source with a target object.
@@ -25,81 +24,75 @@ public abstract class MergeableObject {
      */
     protected void merge(SourceWrapper sourceWrapper, Object target, IgnorableFields ignorable, CustomMappings customMappings) {
         new InspectableObject(target)
-                .getDeclaredFields()
-                .forEach(targetFlexibleField -> {
-                    String targetFieldName = targetFlexibleField.getName();
+            .getDeclaredFields()
+            .forEach(targetFlexibleField -> {
+                String targetFieldName = targetFlexibleField.getName();
 
-                    if (!ignorable.isEmpty() && ignorable.containsTo(targetFieldName)) {
-                        if (!ignorable.hasIgnorableNestedFor(targetFieldName)) {
-                            return;
-                        }
-
-                        ignorable.removeRootFieldWithName(targetFieldName);
-
-                        targetFlexibleField.setIgnorableFields(ignorable);
+                if (!ignorable.isEmpty() && ignorable.containsTo(targetFieldName)) {
+                    if (!ignorable.hasIgnorableNestedFor(targetFieldName)) {
+                        return;
                     }
 
-                    FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(targetFieldName);
+                    ignorable.removeRootFieldWithName(targetFieldName);
 
-                    targetFlexibleField.setValue(sourceField);
+                    targetFlexibleField.setIgnorableFields(ignorable);
+                }
 
-                    if (!customMappings.isEmpty() &&
-                            customMappings.hasTargetWithName(targetFieldName) &&
-                            customMappings.hasTargetFor(targetFieldName)) {
+                if ((customMappings.isNotEmpty() && customMappings.hasTargetWithName(targetFieldName)) ||
+                    customMappings.existInMultiple(targetFieldName)) {
+                    this.mergeCustomMappings(sourceWrapper, targetFlexibleField, customMappings);
 
-                        this.mergeCustomMappings(sourceWrapper, targetFlexibleField, customMappings);
-                    }
-                });
+                    return;
+                }
+
+                FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(targetFieldName);
+
+                targetFlexibleField.setValue(sourceField);
+            });
     }
 
     protected void mergeCustomMappings(SourceWrapper sourceWrapper, FlexibleField targetField, CustomMappings customMappings) {
-        if (customMappings.isEmpty()) {
-            return;
-        }
+        CustomizableFieldPathShredder targetPath = customMappings.getTargetWithName(targetField.getName());
 
         CustomizableFieldPathShredder sourcePath = customMappings.getSourceFor(targetField.getName());
 
-        CustomizableFieldPathShredder targetPath = customMappings.getTargetWithName(targetField.getName());
-
         FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(sourcePath.getRootField());
 
-        if (sourcePath.getType().equals(NESTED_FIELD)) {
-            sourcePath.removeRootField();
+        if (sourceField == null) {
+            if ((sourceWrapper.getClassName().toLowerCase().equals(sourcePath.getRootField().toLowerCase()) ||
+                sourceWrapper.getClassName().toLowerCase().contains(sourcePath.getRootField().toLowerCase())) &&
+                targetField instanceof JavaField) {
+                return;
+            }
+        }
+
+        if (sourceField != null) {
+            if (sourcePath.hasNestedFields()) {
+                sourcePath.updateRootWithNextField();
+            }
+
+            if (targetPath.hasNestedFields()) {
+                targetPath.updateRootWithNextField();
+            } else {
+                if (targetPath.getRootField().contains(Delimiters.COMMA_SEPARATOR)) {
+                    String newRootTargetPath = targetPath.getRootField().replace(targetField.getName() + ",", "");
+
+                    targetPath.setRoot(newRootTargetPath);
+                }
+            }
 
             targetField.setCustomMappings(customMappings);
 
-            if (targetPath.getType().equals(SINGLE)) {
-                targetField.setValue(sourceField);
+            targetField.setValue(sourceField);
 
-                return;
-            }
+            return;
+        }
 
-            targetPath.removeRootField();
-        } else if (sourcePath.getType().equals(SINGLE_METHOD)) {
-            String rootField = sourcePath.getRootField();
+        Function rootFunction = new Function(sourcePath.getRootField());
 
-            if (Determiner.isFunction(rootField)) {
-                Function rootFunction = new Function(sourcePath.getRootField());
-
-                if (rootFunction.hasNestedFunctions()) {
-                    rootFunction.getNestedFunctionList().forEach(nestedFunction -> {
-                        nestedFunction.getArgumentsList().forEach(argument -> {
-                            FlexibleField srcField = sourceWrapper.getMatchingFieldFor(argument);
-
-                            if (srcField != null) {
-                                Object value = srcField.getValue();
-
-                                Class<?> type = srcField.getType();
-
-                                String argumentsReplaced = nestedFunction.getArguments().replace(argument, value + "@" + type);
-
-                                nestedFunction.setArguments(argumentsReplaced);
-                            }
-                        });
-                    });
-                }
-
-                rootFunction.getSingleFunction().getArgumentsList().forEach(argument -> {
+        if (rootFunction.hasNestedFunctions()) {
+            rootFunction.getNestedFunctionList().forEach(nestedFunction -> {
+                nestedFunction.getArgumentsList().forEach(argument -> {
                     FlexibleField srcField = sourceWrapper.getMatchingFieldFor(argument);
 
                     if (srcField != null) {
@@ -107,54 +100,29 @@ public abstract class MergeableObject {
 
                         Class<?> type = srcField.getType();
 
-                        String argumentsReplaced = rootFunction.getSingleFunction().getArguments().replace(argument, value + "@" + type);
+                        String argumentsReplaced = nestedFunction.getArguments().replace(argument, value + "@" + type);
 
-                        rootFunction.getSingleFunction().setArguments(argumentsReplaced);
+                        nestedFunction.setArguments(argumentsReplaced);
                     }
                 });
+            });
+        } else {
+            rootFunction.getSingleFunction().getArgumentsList().forEach(argument -> {
+                FlexibleField srcField = sourceWrapper.getMatchingFieldFor(argument);
 
-                targetField.setValue(rootFunction.execute().getValue());
+                if (srcField != null) {
+                    Object value = srcField.getValue();
 
-                return;
-            }
+                    Class<?> type = srcField.getType();
 
-            sourcePath.removeRootField();
+                    String argumentsReplaced = rootFunction.getSingleFunction().getArguments().replace(argument, value + "@" + type);
 
-            targetField.setCustomMappings(customMappings);
-            targetField.setValue(sourceField);
-
-            return;
-        } else if (sourcePath.getType().equals(NESTED_METHOD)) {
-            Function rootFunction = new Function(sourcePath.getRootField());
-
-            if (rootFunction.hasNestedFunctions()) {
-                rootFunction.getNestedFunctionList().forEach(nestedFunction -> {
-                    nestedFunction.getArgumentsList().forEach(argument -> {
-                        FlexibleField srcField = sourceWrapper.getMatchingFieldFor(argument);
-
-                        if (srcField != null) {
-                            Object value = srcField.getValue();
-
-                            Class<?> type = srcField.getType();
-
-                            String argumentsReplaced = nestedFunction.getArguments().replace(argument, value + "@" + type);
-
-                            nestedFunction.setArguments(argumentsReplaced);
-                        }
-                    });
-                });
-            }
-
-            targetField.setValue(rootFunction.execute().getValue());
-
-            return;
+                    rootFunction.getSingleFunction().setArguments(argumentsReplaced);
+                }
+            });
         }
 
-        targetField.setValue(sourceField);
-
-        if (targetPath.hasOtherFields()) {
-            targetPath.removeRootField();
-        }
+        targetField.setValue(rootFunction.execute().getValue());
     }
 
 }

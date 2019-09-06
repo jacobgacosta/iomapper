@@ -1,5 +1,7 @@
 package dev.iomapper;
 
+import dev.iomapper.utils.Delimiters;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,28 +73,46 @@ public class CustomMappings {
         return this.hasTargetFor(targetFieldName);
     }
 
+    public boolean existInMultiple(String targetFieldName) {
+        for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
+            if (!customMapping.getValue().getRootField().isEmpty()) {
+                String[] multipleFields = customMapping.getValue().getRootField().split(Delimiters.COMMA_SEPARATOR);
+
+                for (String field : multipleFields) {
+                    if (field.equals(targetFieldName)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     public CustomizableFieldPathShredder getSourceFor(String targetFieldName) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().trim().equals(targetFieldName)) {
+            if (customMapping.getValue().getRootField().trim().equals(targetFieldName) ||
+                customMapping.getValue().getRootField().split(Delimiters.COMMA_SEPARATOR)[0].equals(targetFieldName)) {
                 return customMapping.getKey();
             }
         }
 
-        return new CustomizableFieldPathShredder("");
+        return new CustomizableFieldPathShredder(targetFieldName);
     }
 
     public CustomizableFieldPathShredder getTargetWithName(String targetFieldName) {
         for (Map.Entry<CustomizableFieldPathShredder, CustomizableFieldPathShredder> customMapping : customMappings.entrySet()) {
-            if (customMapping.getValue().getRootField().trim().equals(targetFieldName)) {
+            if (customMapping.getValue().getRootField().trim().equals(targetFieldName) ||
+                customMapping.getValue().getRootField().split(Delimiters.COMMA_SEPARATOR)[0].equals(targetFieldName)) {
                 return customMapping.getValue();
             }
         }
 
-        return new CustomizableFieldPathShredder("");
+        return new CustomizableFieldPathShredder(targetFieldName);
     }
 
-    public boolean isEmpty() {
-        return this.customMappings.isEmpty();
+    public boolean isNotEmpty() {
+        return !this.customMappings.isEmpty();
     }
 
 }

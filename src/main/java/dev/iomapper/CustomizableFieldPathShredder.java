@@ -1,7 +1,9 @@
 package dev.iomapper;
 
+import dev.iomapper.parser.SentenceValidator;
 import dev.iomapper.utils.Delimiters;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,49 +16,45 @@ import static dev.iomapper.RootTypeEnum.*;
 public class CustomizableFieldPathShredder {
 
     private String root;
-    private RootTypeEnum rootTypeEnum;
-    private List<String> nestedFields;
+    private List<String> nestedFields = new ArrayList<>();
 
     public CustomizableFieldPathShredder(String value) {
-        if (Determiner.isSingle(value)) {
-            this.root = value;
-            this.rootTypeEnum = SINGLE;
-        } else if (Determiner.isNested(value)) {
-            this.nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
-            this.root = nestedFields.get(0);
-            this.rootTypeEnum = NESTED_FIELD;
-        } else if (Determiner.isFunction(value)) {
-            this.nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
-            this.root = nestedFields.get(0);
-            this.rootTypeEnum = SINGLE_METHOD;
-        } else if (Determiner.isMultiple(value)) {
-            this.nestedFields = new LinkedList<>(Arrays.asList(value.split(Delimiters.COMMA_SEPARATOR)));
-            this.root = nestedFields.get(0);
-            this.rootTypeEnum = MULTIPLE;
-        } else if (Determiner.isNestedMethod(value)) {
-            this.root = value;
-            this.rootTypeEnum = NESTED_METHOD;
+        SentenceValidator sentenceValidator = SentenceValidator.getInstance();
+
+        sentenceValidator.validate(value);
+
+        List<String> fields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
+
+        if (fields.size() > 1) {
+            for (int index = 1; index < fields.size(); index++) {
+                this.nestedFields.add(fields.get(index));
+            }
         }
+
+        this.root = fields.get(0);
+    }
+
+    public void setRoot(String root) {
+        this.root = root;
     }
 
     public String getRootField() {
-        if (this.nestedFields != null && !this.nestedFields.isEmpty()) {
-            return this.nestedFields.get(0);
-        } else {
-            return this.root;
+        return this.root;
+    }
+
+    public boolean hasNestedFields() {
+        return !this.nestedFields.isEmpty();
+    }
+
+    public boolean hasNoNestedFields() {
+        return this.nestedFields.isEmpty();
+    }
+
+    public void updateRootWithNextField() {
+        if (!this.nestedFields.isEmpty()) {
+            this.root = this.nestedFields.get(0);
+
+            this.nestedFields.remove(0);
         }
     }
-
-    public RootTypeEnum getType() {
-        return this.rootTypeEnum;
-    }
-
-    public void removeRootField() {
-        this.nestedFields.remove(0);
-    }
-
-    public boolean hasOtherFields() {
-        return this.nestedFields != null && !this.nestedFields.isEmpty();
-    }
-
 }
