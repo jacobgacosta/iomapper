@@ -1,10 +1,9 @@
 package dev.iomapper.parser;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FunctionLoader {
@@ -14,22 +13,48 @@ public class FunctionLoader {
     static {
         String functionsPackageName = "dev.iomapper.parser.functions";
 
-        String functionsPathLocation = functionsPackageName.replace(".", "/");
+        ServiceLoader<Callable> serviceLoader = ServiceLoader.load(Callable.class);
+
+        List<String> buildInFunctionNames = new ArrayList<>();
+
+        for (Callable implClass : serviceLoader) {
+            buildInFunctionNames.add(implClass.getClass().getSimpleName());
+        }
+
+        loadFunctions(buildInFunctionNames, functionsPackageName);
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        String[] functionsNames = new File(classLoader.getResource(functionsPathLocation).getFile()).list();
+        String externalPackageName = "mapping.functions";
 
-        List<String> cleanFunctionNames = Arrays.stream(functionsNames)
-                .filter(fileName -> !fileName.contains("$1"))
-                .map(fileName -> fileName.replace(".class", ""))
-                .collect(Collectors.toList());
+        String externalFunctionsPathLocation = externalPackageName.replace(".", "/");
 
+        URL urlExternalResources = classLoader.getResource(externalFunctionsPathLocation);
+
+        if (urlExternalResources != null) {
+            String[] externalFunctionsNames = new File(urlExternalResources.getFile()).list();
+
+            List<String> cleanExternalFunctionsNames = getFunctionNamesIn(externalFunctionsNames);
+
+            loadFunctions(cleanExternalFunctionsNames, externalPackageName);
+        }
+    }
+
+    private static List<String> getFunctionNamesIn(String[] functionsNames) {
+        return Arrays.stream(functionsNames)
+            .filter(fileName -> !fileName.contains("$1"))
+            .map(fileName -> fileName.replace(".class", ""))
+            .collect(Collectors.toList());
+    }
+
+    private static void loadFunctions(List<String> cleanFunctionNames, String functionsPackageName) {
         for (String functionName : cleanFunctionNames) {
             String classPath = functionsPackageName + "." + functionName;
 
             try {
-                Callable callable = (Callable) Class.forName(classPath).newInstance();
+                Class[] params = {};
+
+                Callable callable = (Callable) Class.forName(classPath).getDeclaredConstructor(params).newInstance();
 
                 FunctionLoader.callable.put(functionName.toLowerCase(), callable);
             } catch (ClassNotFoundException e) {
@@ -37,6 +62,10 @@ public class FunctionLoader {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
         }

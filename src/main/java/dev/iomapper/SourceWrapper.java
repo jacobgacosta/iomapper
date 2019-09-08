@@ -1,5 +1,7 @@
 package dev.iomapper;
 
+import dev.iomapper.utils.Delimiters;
+
 /**
  * SourceWrapper is a wrapper object of the source instance.
  *
@@ -38,6 +40,16 @@ public class SourceWrapper {
         }
 
         return flexibleField;
+    }
+
+    public String getClassName() {
+        String[] fullNameClass = this.source.getClass().getName().split(Delimiters.DOT_SEPARATOR);
+
+        return fullNameClass[fullNameClass.length - 1];
+    }
+
+    public Object getValue() {
+        return this.source;
     }
 
 }

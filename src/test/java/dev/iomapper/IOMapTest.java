@@ -4,8 +4,6 @@ import dev.iomapper.dtos.AddressDto;
 import dev.iomapper.dtos.ScholarshipDto;
 import dev.iomapper.dtos.UserDto;
 import dev.iomapper.models.User;
-import dev.iomapper.BridgeMap;
-import dev.iomapper.IOMapBridge;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -48,7 +46,7 @@ public class IOMapTest {
         userDto.setJob("Programmer");
 
         User user = map.inner().from(userDto).to(User.class).ignoring(ignorableFields ->
-                ignorableFields.ignore("name").ignore("job")
+            ignorableFields.ignore("name").ignore("job")
         ).build();
 
         assertNull(user.getName());
@@ -61,8 +59,8 @@ public class IOMapTest {
         userDto.setEmail("dosek17@gmail.com");
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-                customMapping
-                        .relate("email", "userId")
+            customMapping
+                .relate("email", "userId")
         ).build();
 
         assertEquals("dosek17@gmail.com", user.getUserId());
@@ -78,7 +76,7 @@ public class IOMapTest {
         userDto.setAddressDto(addressDto);
 
         User user = map.inner().from(userDto).to(User.class).ignoring(ignorableFields ->
-                ignorableFields.ignore("address.state")
+            ignorableFields.ignore("address.state")
         ).build();
 
         assertNull(user.getAddress().getState());
@@ -94,9 +92,9 @@ public class IOMapTest {
         userDto.setAddressDto(addressDto);
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-                customMapping
-                        .relate("addressDto.zip", "address.zipCode")
-                        .relate("addressDto.state", "fullAddress")
+            customMapping
+                .relate("addressDto.zip", "address.zipCode")
+                .relate("addressDto.state", "fullAddress")
         ).build();
 
         assertEquals("03400", user.getAddress().getZipCode());
@@ -111,8 +109,8 @@ public class IOMapTest {
         userDto.setLastName("Acosta");
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-                customMapping
-                        .relate("concat(name, middleName, lastName, ['s'])", "name")
+            customMapping
+                .relate("concat(name, middleName, lastName, ['s'])", "name")
         ).build();
 
         assertEquals("Jacob Guzman Acosta", user.getName());
@@ -128,8 +126,8 @@ public class IOMapTest {
         userDto.setAddressDto(addressDto);
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-                customMapping
-                        .relate("addressDto.concat(state, zip, ['*'])", "fullAddress")
+            customMapping
+                .relate("addressDto.concat(state, zip, ['*'])", "fullAddress")
         ).build();
 
         assertEquals("CDMX*03400", user.getFullAddress());
@@ -141,11 +139,11 @@ public class IOMapTest {
         userDto.setName("Jacob");
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-                customMapping
-                        .relate("name", "name, userId")
+            customMapping
+                .relate("name", "alias, userId")
         ).build();
 
-        assertEquals("Jacob", user.getName());
+        assertEquals("Jacob", user.getAlias());
         assertEquals("Jacob", user.getUserId());
     }
 
@@ -172,7 +170,7 @@ public class IOMapTest {
         userDto.setAddressDto(addressDto);
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-                customMapping.relate("addressDto", "address.zipCode")
+            customMapping.relate("addressDto", "address.zipCode")
         ).build();
 
         assertNull(user.getAddress().getZipCode());
@@ -184,7 +182,7 @@ public class IOMapTest {
         userDto.setJob("Developer");
 
         User user = map.inner().from(userDto).to(User.class).relate(customMapping ->
-                customMapping.relate("job", "address")
+            customMapping.relate("job", "address")
         ).build();
 
         assertNull(user.getAddress());

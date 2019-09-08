@@ -5,6 +5,7 @@ package dev.iomapper.models;
  */
 public class NumericModel {
 
+    private NestedNumericModel nestedNumericModel;
     private byte byteField;
     private short shortField;
     private int intField;
@@ -67,6 +68,14 @@ public class NumericModel {
 
     public void setBooleanField(boolean booleanField) {
         this.booleanField = booleanField;
+    }
+
+    public NestedNumericModel getNestedNumericModel() {
+        return nestedNumericModel;
+    }
+
+    public void setNestedNumericModel(NestedNumericModel nestedNumericModel) {
+        this.nestedNumericModel = nestedNumericModel;
     }
 
 }
