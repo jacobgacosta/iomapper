@@ -28,7 +28,7 @@ public class IOMapNestedFunctionsTest {
         numericModel.setByteField((byte) 127);
         numericModel.setShortField((short) 10000);
 
-        NumericDto numericDto = map.outer().from(numericModel).to(NumericDto.class).relate(customMapping ->
+        map.outer().from(numericModel).to(NumericDto.class).relate(customMapping ->
             customMapping.relate("nonexistentFunction(byteField, shortField)", "stringI")
         ).build();
     }
