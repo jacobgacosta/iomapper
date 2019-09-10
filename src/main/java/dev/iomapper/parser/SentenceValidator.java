@@ -1,8 +1,5 @@
 package dev.iomapper.parser;
 
-import java.io.File;
-import java.util.Arrays;
-
 /**
  * Created by norveo on 11/14/18.
  */
@@ -12,24 +9,6 @@ public class SentenceValidator {
 
     public static SentenceValidator getInstance() {
         return instance;
-    }
-
-    private static void validateNestedFunctionsSentence(String sentence) {
-        String packageName = "io.dojogeek.parser.functions";
-
-        String path = packageName.replace(".", "/");
-
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-        String[] methodsList = new File(classLoader.getResource(path).getFile()).list();
-
-        String function = sentence.substring(0, sentence.indexOf("("));
-
-        if (!Arrays.stream(methodsList)
-                .map(fileName -> fileName.replace(".class", "").toLowerCase())
-                .anyMatch(sentence.substring(0, sentence.indexOf("("))::equals)) {
-            throw new RuntimeException("The '" + sentence + "'" + " function doesn't exist.");
-        }
     }
 
     public boolean validate(String sentence) {
