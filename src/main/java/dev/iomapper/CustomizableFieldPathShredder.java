@@ -45,11 +45,7 @@ public class CustomizableFieldPathShredder {
     public boolean hasNestedFields() {
         return !this.nestedFields.isEmpty();
     }
-
-    public boolean hasNoNestedFields() {
-        return this.nestedFields.isEmpty();
-    }
-
+    
     public void updateRootWithNextField() {
         if (!this.nestedFields.isEmpty()) {
             this.root = this.nestedFields.get(0);
