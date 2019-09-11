@@ -53,10 +53,10 @@ local.properties
 .worksheet
 
 ### Eclipse Patch ###
-# Eclipse Core		
+# Eclipse Core
 .project
 
-# JDT-specific (Eclipse Java Development Tools)		
+# JDT-specific (Eclipse Java Development Tools)
 .classpath
 
 ### Intellij ###
@@ -309,5 +309,7 @@ gradle-app.setting
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+
+gradle.properties
 
 # End of https://www.gitignore.io/api/java,linux,macos,gradle,eclipse,windows,intellij,intellij+all,intellij+iml
