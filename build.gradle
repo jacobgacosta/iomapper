@@ -11,10 +11,6 @@ plugins {
     id 'java-library'
 }
 
-apply plugin: 'java'
-
-apply plugin: 'application'
-
 jar {
     baseName = 'iomapper'
     version =  '1.0.0'
