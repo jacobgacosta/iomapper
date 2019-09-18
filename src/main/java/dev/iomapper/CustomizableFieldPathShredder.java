@@ -1,7 +1,6 @@
 package dev.iomapper;
 
 import dev.iomapper.parser.SentenceValidator;
-import dev.iomapper.utils.Delimiters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,8 +44,8 @@ public class CustomizableFieldPathShredder {
     public boolean hasNestedFields() {
         return !this.nestedFields.isEmpty();
     }
-    
-    public void updateRootWithNextField() {
+
+    public void updateRootFieldWithNextField() {
         if (!this.nestedFields.isEmpty()) {
             this.root = this.nestedFields.get(0);
 

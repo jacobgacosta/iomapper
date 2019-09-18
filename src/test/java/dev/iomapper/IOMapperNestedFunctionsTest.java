@@ -12,12 +12,12 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by norveo on 10/15/18.
  */
-public class IOMapNestedFunctionsTest {
+public class IOMapperNestedFunctionsTest {
 
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
 
-    private BridgeMap<NumericDto, NumericModel> map = new IOMapBridge<>();
+    private BridgeMap<NumericDto, NumericModel> map = new IOMapperBridge<>();
 
     @Test
     public void shouldThrowARuntimeExceptionForNonExistentFunction() {

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * UnwantedTargetList is a extension of an ArrayList for the ignorable fields.
+ * IgnorableFields allows you add fields for ignore in mapping operation.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public class IgnorableFields {
 
@@ -15,21 +15,37 @@ public class IgnorableFields {
     private List<IgnorableFieldPathShredder> ignorableFieldPathShredders = new ArrayList<>();
 
     /**
-     * Add the name of the field to fill.
+     * Adds the ignorable field.
+     * <p>
+     * The <b>fieldPath</b> value is treated as a path, is possible to ignore nested fields using the dot operator,
+     * ex. rootField.firstNestedField.secondNestedField
      *
-     * @param fieldName the field name.
-     * @return a <bold>UnwantedTargetList</bold> instance
+     * @param fieldPath the field path.
+     * @return a <b>IgnorableFields</b> instance
      */
-    public IgnorableFields ignore(String fieldName) {
-        this.ignorableFieldPathShredders.add(new IgnorableFieldPathShredder(fieldName));
+    public IgnorableFields ignore(String fieldPath) {
+        this.ignorableFieldPathShredders.add(new IgnorableFieldPathShredder(fieldPath));
 
         return this;
     }
 
+    /**
+     * Check if the ignorable list is empty.
+     *
+     * @return a boolean
+     */
     public boolean isEmpty() {
         return this.ignorableFieldPathShredders.isEmpty();
     }
 
+    /**
+     * Verifies if the ignorable list contains a root field matching <b>fieldName</b>.
+     * <p>
+     * The root field is the first name in the chained fields separated by dot operator.
+     *
+     * @param fieldName the field name
+     * @return the boolean
+     */
     public boolean containsTo(String fieldName) {
         for (IgnorableFieldPathShredder ignorableFieldPathShredder : this.ignorableFieldPathShredders) {
             if (ignorableFieldPathShredder.getRootField().equals(fieldName)) {
@@ -40,6 +56,13 @@ public class IgnorableFields {
         return false;
     }
 
+    /**
+     * Remove the root field in a field path.
+     * <p>
+     * If the root field is the only one without nested fields, it's preserved in the list.
+     *
+     * @param fieldName the field name to remove
+     */
     public void removeRootFieldWithName(String fieldName) {
         LASTED_DELETED = fieldName;
 
@@ -50,6 +73,14 @@ public class IgnorableFields {
         }
     }
 
+    /**
+     * Checks if a field with the name equal to <b>fieldName</b> exist in the list.
+     *
+     * <b>fieldName</b> is compared with the root field in the field path added to ignorable list.
+     *
+     * @param fieldName the field name
+     * @return the boolean
+     */
     public boolean hasIgnorableNestedFor(String fieldName) {
         for (IgnorableFieldPathShredder ignorableFieldPathShredder : ignorableFieldPathShredders) {
             if (ignorableFieldPathShredder.getRootField().equals(fieldName) && ignorableFieldPathShredder.hasNestedFields()) {

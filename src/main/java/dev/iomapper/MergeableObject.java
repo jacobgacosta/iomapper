@@ -1,26 +1,22 @@
 package dev.iomapper;
 
 import dev.iomapper.parser.Function;
-import dev.iomapper.utils.Delimiters;
-
-import java.util.logging.Logger;
 
 /**
- * MergeableObject allows to mergeCustomMappings a source with a target object.
+ * MergeableObject allows to merge a source object with a target object.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public abstract class MergeableObject {
 
-    private final static Logger LOGGER = Logger.getLogger(MergeableObject.class.getName());
-
     /**
-     * Merge the source with the target object taking into account the ignorable fields and the custom relations.
+     * Inspects the target object and iterate over its fields to compare each one and verify if it applies
+     * in a custom mapping or ignorable fields.
      *
-     * @param sourceWrapper  the source object wrapper.
-     * @param target         the target instance.
-     * @param ignorable      a list with the unwanted target fields.
-     * @param customMappings a mapper with the custom relations for mapping.
+     * @param sourceWrapper  the source wrapper object.
+     * @param target         the target object.
+     * @param ignorable      the ignorable fields object.
+     * @param customMappings the custom mappings object.
      */
     protected void merge(SourceWrapper sourceWrapper, Object target, IgnorableFields ignorable, CustomMappings customMappings) {
         new InspectableObject(target)
@@ -38,8 +34,8 @@ public abstract class MergeableObject {
                     targetFlexibleField.setIgnorableFields(ignorable);
                 }
 
-                if ((customMappings.isNotEmpty() && customMappings.hasTargetWithName(targetFieldName)) ||
-                    customMappings.existInMultiple(targetFieldName)) {
+                if ((customMappings.isNotEmpty() && customMappings.hasTargetFor(targetFieldName)) ||
+                    customMappings.existInMultipleTargets(targetFieldName)) {
                     this.mergeCustomMappings(sourceWrapper, targetFlexibleField, customMappings);
 
                     return;
@@ -51,10 +47,21 @@ public abstract class MergeableObject {
             });
     }
 
+    /**
+     * Assigns the source values to the target fields defined in the custom mapping, including:
+     *
+     * - Result of the execution functions
+     * - Apply nested functions source fields
+     * - Mapping to multiple target fields
+     *
+     * @param sourceWrapper  the source wrapper object.
+     * @param targetField    the flexible field object.
+     * @param customMappings the custom mappings object.
+     */
     protected void mergeCustomMappings(SourceWrapper sourceWrapper, FlexibleField targetField, CustomMappings customMappings) {
-        CustomizableFieldPathShredder targetPath = customMappings.getTargetWithName(targetField.getName());
-
         CustomizableFieldPathShredder sourcePath = customMappings.getSourceFor(targetField.getName());
+
+        CustomizableFieldPathShredder targetPath = customMappings.getTargetWithName(targetField.getName());
 
         FlexibleField sourceField = sourceWrapper.getMatchingFieldFor(sourcePath.getRootField());
 
@@ -68,11 +75,11 @@ public abstract class MergeableObject {
 
         if (sourceField != null) {
             if (sourcePath.hasNestedFields()) {
-                sourcePath.updateRootWithNextField();
+                sourcePath.updateRootFieldWithNextField();
             }
 
             if (targetPath.hasNestedFields()) {
-                targetPath.updateRootWithNextField();
+                targetPath.updateRootFieldWithNextField();
             } else {
                 if (targetPath.getRootField().contains(Delimiters.COMMA_SEPARATOR)) {
                     String newRootTargetPath = targetPath.getRootField().replace(targetField.getName() + ",", "");

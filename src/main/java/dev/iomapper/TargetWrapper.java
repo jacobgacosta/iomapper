@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 /**
  * TargetWrapper is a wrapper to handle easily the target class filling.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public class TargetWrapper<T> extends MergeableObject {
 
@@ -18,7 +18,7 @@ public class TargetWrapper<T> extends MergeableObject {
     private IgnorableFields ignorableFields = new IgnorableFields();
 
     /**
-     * TargetWrapper constructor.
+     * <b>TargetWrapper</b> constructor.
      *
      * @param targetClass the target class.
      */
@@ -27,21 +27,21 @@ public class TargetWrapper<T> extends MergeableObject {
     }
 
     /**
-     * Returns a target filled instance from source object.
+     * Sets a @see dev.iomapper.SourceWrapper object.
      *
-     * @param source the source object wrapper.
-     * @return a TargetWrapper object.
+     * @param sourceWrapper the source wrapper object.
+     * @return a <b>TargetWrapper</b> object.
      */
-    public TargetWrapper<T> populateWith(SourceWrapper source) {
-        this.sourceWrapper = source;
+    public TargetWrapper<T> populateWith(SourceWrapper sourceWrapper) {
+        this.sourceWrapper = sourceWrapper;
 
         return this;
     }
 
     /**
-     * Sets a list of fields to fill.
+     * Sets an @see dev.iomapper.IgnorableFields object.
      *
-     * @param ignorableFields a list of fields to fill.
+     * @param ignorableFields the ignorable fields object.
      */
     public TargetWrapper<T> ignore(IgnorableFields ignorableFields) {
         if (ignorableFields != null) {
@@ -52,9 +52,9 @@ public class TargetWrapper<T> extends MergeableObject {
     }
 
     /**
-     * Sets a fill of the custom relations mapping.
+     * Sets a @see dev.iomapper.CustomMappings object.
      *
-     * @param customizable a fill with the custom relations.
+     * @param customizable the custom mappings object.
      */
     public TargetWrapper<T> relate(CustomMappings customizable) {
         if (customizable != null) {
@@ -64,6 +64,11 @@ public class TargetWrapper<T> extends MergeableObject {
         return this;
     }
 
+    /**
+     * Gets the filled target object.
+     *
+     * @return T the type of target object.
+     */
     public T get() {
         try {
             this.targetInstance = this.target.newInstance();

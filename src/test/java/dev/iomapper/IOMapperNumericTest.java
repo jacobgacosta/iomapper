@@ -1,8 +1,6 @@
 package dev.iomapper;
 
 import dev.iomapper.dtos.NumericDto;
-import dev.iomapper.BridgeMap;
-import dev.iomapper.IOMapBridge;
 import dev.iomapper.models.NumericModel;
 import org.junit.Test;
 
@@ -11,9 +9,9 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by norveo on 10/12/18.
  */
-public class IOMapNumericTest {
+public class IOMapperNumericTest {
 
-    private BridgeMap<NumericDto, NumericModel> map = new IOMapBridge<>();
+    private BridgeMap<NumericDto, NumericModel> map = new IOMapperBridge<>();
 
     @Test
     public void shouldCastStringTypeToByteTypeThroughCustomMapping() {

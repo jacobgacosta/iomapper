@@ -1,6 +1,5 @@
 package dev.iomapper;
 
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -10,9 +9,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        IOMapTest.class,
-        IOMapNumericTest.class,
-        IOMapNestedFunctionsTest.class
+        IOMapperTest.class,
+        IOMapperNumericTest.class,
+        IOMapperNestedFunctionsTest.class
 })
-public class IOMapTestSuite {
+public class IOMapperTestSuite {
 }
