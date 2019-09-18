@@ -1,46 +1,46 @@
 package dev.iomapper;
 
 /**
- * Mapper is the contract to fill a target object.
+ * Mapper is the contract to build a target object.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public interface Mapper<T, T2> {
 
     /**
-     * Sets the source object to fill.
+     * Sets the source object.
      *
      * @param source the source instance.
-     * @return a <bold>IOMap</bold> instance.
+     * @return a <b>IOMap</b> instance.
      */
     Mapper<T, T2> from(T source);
 
     /**
-     * Sets the target class to fill.
+     * Sets the target class.
      *
      * @param target the target class.
-     * @return a <bold>IOMap</bold> instance.
+     * @return a <b>IOMap</b> instance.
      */
     Mapper<T, T2> to(Class<T2> target);
 
     /**
-     * Sets an ignorable object with the fields to fill in mapping.
+     * Sets an ignorable object with the ignorable fields for mapping operation.
      *
-     * @param ignorable the target class.
-     * @return a <bold>IOMap</bold> instance.
+     * @param ignorable the ignorable instance.
+     * @return a <b>IOMap</b> instance.
      */
     Mapper<T, T2> ignoring(Ignorable ignorable);
 
     /**
-     * Sets a customizable object with the fields for explicit mapping.
+     * Sets a customizable object with the fields for the explicit mapping.
      *
-     * @param customizable the target class.
-     * @return a <bold>IOMap</bold> instance.
+     * @param customizable the customizable instance.
+     * @return a <b>IOMap</b> instance.
      */
     Mapper<T, T2> relate(Customizable customizable);
 
     /**
-     * Returns a filled target object.
+     * Starts with the building target object
      *
      * @return a target object instance.
      */

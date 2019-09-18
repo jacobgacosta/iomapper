@@ -1,29 +1,31 @@
 package dev.iomapper;
 
 import java.lang.reflect.Field;
-import java.util.logging.Logger;
 
 /**
- * JavaField is a wrapper of a java property.
+ * JavaField is a wrapper of a Java property.
  *
- * @author norvek
+ * A source field or target field can be of this type and be wrapped to help in the custom mappings.
+ *
+ * @author Jacob G. Acosta
  */
 public class JavaField extends FlexibleField {
-
-    private final static Logger LOGGER = Logger.getLogger(JavaField.class.getName());
 
     /**
      * JavaField constructor.
      *
-     * @param field           the field.
-     * @param declaringObject the reference object that hosts the field.
+     * @param field        the field.
+     * @param parentObject the reference object that hosts the field.
      */
-    public JavaField(Field field, Object declaringObject) {
-        super(field, declaringObject);
+    public JavaField(Field field, Object parentObject) {
+        super(field, parentObject);
     }
 
     /**
-     * Set the value to property.
+     * This method chooce between set directly a value to a Java field or apply the merge
+     * custom mapping operation for nested objects.
+     *
+     * In the custom mapping, an object
      *
      * @param flexibleField a flexible field.
      */

@@ -4,9 +4,11 @@ import java.lang.reflect.Field;
 import java.util.logging.Logger;
 
 /**
- * JavaField is a wrapper of a foreign property.
+ * ForeignField is a wrapper for non-Java fields.
+ * <p>
+ * A source field or target field can be of this type and be wrapped to help in the custom mappings.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public class ForeignField extends FlexibleField {
 
@@ -23,15 +25,16 @@ public class ForeignField extends FlexibleField {
     }
 
     /**
-     * Sets the value to property.
+     * Creates instances for non-Java objects and apply the merge operation to
+     * apply the custom mappings.
      *
      * @param flexibleField a flexible field.
      */
     @Override
     protected void setValue(FlexibleField flexibleField) {
         if (flexibleField == null ||
-                flexibleField.getValue() == null ||
-                flexibleField instanceof JavaField) {
+            flexibleField.getValue() == null ||
+            flexibleField instanceof JavaField) {
             return;
         }
 

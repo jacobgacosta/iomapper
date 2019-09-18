@@ -3,12 +3,12 @@ package dev.iomapper;
 /**
  * Customizable is the contract that define the custom mappings.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public interface Customizable {
 
     /**
-     * Fills a custom mapper.
+     * Fills a custom mapper through the @see dev.iomapper.CustomMappings object.
      *
      * @return the filled custom mapper.
      */

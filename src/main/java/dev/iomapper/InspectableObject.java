@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * InspectableObject is a wrapper to inspect easily a object.
+ * InspectableObject helps inspect an object and choose its type.
  *
  * @author norvek
  */
@@ -23,7 +23,8 @@ public class InspectableObject {
     }
 
     /**
-     * Returns a list of FlexibleField
+     * Iterates over the inspectable object and choose the field type,
+     * @see dev.iomapper.JavaField or @see dev.iomapper.ForeignField.
      *
      * @return a FlexibleField object.
      */
@@ -32,13 +33,13 @@ public class InspectableObject {
 
         Stream.of(this.object.getClass().getDeclaredFields()).forEach(field -> {
             if (field.getType().isPrimitive() ||
-                    field.getType().isAssignableFrom(Byte.class) ||
-                    field.getType().isAssignableFrom(Short.class) ||
-                    field.getType().isAssignableFrom(Integer.class) ||
-                    field.getType().isAssignableFrom(Long.class) ||
-                    field.getType().isAssignableFrom(Float.class) ||
-                    field.getType().isAssignableFrom(Double.class) ||
-                    field.getType().isAssignableFrom(String.class)) {
+                field.getType().isAssignableFrom(Byte.class) ||
+                field.getType().isAssignableFrom(Short.class) ||
+                field.getType().isAssignableFrom(Integer.class) ||
+                field.getType().isAssignableFrom(Long.class) ||
+                field.getType().isAssignableFrom(Float.class) ||
+                field.getType().isAssignableFrom(Double.class) ||
+                field.getType().isAssignableFrom(String.class)) {
                 fields.add(new JavaField(field, this.object));
                 return;
             }
