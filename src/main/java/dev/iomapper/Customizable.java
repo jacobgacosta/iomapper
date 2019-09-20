@@ -10,6 +10,7 @@ public interface Customizable {
     /**
      * Fills a custom mapper through the @see dev.iomapper.CustomMappings object.
      *
+     * @param customMapping a custom mapping object
      * @return the filled custom mapper.
      */
     CustomMappings fill(CustomMappings customMapping);

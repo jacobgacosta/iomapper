@@ -5,7 +5,7 @@ import java.util.List;
 
 
 /**
- * <b>NumberArgumentConverter<b/> converts a serie of arguments in a list of determinate type.
+ * <b>NumberArgumentConverter</b> converts a serie of arguments in a list of determinate type.
  *
  * @param <T> the type parameter
  */

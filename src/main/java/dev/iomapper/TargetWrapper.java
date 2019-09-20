@@ -42,6 +42,7 @@ public class TargetWrapper<T> extends MergeableObject {
      * Sets an @see dev.iomapper.IgnorableFields object.
      *
      * @param ignorableFields the ignorable fields object.
+     * @return a <b>TargetWrapper</b> object
      */
     public TargetWrapper<T> ignore(IgnorableFields ignorableFields) {
         if (ignorableFields != null) {
@@ -55,6 +56,7 @@ public class TargetWrapper<T> extends MergeableObject {
      * Sets a @see dev.iomapper.CustomMappings object.
      *
      * @param customizable the custom mappings object.
+     * @return a <b>TargetWrapper</b> object
      */
     public TargetWrapper<T> relate(CustomMappings customizable) {
         if (customizable != null) {
