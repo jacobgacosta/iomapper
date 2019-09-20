@@ -24,9 +24,9 @@ public class InspectableObject {
 
     /**
      * Iterates over the inspectable object and choose the field type,
-     * @see dev.iomapper.JavaField or @see dev.iomapper.ForeignField.
      *
      * @return a FlexibleField object.
+     * @see dev.iomapper.JavaField or @see dev.iomapper.ForeignField.
      */
     public List<FlexibleField> getDeclaredFields() {
         List<FlexibleField> fields = new ArrayList<>();

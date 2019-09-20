@@ -3,7 +3,7 @@ package dev.iomapper;
 /**
  * BridgeMap is the contract to fill the source/target and vice versa.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public interface BridgeMap<T, T2> {
 

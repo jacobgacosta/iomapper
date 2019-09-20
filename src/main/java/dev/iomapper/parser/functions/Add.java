@@ -4,13 +4,21 @@ import dev.iomapper.parser.*;
 
 import java.util.List;
 
+/**
+ * <b>Add</b> class apply a sum of primitive types.
+ *
+ * @author Jacob G. Acosta
+ */
 public class Add implements Callable {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Result invoke(String arguments) {
-        NumericArgumetValidator numericArgumetValidator = new NumericArgumetValidator(arguments);
+        ArithmeticOperatorDeterminer arithmeticOperatorDeterminer = new ArithmeticOperatorDeterminer(arguments);
 
-        OperationTypeEnum operationType = numericArgumetValidator.getOperationType();
+        OperationTypeEnum operationType = arithmeticOperatorDeterminer.getOperationType();
 
         Result result = new Result();
 

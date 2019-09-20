@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by norveo on 11/14/18.
+ * <b>Function</b> is a wrapper for a function sentence that allows to operate on it.
+ *
+ * @author Jacob G. Acosta
  */
 public class Function {
 
@@ -14,37 +16,73 @@ public class Function {
     private String sentence;
     private int lastOpeningParenthesisPosition = 0;
     private int firstClosingParenthesisPosition = 0;
-    private List<SingleFunction> nestedFunctionList = new ArrayList<>();
+    private List<SingleFunction> nestedFunctionsList = new ArrayList<>();
 
+    /**
+     * Instantiates a new <b>Function</b> object, apply a validation on the <b>sentence</b>
+     * and fills a list of functions found.
+     * <p>
+     * If the function has no other nested functions, the first level function is added
+     * as the only element in the list of nested functions.
+     *
+     * @param sentence the sentence
+     */
     public Function(String sentence) {
         this.validate(sentence);
 
         this.sentence = sentence;
 
-        this.shredFunction(this.sentence, this.nestedFunctionList);
+        this.shredFunction(this.sentence, this.nestedFunctionsList);
     }
 
+    /**
+     * Gets the result of sentence execution. The sentence may contain nested functions.
+     *
+     * @return a @see dev.iomapper.parser.Result object
+     */
     public Result execute() {
-        return Functions.wrap(this.nestedFunctionList)
-                .validateAgainst(FunctionLoader.callable)
-                .execute();
+        return Functions.wrap(this.nestedFunctionsList)
+            .validateAgainst(FunctionLoader.callable)
+            .execute();
     }
 
+    /**
+     * Checks if the sentence contains nested functions.
+     *
+     * @return a boolean
+     */
     public boolean hasNestedFunctions() {
-        return this.nestedFunctionList.size() > 1;
+        return this.nestedFunctionsList.size() > 1;
     }
 
+    /**
+     * Gets the most outer function in the sentence.
+     *
+     * @return @see dev.iomapper.parser.SingleFunction object
+     */
     public SingleFunction getSingleFunction() {
-        return this.nestedFunctionList.get(0);
+        return this.nestedFunctionsList.get(0);
     }
 
-    public List<SingleFunction> getNestedFunctionList() {
-        return this.nestedFunctionList;
+    /**
+     * Gets a list of nested functions.
+     *
+     * @return the nested function list
+     */
+    public List<SingleFunction> getNestedFunctionsList() {
+        return this.nestedFunctionsList;
     }
 
+    /**
+     * Fills a list of functions contained in the sentence.
+     *
+     * @param sentence  the sentence
+     * @param functions an empty list of functions
+     * @return a list of functions
+     */
     private List<SingleFunction> shredFunction(String sentence, List<SingleFunction> functions) {
         if (!this.isCallable(sentence)) {
-            return this.nestedFunctionList;
+            return this.nestedFunctionsList;
         }
 
         char[] granulatedSentence = this.getGranuleteFrom(sentence);
@@ -77,7 +115,7 @@ public class Function {
                 functions.add(singleFunction);
 
                 if (functions.size() > 1) {
-                    singleFunction.setReferenceTo(functions.get(functions.size() - 2).hash());
+                    singleFunction.setReference(functions.get(functions.size() - 2).hash());
                 }
 
                 sentence = this.replaceOccurrencesInSentence(sentence, singleFunction.getSignature(), singleFunction.hash());
@@ -91,6 +129,12 @@ public class Function {
         return this.shredFunction(sentence, functions);
     }
 
+    /**
+     * Deduces the name of a function in a sentence.
+     *
+     * @param sentence the sentence
+     * @return the name of the function
+     */
     private String deduceTheMostNestedFunctionName(String sentence) {
         String subset = sentence.substring(0, this.getConstructorOpeningPosition());
 
@@ -109,6 +153,11 @@ public class Function {
         return presumedFunctionName.reverse().toString();
     }
 
+    /**
+     * Validates a function sentence.
+     *
+     * @param sentence the sentence
+     */
     private void validate(String sentence) {
         sentence = sentence.trim();
 
@@ -117,13 +166,19 @@ public class Function {
         }
     }
 
-    private boolean isValidStructure(String function) {
+    /**
+     * Validates the function sentence structure.
+     *
+     * @param sentence the sentence
+     * @return a boolean
+     */
+    private boolean isValidStructure(String sentence) {
         char openParenthesis = '(';
         char closeParenthesis = ')';
 
         int parenthesisCount = -1;
 
-        char[] characters = function.toCharArray();
+        char[] characters = sentence.toCharArray();
 
         for (int index = 0; index <= characters.length - 1; index++) {
             if (characters[index] == openParenthesis) {
@@ -135,45 +190,100 @@ public class Function {
             }
         }
 
-        return parenthesisCount != 0 && this.isAValidStartAndEndOfTheFunction(function);
+        return parenthesisCount != 0 && this.isAValidStartAndEndOfTheFunction(sentence);
     }
 
-    private boolean isAValidStartAndEndOfTheFunction(String name) {
-        return name.matches("^([a-zA-Z]+\\()+.+\\)$");
+    /**
+     * Checks the start and end of the function sentence.
+     *
+     * @param sentence the sentence
+     * @return a boolean
+     */
+    private boolean isAValidStartAndEndOfTheFunction(String sentence) {
+        return sentence.matches("^([a-zA-Z]+\\()+.+\\)$");
     }
 
+    /**
+     * Checks the sentence corresponds to a valid callable function.
+     *
+     * @param sentence the sentence
+     * @return a boolean
+     */
     private boolean isCallable(String sentence) {
         return !sentence.equals(ExtrangerFunction.UNRECOGNIZED_FUNCTION) && this.isAValidStartAndEndOfTheFunction(sentence);
     }
 
+    /**
+     * Converts the setence to a char array.
+     *
+     * @param sentence the sentence
+     * @return an array of chars
+     */
     private char[] getGranuleteFrom(String sentence) {
         return sentence.toCharArray();
     }
 
+    /**
+     * Sets the position for an opening parenthesis in the sentence.
+     *
+     * @param position the position
+     */
     private void registerOpeningParenthesisPosition(int position) {
         this.lastOpeningParenthesisPosition = position;
     }
 
+    /**
+     * Sets the position for an closing parenthesis in the sentence.
+     *
+     * @param position the position
+     */
     private void registerClosingParenthesisPosition(int position) {
         this.firstClosingParenthesisPosition = position;
     }
 
+    /**
+     * Checks if the function in a sentence has already closed parenthesis indicating
+     * the end of the signature.
+     *
+     * @return a boolean
+     */
     private boolean isReadyToPrepareAFunction() {
         return this.firstClosingParenthesisPosition > 0;
     }
 
+    /**
+     * Gets the last registered position for an opening parenthesis in the funcion sentence.
+     *
+     * @return the position
+     */
     private int getConstructorOpeningPosition() {
         return this.lastOpeningParenthesisPosition;
     }
 
+    /**
+     * Gets the last registered position for an closing parenthesis in the funcion sentence.
+     *
+     * @return the position
+     */
     private int getConstructorClosingPosition() {
         return this.firstClosingParenthesisPosition;
     }
 
+    /**
+     * Replaces the function signature within a sentence using the hash of function to avoid
+     * processing functions with a repeat signatures.
+     *
+     * @param sentence    the sentence
+     * @param replaceable the signature to replace
+     * @return the has of function
+     */
     private String replaceOccurrencesInSentence(String sentence, String replaceable, String hash) {
         return sentence.replace(replaceable, hash);
     }
 
+    /**
+     * Resets the indexes for the opening and closing parentheses.
+     */
     private void resetSweepIndexes() {
         this.lastOpeningParenthesisPosition = 0;
         this.firstClosingParenthesisPosition = 0;

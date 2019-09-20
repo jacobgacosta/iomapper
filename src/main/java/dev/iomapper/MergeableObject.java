@@ -49,7 +49,7 @@ public abstract class MergeableObject {
 
     /**
      * Assigns the source values to the target fields defined in the custom mapping, including:
-     *
+     * <p>
      * - Result of the execution functions
      * - Apply nested functions source fields
      * - Mapping to multiple target fields
@@ -98,7 +98,7 @@ public abstract class MergeableObject {
         Function rootFunction = new Function(sourcePath.getRootField());
 
         if (rootFunction.hasNestedFunctions()) {
-            rootFunction.getNestedFunctionList().forEach(nestedFunction -> {
+            rootFunction.getNestedFunctionsList().forEach(nestedFunction -> {
                 nestedFunction.getArgumentsList().forEach(argument -> {
                     FlexibleField srcField = sourceWrapper.getMatchingFieldFor(argument);
 

@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 /**
  * JavaField is a wrapper of a Java property.
- *
+ * <p>
  * A source field or target field can be of this type and be wrapped to help in the custom mappings.
  *
  * @author Jacob G. Acosta
@@ -24,7 +24,7 @@ public class JavaField extends FlexibleField {
     /**
      * This method chooce between set directly a value to a Java field or apply the merge
      * custom mapping operation for nested objects.
-     *
+     * <p>
      * In the custom mapping, an object
      *
      * @param flexibleField a flexible field.

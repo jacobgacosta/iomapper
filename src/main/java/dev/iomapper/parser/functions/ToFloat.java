@@ -4,10 +4,15 @@ import dev.iomapper.parser.Callable;
 import dev.iomapper.parser.Result;
 
 /**
- * Created by norveo on 10/12/18.
+ * <b>ToFloat</b> class converts a type to float. The type needs to be compatible.
+ *
+ * @author Jacob G. Acosta
  */
 public class ToFloat implements Callable {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Result invoke(String arguments) {
         String value = arguments.split("@")[0];

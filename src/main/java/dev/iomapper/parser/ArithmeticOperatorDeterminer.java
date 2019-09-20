@@ -1,9 +1,21 @@
 package dev.iomapper.parser;
 
-public class NumericArgumetValidator {
+/**
+ * <b>ArithmeticOperatorDeterminer</b> helps determine the arithmetic operation's type
+ * for a series of arguments.
+ *
+ * @author Jacob G. Acosta
+ */
+public class ArithmeticOperatorDeterminer {
+
     private StringBuilder typesOfArguments = new StringBuilder();
 
-    public NumericArgumetValidator(String arguments) {
+    /**
+     * Instantiates a new Arithmetic operator determiner.
+     *
+     * @param arguments the arguments
+     */
+    public ArithmeticOperatorDeterminer(String arguments) {
         for (String argument : arguments.split(",")) {
             if (argument.trim().contains("@")) {
                 String[] parameterStructure = argument.trim().split("@");
@@ -15,9 +27,9 @@ public class NumericArgumetValidator {
 
                     continue;
                 } else if (!type.equals("float") &&
-                        !type.equals("double") &&
-                        !type.equals("long") &&
-                        (type.equals("int") || type.equals("byte") || type.equals("short"))
+                    !type.equals("double") &&
+                    !type.equals("long") &&
+                    (type.equals("int") || type.equals("byte") || type.equals("short"))
                 ) {
                     typesOfArguments.append(OperationTypeEnum.INT + "|");
 
@@ -51,6 +63,11 @@ public class NumericArgumetValidator {
         }
     }
 
+    /**
+     * Gets the operation type.
+     *
+     * @return the operation type
+     */
     public OperationTypeEnum getOperationType() {
         if (typesOfArguments.toString().contains(OperationTypeEnum.FLOAT.name())) {
             return OperationTypeEnum.FLOAT;
@@ -63,6 +80,11 @@ public class NumericArgumetValidator {
         return OperationTypeEnum.INT;
     }
 
+    /**
+     * Check if a value is an int type.
+     *
+     * @return a boolean
+     */
     private boolean isInt(String value) {
         try {
             Integer.valueOf(value);
@@ -73,6 +95,11 @@ public class NumericArgumetValidator {
         return true;
     }
 
+    /**
+     * Check if a value is a long type.
+     *
+     * @return a boolean
+     */
     private boolean isLong(String value) {
         try {
             Long.valueOf(value);
@@ -83,6 +110,11 @@ public class NumericArgumetValidator {
         return true;
     }
 
+    /**
+     * Check if a value is a float type.
+     *
+     * @return a boolean
+     */
     private boolean isFloat(String value) {
         try {
             Float.valueOf(value);
@@ -93,6 +125,11 @@ public class NumericArgumetValidator {
         return true;
     }
 
+    /**
+     * Check if a value is a double type.
+     *
+     * @return a boolean
+     */
     private boolean isDouble(String value) {
         try {
             Double.valueOf(value);

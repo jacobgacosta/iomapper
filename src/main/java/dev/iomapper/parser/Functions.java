@@ -3,23 +3,41 @@ package dev.iomapper.parser;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * <b>Functions</b> helps validate and execute a list of @see dev.iomapper.parser.SingleFunction objects.
+ *
+ * @author Jacob G. Acosta
+ */
 public class Functions {
 
     private static Functions functions = new Functions();
-    private List<SingleFunction> singleFunctionList;
+    private List<SingleFunction> singleFunctionsList;
 
     private Functions() {
     }
 
-    public static Functions wrap(List<SingleFunction> singleFunctionList) {
-        functions.setSingleFunctionList(singleFunctionList);
+    /**
+     * Sets the <b>singleFunctionList</b>
+     *
+     * @param singleFunctionsList the single functions list
+     * @return a static reference to <b>Functions</b> instance
+     */
+    public static Functions wrap(List<SingleFunction> singleFunctionsList) {
+        functions.setSingleFunctionList(singleFunctionsList);
 
         return functions;
     }
 
-    public Functions validateAgainst(Map<String, Callable> functionInfo) {
-        this.singleFunctionList.forEach(singleFunction -> {
-            if (functionInfo.get(singleFunction.getName().toLowerCase()) == null) {
+    /**
+     * Validates against a map of functions.
+     *
+     * @param functionsInfo the functions map
+     * @return a static reference to <b>Functions</b> instance
+     */
+    public Functions validateAgainst(Map<String, Callable> functionsInfo) {
+        this.singleFunctionsList.forEach(singleFunction -> {
+            if (functionsInfo.get(singleFunction.getName().toLowerCase()) == null) {
                 throw new RuntimeException("The '" + singleFunction.getName() + "'" + " singleFunction doesn't exist.");
             }
         });
@@ -27,11 +45,16 @@ public class Functions {
         return functions;
     }
 
+    /**
+     * Executes the Callable of functions.
+     *
+     * @return a @see dev.iomapper.parser.Result object
+     */
     public Result execute() {
-        this.singleFunctionList.forEach(function -> {
+        this.singleFunctionsList.forEach(function -> {
             if (function.hasAReference()) {
-                this.singleFunctionList.forEach(functionToCheck -> {
-                    if (functionToCheck.hash().equals(function.getReferenceTo())) {
+                this.singleFunctionsList.forEach(functionToCheck -> {
+                    if (functionToCheck.hash().equals(function.getReference())) {
                         String replacedArguments = function.getArguments().replace(functionToCheck.hash(), functionToCheck.getResult().getValue().toString());
 
                         function.setArguments(replacedArguments);
@@ -44,11 +67,16 @@ public class Functions {
             }
         });
 
-        return this.singleFunctionList.get(this.singleFunctionList.size() - 1).getResult();
+        return this.singleFunctionsList.get(this.singleFunctionsList.size() - 1).getResult();
     }
 
-    private void setSingleFunctionList(List<SingleFunction> singleFunctionList) {
-        this.singleFunctionList = singleFunctionList;
+    /**
+     * Sets the <b>singleFunctionList</b>
+     *
+     * @param singleFunctionsList the single functions list
+     */
+    private void setSingleFunctionList(List<SingleFunction> singleFunctionsList) {
+        this.singleFunctionsList = singleFunctionsList;
     }
 
 }

@@ -35,7 +35,7 @@ public class NumericModel {
     }
 
     public void setIntField(int intField) {
-       this.intField = intField;
+        this.intField = intField;
     }
 
     public long getLongField() {

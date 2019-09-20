@@ -4,10 +4,15 @@ import dev.iomapper.parser.Callable;
 import dev.iomapper.parser.Result;
 
 /**
- * Created by norveo on 10/14/18.
+ * <b>ToString</b> class converts a type to String. The type needs to be compatible.
+ *
+ * @author Jacob G. Acosta
  */
 public class ToString implements Callable {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Result invoke(String arguments) {
         String value;
