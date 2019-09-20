@@ -7,22 +7,29 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static dev.iomapper.RootTypeEnum.*;
-
 /**
- * Created by norveo on 8/7/18.
+ * <b>CustomizableFieldPathShredder</b> is an auxiliar class for @see dev.iomapper.CustomMappings class
+ * it split the field path identifiying the <b>root</b> and nested fields.
+ * <p>
+ * Created by Jacob G. Acosta.
  */
 public class CustomizableFieldPathShredder {
 
-    private String root;
+    private String rootField;
     private List<String> nestedFields = new ArrayList<>();
 
-    public CustomizableFieldPathShredder(String value) {
+    /**
+     * Applies the validations and assign the root field, as well as its nested fields (if it contains),.
+     * on the <b>fieldPath</b> parameter.
+     *
+     * @param fieldPath the field path
+     */
+    public CustomizableFieldPathShredder(String fieldPath) {
         SentenceValidator sentenceValidator = SentenceValidator.getInstance();
 
-        sentenceValidator.validate(value);
+        sentenceValidator.validate(fieldPath);
 
-        List<String> fields = new LinkedList<>(Arrays.asList(value.split(Delimiters.DOT_SEPARATOR)));
+        List<String> fields = new LinkedList<>(Arrays.asList(fieldPath.split(Delimiters.DOT_SEPARATOR)));
 
         if (fields.size() > 1) {
             for (int index = 1; index < fields.size(); index++) {
@@ -30,26 +37,45 @@ public class CustomizableFieldPathShredder {
             }
         }
 
-        this.root = fields.get(0);
+        this.rootField = fields.get(0);
     }
 
-    public void setRoot(String root) {
-        this.root = root;
+    /**
+     * Sets the root field.
+     *
+     * @param rootField the root field
+     */
+    public void setRoot(String rootField) {
+        this.rootField = rootField;
     }
 
+    /**
+     * Gets the root field.
+     *
+     * @return the root field
+     */
     public String getRootField() {
-        return this.root;
+        return this.rootField;
     }
 
+    /**
+     * Returns if the <b>fieldPath</b> has nested fields.
+     *
+     * @return the boolean
+     */
     public boolean hasNestedFields() {
         return !this.nestedFields.isEmpty();
     }
 
+    /**
+     * Updates the <b>root field</b> by moving it with the next nested.
+     */
     public void updateRootFieldWithNextField() {
         if (!this.nestedFields.isEmpty()) {
-            this.root = this.nestedFields.get(0);
+            this.rootField = this.nestedFields.get(0);
 
             this.nestedFields.remove(0);
         }
     }
+
 }

@@ -3,10 +3,26 @@ package dev.iomapper.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * <b>NumberArgumentConverter<b/> converts a serie of arguments in a list of determinate type.
+ *
+ * @param <T> the type parameter
+ */
 public class NumberArgumentConverter<T> {
 
     private List<T> params;
 
+    /**
+     * Instantiates a new Number argument converter.
+     * <p>
+     * When the arguments are received the way: 1, 2, 3 in String type,
+     * these are cataloged to a list of the defined type.
+     *
+     * @param delimiter the delimiter
+     * @param arguments the arguments
+     * @param type      the type
+     */
     public NumberArgumentConverter(String delimiter, String arguments, Class<T> type) {
         String[] args = arguments.split(delimiter);
 
@@ -29,6 +45,11 @@ public class NumberArgumentConverter<T> {
         }
     }
 
+    /**
+     * Gets the arguments.
+     *
+     * @return the arguments list
+     */
     public List<T> getArguments() {
         return this.params;
     }

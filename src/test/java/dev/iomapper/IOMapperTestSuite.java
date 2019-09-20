@@ -9,9 +9,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        IOMapperTest.class,
-        IOMapperNumericTest.class,
-        IOMapperNestedFunctionsTest.class
+    IOMapperTest.class,
+    IOMapperNumericTest.class,
+    IOMapperNestedFunctionsTest.class
 })
 public class IOMapperTestSuite {
 }

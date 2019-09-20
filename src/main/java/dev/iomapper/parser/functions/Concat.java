@@ -1,9 +1,9 @@
 package dev.iomapper.parser.functions;
 
+import dev.iomapper.Determiner;
 import dev.iomapper.parser.ArgumentCleaner;
 import dev.iomapper.parser.Callable;
 import dev.iomapper.parser.Result;
-import dev.iomapper.Determiner;
 
 import java.util.List;
 import java.util.logging.Logger;

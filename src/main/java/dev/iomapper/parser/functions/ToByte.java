@@ -4,10 +4,15 @@ import dev.iomapper.parser.Callable;
 import dev.iomapper.parser.Result;
 
 /**
- * Created by norveo on 10/3/18.
+ * <b>ToByte</b> class converts a type to byte. The type needs to be compatible.
+ *
+ * @author Jacob G. Acosta
  */
 public class ToByte implements Callable {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Result invoke(String arguments) {
         String value = arguments.split("@")[0];

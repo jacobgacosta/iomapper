@@ -1,7 +1,7 @@
 package dev.iomapper;
 
 /**
- * Customizable is the contract that define the custom mappings.
+ * <b>Customizable</b> is the contract that define the custom mappings.
  *
  * @author Jacob G. Acosta
  */

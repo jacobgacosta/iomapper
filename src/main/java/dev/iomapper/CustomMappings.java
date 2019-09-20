@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * CustomMappings allow you specify the custom mapping between source/target objects.
+ * <b>CustomMappings</b> allow you specify the custom mapping between source/target objects.
  *
  * @author Jacob G. Acosta
  */

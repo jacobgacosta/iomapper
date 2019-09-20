@@ -25,14 +25,14 @@ public class IOMapperNumericTest {
         numericDto.setStringBo("true");
 
         NumericModel numericModel = map.inner().from(numericDto).to(NumericModel.class).relate(customMapping ->
-                customMapping
-                        .relate("toByte(stringB)", "byteField")
-                        .relate("toShort(stringS)", "shortField")
-                        .relate("toInt(stringI)", "intField")
-                        .relate("toLong(stringL)", "longField")
-                        .relate("toFloat(stringF)", "floatField")
-                        .relate("toDouble(stringD)", "doubleField")
-                        .relate("toBoolean(stringBo)", "booleanField")
+            customMapping
+                .relate("toByte(stringB)", "byteField")
+                .relate("toShort(stringS)", "shortField")
+                .relate("toInt(stringI)", "intField")
+                .relate("toLong(stringL)", "longField")
+                .relate("toFloat(stringF)", "floatField")
+                .relate("toDouble(stringD)", "doubleField")
+                .relate("toBoolean(stringBo)", "booleanField")
         ).build();
 
         assertEquals(127, numericModel.getByteField());
@@ -50,7 +50,7 @@ public class IOMapperNumericTest {
         numericModel.setBooleanField(true);
 
         NumericDto numericDto = map.outer().from(numericModel).to(NumericDto.class).relate(customMapping ->
-                customMapping.relate("toString(booleanField)", "stringBo")
+            customMapping.relate("toString(booleanField)", "stringBo")
         ).build();
 
         assertEquals("true", numericDto.getStringBo());
@@ -65,8 +65,8 @@ public class IOMapperNumericTest {
         numericModel.setFloatField(93.90f);
 
         NumericDto numericDto = map.outer().from(numericModel).to(NumericDto.class).relate(customMapping ->
-                customMapping.relate("add(byteField, shortField)", "iValue")
-                             .relate("add(doubleField, floatField)", "dValue")
+            customMapping.relate("add(byteField, shortField)", "iValue")
+                .relate("add(doubleField, floatField)", "dValue")
         ).build();
 
         assertEquals(10127, numericDto.getiValue());

@@ -6,9 +6,12 @@ import java.lang.reflect.Field;
 import java.util.logging.Logger;
 
 /**
- * FlexibleField is a wrapper of a object property.
+ * <b>FlexibleField</b> helps to manipulate the <b>Field</b> objects.
+ * <p>
+ * Also keeps the list of @see dev.iomapper.CustomMappings and @see dev.iomapper.IgnorableFields applicable to
+ * the wrapped field.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public abstract class FlexibleField extends MergeableObject {
 
@@ -31,14 +34,18 @@ public abstract class FlexibleField extends MergeableObject {
     }
 
     /**
-     * Gets the name of property.
+     * Gets the name of the wrapped field.
+     *
+     * @return the name
      */
     protected String getName() {
         return this.field.getName();
     }
 
     /**
-     * Gets the value of property.
+     * Gets the value of the wrapped field.
+     *
+     * @return the value
      */
     protected Object getValue() {
         Object value = null;
@@ -54,9 +61,9 @@ public abstract class FlexibleField extends MergeableObject {
     }
 
     /**
-     * Set the value to property.
+     * Sets a value directly to the wrapped field.
      *
-     * @param value an object.
+     * @param value the value.
      */
     protected void setValue(Object value) {
         if (value == null) {
@@ -74,9 +81,9 @@ public abstract class FlexibleField extends MergeableObject {
     }
 
     /**
-     * Set the value to property.
+     * Sets a flexible field that contains the value to set for.
      *
-     * @param flexibleField a flexible field.
+     * @param flexibleField the flexible field.
      */
     protected void setValue(FlexibleField flexibleField) {
         if (flexibleField.getValue() == null) {
@@ -87,7 +94,7 @@ public abstract class FlexibleField extends MergeableObject {
     }
 
     /**
-     * Sets the ignorable list for the nested fields of this field.
+     * Sets the ignorable list applicable for the wrapped field.
      *
      * @param ignorableFields the ignorable list.
      */
@@ -96,7 +103,7 @@ public abstract class FlexibleField extends MergeableObject {
     }
 
     /**
-     * Sets the custom mapper for the nested fields of this field.
+     * Sets the custom mappings applicable for the wrapped field.
      *
      * @param customMappings the custom mapper.
      */
@@ -104,6 +111,12 @@ public abstract class FlexibleField extends MergeableObject {
         this.customMappings = customMappings;
     }
 
+
+    /**
+     * Gets the type of the wrapped field.
+     *
+     * @return the type
+     */
     public Class<?> getType() {
         return this.field.getType();
     }
