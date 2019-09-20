@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class IOMapTest {
+public class IOMapperTest {
 
-    private BridgeMap<UserDto, User> map = new IOMapBridge<>();
+    private BridgeMap<UserDto, User> map = new IOMapperBridge<>();
 
     @Test
     public void shouldReturnANotNullTargetInstance() {

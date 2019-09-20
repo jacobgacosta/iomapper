@@ -1,16 +1,16 @@
 package dev.iomapper;
 
 /**
- * Ignorable is the contract that define the ignorable list.
+ * Ignorable is the contract that defines the the fillign of ignorable fields.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public interface Ignorable {
 
     /**
-     * Fills a list of ignorable.
+     * Adds the ignorable fields through the @see dev.iomapper.IgnorableFields object.
      *
-     * @return the filled list of ignorable.
+     * @return the filled list of ignorable fields.
      */
     IgnorableFields fill(IgnorableFields ignorableFields);
 

@@ -1,11 +1,9 @@
 package dev.iomapper;
 
-import dev.iomapper.utils.Delimiters;
-
 /**
- * SourceWrapper is a wrapper object of the source instance.
+ * SourceWrapper is a wrapper to handle easily the operations on the source object.
  *
- * @author norvek
+ * @author Jacob G. Acosta
  */
 public class SourceWrapper {
 
@@ -14,17 +12,17 @@ public class SourceWrapper {
     /**
      * SourceWrapper constructor.
      *
-     * @param source the source instance.
+     * @param source the source object instance.
      */
     public SourceWrapper(Object source) {
         this.source = source;
     }
 
     /**
-     * Finds a matching field into the source instance.
+     * Gets if exist, a field matching <b>fieldName</b> inside the source object.
      *
      * @param fieldName the field name.
-     * @return a <bold>FlexibleField</bold>
+     * @return a <b>FlexibleField</b>
      */
     public FlexibleField getMatchingFieldFor(String fieldName) {
         FlexibleField flexibleField = null;
@@ -42,14 +40,15 @@ public class SourceWrapper {
         return flexibleField;
     }
 
+    /**
+     * Gets the class name of the wrapped object.
+     *
+     * @return the class name.
+     */
     public String getClassName() {
         String[] fullNameClass = this.source.getClass().getName().split(Delimiters.DOT_SEPARATOR);
 
         return fullNameClass[fullNameClass.length - 1];
-    }
-
-    public Object getValue() {
-        return this.source;
     }
 
 }

@@ -1,7 +1,7 @@
-package dev.iomapper.utils;
+package dev.iomapper;
 
 /**
- * Created by norveo on 8/6/18.
+ * Created by Jacob G. Acosta.
  */
 public class Delimiters {
 
