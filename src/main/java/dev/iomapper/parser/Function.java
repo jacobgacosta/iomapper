@@ -58,7 +58,7 @@ public class Function {
     /**
      * Gets the most outer function in the sentence.
      *
-     * @return @see dev.iomapper.parser.SingleFunction object
+     * @return a @see dev.iomapper.parser.SingleFunction object
      */
     public SingleFunction getSingleFunction() {
         return this.nestedFunctionsList.get(0);

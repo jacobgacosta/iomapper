@@ -61,7 +61,7 @@ public class CustomMappings {
      * Verifies if a target field name is present in a group of target fields separated by comma, because
      * the customizable mapping allows mapping a source field to multiple target fields on the same level.
      * <p>
-     * Ex. sourceField -> targetField1, targetField2
+     * Ex. sourceField to targetField1, targetField2
      * <p>
      * The sourceField field in the previous example is mapped to targetField1 and targetField2 fields.
      * <p>
