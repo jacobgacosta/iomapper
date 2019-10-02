@@ -15,7 +15,7 @@
 - Execution of functions on fields **(source)**
 - Execution of nested functions on fields **(source)**
 
-**IOMapper** is accessible, powerful and puts at your fingertips the possibility to scale and add new functionalities that w'll allow you to perform more complex mapping to meet your needs.
+**IOMapper** is accessible, powerful and puts at your fingertips the possibility to scale and add new functionalities that will allow you to perform more complex mapping to meet your needs.
 
 ## Contributing
 Thank you for considering contributing to **IOMapper**! The contribution guide can be found in the [IOMapper documentation.](https://iomapper.dev/)
