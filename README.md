@@ -1,3 +1,7 @@
+<p align="center">
+<img width="400" height="240" src="https://raw.githubusercontent.com/jacobgacosta/iomapper/master/art/logo.png" alt="IOMapper logo" />
+</p>
+
 # IOMapper
 [![tag](https://img.shields.io/badge/tag%20-1.0.0-brightgreen.svg)]() [![licence](https://img.shields.io/badge/licence%20-MIT-orange.svg)](https://github.com/jacobgacosta/iomapper/blob/master/LICENSE.md) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/dev.iomapper/iomapper/badge.svg)](https://search.maven.org/artifact/dev.iomapper/iomapper/1.0.0/jar) [![Powered by](https://img.shields.io/badge/powered%20by-java-blue.svg)]()
 
@@ -22,3 +26,7 @@ Thank you for considering contributing to **IOMapper**! The contribution guide c
 
 ## License
 IOMapper is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Credits
+- Created by (Jacob_GA)[https://twitter.com/Jacob_GAcosta]
+- Logo by (Caneco)[https://twitter.com/caneco]
